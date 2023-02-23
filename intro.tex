@@ -1,27 +1,17 @@
 
 \chapwithtoc{Introduction}
 
-%\item What is the nature of the problem the thesis is addressing?
-With the rising importance of data, many users would benefit from advanced features such as versioning and file-level
-encryption to their data storage without the need for specialized software.
-In this thesis, I aim to provide a solution to this problem by introducing a virtual file system (VFS) that allows users
-to add these features to their existing file systems with ease.
-Specifically, the user will be able to create snapshots to later rollback and will be able to encrypt specific files or
-even directories with password and then temporarily decrypt them in a convenient way.
+With the rising importance of data, many users would benefit from advanced features such as versioning and file-level encryption to their data storage without the need for specialized software.
+In this thesis, I aim to provide a solution to this problem by introducing a virtual file system (VFS) that allows users to add these features to their existing file systems with ease.
+Specifically, the user will be able to create snapshots to later rollback to and will be able to encrypt specific files or even directories with password and then temporarily decrypt them in a convenient way.
 
-%\item What is the common approach for solving that problem now?
-Usually if user wants mentioned features, he has to download two separate binaries that he will use.
+Usually if user wants mentioned features, he has to download two separate programs that he will use.
 As an example for versioning every reader probably knows \texttt{git}.
-With that user gets the ability to create a so called repository with information about file changes stored in \texttt{.git} directory.
-To password protect files, there is plenty of software to choose from and just to name any, one may use Folder Lock.
+With that user gets the ability to create a so called repository with information about file changes stored in \texttt{.git} directory. There also exists few solutions providing versioning on a file system level but these are usually deprecated, non-multiplatform and far from easy to use.
+To password protect files, there is plenty of software to choose from and just to name any, one may use Folder Lock. But there doesn't exist a single solution providing this specific feature on lower level.
 
-%\item How this thesis approaches the problem?
-But that doesn't maximize the user's convenience as mentioned approaches come with limitation of having to use specialized
-software to access the files and the software usually leaks the implementation details.
-My thesis on the other hand, provides these features in form of virtual file system (VFS) - some form of intermediate layer
-between OS and specific file systems.
+The main problem of these programs I am trying to overcome is the need for accessing the files through a specialized software and leaking the implementation details.
+My thesis on the other hand, provides these features in form of virtual file system (VFS) - some form of intermediate layer between OS and specific file systems.
 
-%\item What can the reader expect in the individual chapters of the thesis?
-The individual chapters of the thesis will provide an in-depth explanation what a virtual file system is and how it works,
-how to create a custom multiplatform VFS, and the approach used to add versioning and file-level encryption to it.
+The individual chapters of the thesis will provide an in-depth explanation what a virtual file system is and how it works, how to create a custom multiplatform VFS, and the approach used to add versioning and file-level encryption to it. 
 Finally, the thesis will conclude with an evaluation of the VFS's performance, usability, and security.
