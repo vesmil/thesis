@@ -1,10 +1,40 @@
 \chapter{Theoretical overview}
 \label{chap:refs}
 
-Overview of file systems and VFSs
+\section{File Systems}
 
-Review of existing VFS implementations and their features
+A file system is a way of organizing and managing data on a storage device, such as a hard drive, solid-state drive, or other media storage.
+File systems provide a structure for organizing, accessing, and modifying files and directories.
+Some widely used file systems include FAT32, NTFS, HFS+, and EXT4. Each file system has its own set of rules and features, as well as limitations and advantages, depending on the use case and operating system compatibility.
 
-Overview of encryption and versioning techniques
+\section{FUSE and Virtual File Systems}
 
-\ldots
+Filesystem in Userspace (FUSE) is an interface that enables users to create and implement their own file systems without the need to modify the kernel code.
+FUSE allows for the creation of virtual file systems (VFS) that can be mounted and accessed like any other file system.
+A VFS acts as an intermediate layer between the user application and the underlying file system, allowing for additional functionality to be added or modifications to be made without changing the physical file system.
+
+\subsection{Applications of Virtual File Systems}
+
+Virtual file systems find applications in various scenarios, such as:
+
+\textbf{Cloud storage}: VFS can be used to create a seamless interface between local file systems and remote cloud storage services, making it easier for users to access and manage their data across different devices and platforms.
+\textbf{Network file systems}: In a network environment, VFS can be employed to provide a unified view of multiple file systems located on different machines, enabling users to access and manage files and directories as if they were part of their local file system.
+\textbf{Adding functionality}: VFS can be used to add features like encryption, compression, and versioning to existing file systems without changing the underlying file system structure or modifying the operating system kernel.
+
+\section{Versioning}
+
+Versioning, also known as file versioning or snapshotting, is the process of tracking and managing changes to files over time.
+It allows users to create, maintain, and restore different versions of a file or directory, providing an efficient way to track modifications, recover from mistakes, and collaborate on projects.
+
+Version control systems, such as Git, Mercurial, and Subversion, are examples of tools that implement versioning for software development purposes.
+In these systems, versioning is usually achieved by creating a repository that tracks changes to files and directories, allowing users to revert to previous versions or compare differences between versions.
+
+\section{File-level Encryption}
+
+File-level encryption is a security mechanism used to protect the contents of individual files or directories by encrypting the data using a cryptographic algorithm.
+This ensures that the data is unreadable without the proper decryption key or password, providing an additional layer of security against unauthorized access.
+
+There are various encryption algorithms and tools available for file-level encryption, such as Advanced Encryption Standard (AES), RSA, and Pretty Good Privacy (PGP).
+
+To implement file-level encryption in a VFS, an encryption algorithm must be integrated into the file read and write operations, ensuring that data is encrypted before being written to the underlying file system and decrypted when read.
+This process should be transparent to the user and allow for seamless access to the encrypted files or directories once the correct password or decryption key has been provided.
