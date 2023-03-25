@@ -3,7 +3,7 @@
 
 \section{Introduction}\label{sec:introduction}
 
-The development of a custom Virtual File System (VFS) with versioning and encryption capabilities requires a comprehensive understanding of several key concepts and technologies.
+The development of a custom Virtual File System (VFS) with versioning and encryption capabilities requires an understanding of several key concepts and technologies.
 This chapter aims to provide the necessary background and context to deeper understand the VFS implementation discussed in later chapters.
 Even for those already familiar with the subject, a brief refresher on the foundational concepts can be helpful for appreciating design choices made in the VFS solution.
 
@@ -29,12 +29,9 @@ Metadata encompasses information such as file names, creation and modification t
 \section{Virtual File Systems}\label{sec:virtual-file-systems}
 
 A Virtual File System (VFS) is an essential abstraction layer in modern operating systems, designed to facilitate the interaction between various file systems and user applications.
-The VFS serves as an intermediary, allowing applications to access different file systems through a unified interface, regardless of the underlying file system's specific characteristics or structure.
+The VFS functions as an intermediary, enabling applications to access various file systems through a unified interface, regardless of the underlying file system's specific characteristics or structure.
 
-The primary purpose of the VFS is to provide a consistent API (Application Programming Interface) for user applications and the kernel, enabling them to perform file operations without being concerned with the underlying file system implementation.
-This uniform interface simplifies the development of applications and the integration of new file systems into the operating system.
-
-The VFS achieves this abstraction by employing a set of data structures and operations that can be mapped to the corresponding components of different file systems.
+The primary purpose of the VFS is to provide a consistent API for user applications and the kernel, it achieves this abstraction by employing a set of data structures and operations that can be mapped to the corresponding components of different file systems.
 Common VFS data structures include superblocks, inodes, dentries, and file objects, which are used to represent file systems, files, directories, and open file instances, respectively.
 
 The VFS plays a critical role in operating system design for several reasons:
@@ -46,7 +43,17 @@ The VFS plays a critical role in operating system design for several reasons:
     Developers can implement a file system-specific driver that adheres to the VFS interface, allowing applications to utilize the new file system without any modifications.
     \item \textbf{Interoperability:} With the VFS layer, an operating system can support cross-platform file systems like FAT32 or exFAT, enhancing compatibility among different devices and platforms.
     \item \textbf{Caching and Performance:} The VFS can implement caching strategies and performance optimizations that are applicable across different file systems, improving efficiency and reducing redundant operations.
+    \item \textbf{Extensibility:} The VFS can be extended to support additional features, such as encryption and versioning, without the need for kernel modifications.
+    That is also the topic of this thesis.
 \end{enumerate}
+
+\subsection{VFS Operations}\label{subsec:vfs-operations}
+
+The VFS provides file operations such as creating, reading, writing, and deleting files and directories, but also provides operations for managing file system metadata, such as file permissions and timestamps.
+The VFS operations are divided into two categories: \textit{path-based} and \textit{file descriptor-based}.
+Path-based operations are used to access files and directories using their absolute or relative paths.
+File descriptor-based operations are used to access files and directories using file descriptors, which are unique identifiers assigned to open files and directories.
+File descriptors are used to avoid the overhead of resolving paths to file objects, which can be costly for large file systems.
 
 \section{Filesystem in Userspace (FUSE)}\label{sec:filesystem-in-userspace-(fuse)}
 
@@ -58,6 +65,15 @@ This abstraction greatly simplifies the development process and reduces the risk
 To implement a FUSE-based file system, developers write a user-space program that registers itself with the FUSE kernel module.
 This program defines the required file system operations, such as reading, writing, or listing directories, and handles the communication with the underlying storage medium.
 The FUSE kernel module forwards file operation requests from the VFS to the user-space program and returns the results to the VFS layer, effectively creating a seamless interface between the kernel and the user-space file system.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{img/fuse_diagram.svg}
+    \caption{FUSE flow-char diagram}
+    \label{fig:fuse-diagram}
+\end{figure}
+
+More details about FUSE will be discussed in Chapter\ref{chap:implementation}.
 
 \section{Encryption Approaches}\label{sec:encryption-approaches}
 

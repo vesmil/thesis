@@ -1,52 +1,39 @@
-
-
-%%% Choose a language %%%
-
 \newif\ifEN
-\ENtrue   % uncomment this for english
+\ENtrue    % uncomment this for english
 %\ENfalse   % uncomment this for czech
 
 %%% Configuration of the title page %%%
-
-\def\ThesisTitleStyle{mff} % MFF style
-%\def\ThesisTitleStyle{cuni} % uncomment for old-style with cuni.cz logo
-%\def\ThesisTitleStyle{natur} % uncomment for nature faculty logo
-
+\def\ThesisTitleStyle{mff}
 \def\UKFaculty{Faculty of Mathematics and Physics}
-
-\def\UKName{Charles University in Prague} % this is not used in the "mff" style
 
 % Thesis type names, as used in several places in the title
 \def\ThesisTypeTitle{\ifEN BACHELOR THESIS \else BAKALÁŘSKÁ PRÁCE \fi}
 \def\ThesisGenitive{\ifEN bachelor \else bakalářské \fi}
 \def\ThesisAccusative{\ifEN bachelor \else bakalářskou \fi}
 
-%%% Fill in your details %%%
-
 \def\ThesisTitle{Virtual file system in user space}
-\def\ThesisAuthor{{Milan Veselý}}
+\def\ThesisAuthor{Milan Veselý}
 \def\YearSubmitted{2023}
 
 % department assigned to the thesis
-\def\Department{Katedra softwarového inženýrství}
-% Is it a department (katedra), or an institute (ústav)?
-\def\DeptType{Katedra}
+\def\Department{Department of Software Engineering}
+\def\DeptType{Department} % department (katedra), or an institute (ústav)
 
 \def\Supervisor{RNDr. Jakub Yaghob, Ph.D.}
-\def\SupervisorsDepartment{Katedra softwarového inženýrství}
+\def\SupervisorsDepartment{Department of Software Engineering}
 
 % Study programme and specialization
 \def\StudyProgramme{Informatika}
 \def\StudyBranch{Programování a vývoj software}
 
-\def\Dedication{%
+\def\Dedication{
     To my family, thank you for feeding me and keeping me alive during this thesis writing process.
     To my supervisor, RNDr. Jakub Yaghob, Ph.D., thank you for guidance, patience, and expertise throughout the entire thesis process.
     And to my roommates, thank you for not driving me insane with your noisy shenanigans while I was trying to work.
     This thesis is dedicated to all of you for making this experience more bearable and even enjoyable at times.
 }
 
-\def\AbstractEN{%
+\def\AbstractEN{
     This thesis introduces a custom Virtual File System (VFS) with versioning and encryption capabilities, implemented using the FUSE library adjusted for C++.
     The VFS enhances file management by adding password protection and encryption, enabling secure storage and retrieval of sensitive data.
     Versioning allows users to access and restore previous file versions effortlessly.
@@ -55,7 +42,7 @@
     The modularity of the VFS also allows for potential integration of additional features in the future, further improving its utility and adaptability.
 }
 
-\def\AbstractCS{%
+\def\AbstractCS{
     Tato bakalářská práce se věnuje vytváření vlastního virtuálního souborového systému (VFS) s podporou verzování a šifrování a to prostřednictvím knihovny FUSE upravené pro použití s C++.
     Díky šofrování lze přidat ochranu jednotlivých souborů a složek pomocí hesla pro bezpečné uchovávání citlivých dat.
     Verzování na druhou stranu umožní uživatelům snadno uchovávat a obnovovat předchozí verze souborů.
@@ -66,19 +53,17 @@
 % 3 to 5 keywords (recommended), each enclosed in curly braces.
 % Keywords are useful for indexing and searching for the theses by topic.
 \def\Keywords{%
-        {VFS} {FUSE} {C++} {versioning} {security}
+        {VFS} {FUSE} {C++} {versioning} {encryption}
 }
 
 % If your abstracts are long and do not fit in the infopage, you can make the
 % fonts a bit smaller by this setting. (Also, you should try to compress your abstract more.)
-% Alternatively, consider increasing the size of the page by uncommenting the
-% geometry modification in thesis.tex.
 \def\InfoPageFont{}
 %\def\InfoPageFont{\small}  %uncomment to decrease font size
 
-\ifEN\relax\else
 % If you are writing a czech thesis, you additionally need to fill in the
 % english translation of the metadata here!
+\ifEN\relax\else
 \def\ThesisTitleEN{\xxx{Thesis title in English}}
 \def\DepartmentEN{\xxx{Name of the department in English}}
 \def\DeptTypeEN{\xxx{Department}}

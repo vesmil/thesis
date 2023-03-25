@@ -8,11 +8,12 @@ Specifically, the proposed VFS enables users to create snapshots for later rollb
 Currently, users wanting the mentioned features must rely on separate programs.
 For instance, versioning is often achieved through the well-known \texttt{git}, which creates a repository to store file changes in a \texttt{.git} directory, but this might be rather inconvenient in daily usage.
 While there are a few file system-level versioning solutions available, they tend to be outdated, platform-specific, and difficult to use.
-To password-protect files, users can choose from a wide array of software, such as Folder Lock, yet no single solution offers this particular feature at a lower level.
+To password-protect files, users can choose from a wide array of software, such as Folder Lock, gpg or Encrypto, yet no single solution offers this particular feature at a lower level.
 
 The primary issue with these programs, which this thesis seeks to address, lies in the necessity of accessing files through specialized software and exposing implementation details.
 In contrast, the proposed VFS serves as an intermediate layer between the operating system and specific file systems, delivering the desired features in a more streamlined and user-friendly manner.
 
 The subsequent chapters of this thesis will provide a in-depth examination of the virtual file system (VFS) concept, its functionality, and its internal mechanisms.
-Additionally, these chapters will detail the design and implementation of a custom, multiplatform VFS, the methodology employed to incorporate versioning and file-level encryption, and techniques for utilizing the system's modularity to support additional features.
+What analysis was performed to determine the feasibility of the project, and what design decisions were made to ensure the VFS's reliability and efficiency.
+Additionally, following chapters will describe the methodology employed to incorporate versioning and file-level encryption, and techniques for utilizing the system's modularity to support additional features.
 The thesis will end with an assessment of the VFS's performance, usability, and security to judge its overall effectiveness.
