@@ -7,26 +7,38 @@
 
 On Debian-based Linux systems (such as Ubuntu), you may install these dependencies with APT:
 
+\xxx{I will just copy-paste it from the final CI/CD script}
+
 \begin{Verbatim}
-apt-get install \
-  libfuse...
+apt-get install build-essential cmake libfuse-dev crypto++-dev ...
 \end{Verbatim}
 
 To unpack and compile the software, proceed as follows:
 
 \begin{Verbatim}
 ...
-cmake ...
+cmake ..
 \end{Verbatim}
 
 \subsection*{Mount the file system}
 
-\ldots
+Mounting the file system is rather simple.
+All you need to do is a directory and to run the following command:
 
 \begin{Verbatim}
-...
+  CustomVFS /path/to/mountpoint
+\end{Verbatim}
+
+\xxx{mby add notes about options}
+
+\subsection*{Unmount the file system}
+
+\begin{Verbatim}
+  fusermount -u /path/to/mountpoint
 \end{Verbatim}
 
 \section*{Section}
 
 Voila, you are all set.
+
+Let's just learn how to use it\ldots
