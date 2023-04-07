@@ -3,14 +3,33 @@
 
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
-Troubles including using FUSE in C++ because of poorly designed interface - necessity of static wrapper because of operations
+Incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
+The problem is that FUSE expects a C struct with pointers to functions, which poses a problem for non-static C++ methods.
+To solve this issue, two solutions can be considered.
+Either I would be writing C++ code without utilizing objects but then would using C++ instead of C be rather pointless.
+Or I could implement a singleton wrapper with only static methods.
 
-Options to use C in C++\ldots
+Fortunately I wouldn't be starting from the ground up, as there are already existing repositories that provide an incomplete solution to this problem.
+The one I end up using as a foundation is fusexx, which I found most suitable for my needs.
 
-Problems with member methods
+But still, I wanted to make significant changes to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
+The first step was to refactor the code to use modern C++ features, such as removing C-style casts and similar.
+I also had to solve numerous warnings and in few places a completely rewrote some methods to make them more readable or efficient.
+
+\xxx{TODO: Add more details about fusexx and ref}
 
 \section{Architecture}\label{sec:architecture}
 
-What were the considered approaches\ldots
+When determining the architecture of the custom Virtual File System (VFS), several approaches were considered. I
+n this section, we will discuss the thought process behind the chosen architecture.
 
-Some UML diagrams?
+It is important to note that the core VFS implementation was not the primary focus of this thesis.
+Consequently, extensive optimization efforts were not prioritized.
+The result of this is that the entire file system is stored in memory, which may not be the most efficient approach.
+However, such implementation details can be easily replaced, allowing for future improvements in the overall design.
+
+\subsection{Modularity}
+
+The VFS is designed to be modular, allowing for the addition of new features without the need to modify the core implementation.
+
+\ldots

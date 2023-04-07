@@ -1,18 +1,38 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-\section{FUSE operations}\label{sec:fuse-ops}
+\section{FUSE Operations}\label{sec:fuse-ops}
 
-Necessary operations - geattr, \ldots
+To successfully implement the custom Virtual File System (VFS), various FUSE operations are required.
+Some of the essential operations include getattr, readdir, open, read, write, mkdir, and rmdir, among others.
+These operations are responsible for handling basic file system functionalities.
 
-Potentially with explanation from
+A brief overview of some crucial FUSE operations:
+
+\begin{itemize}
+\item \textbf{getattr}: Retrieves the file or directory attributes, such as size, access permissions, and timestamps.
+\item \textbf{readdir}: Lists the contents of a directory.
+\item \textbf{open}: Opens a file for reading or writing.
+\item \textbf{read}: Reads data from an open file.
+\item \textbf{write}: Writes data to an open file.
+\item \textbf{mkdir}: Creates a new directory.
+\item \textbf{rmdir}: Deletes an existing directory.
+...
+\end{itemize}
+
+To implement these FUSE operations, each operation's function must be defined in the custom VFS.
+These functions will be responsible for performing the corresponding file system tasks and interacting with the underlying data structures.
+
+\section{Modularity}\label{sec:modularity}
+
+One of the primary goals in designing the custom VFS is to ensure modularity, enabling easy expansion and the addition of new features or modules.
+This modular approach allows developers to build upon the existing VFS without making extensive changes to the core implementation.
+
+To achieve modularity, the VFS should be designed with well-defined interfaces and organized in a way that promotes separation of concerns.
+This can be accomplished by organizing the code into distinct components, each responsible for specific tasks or features, such as encryption, versioning, or other desired functionalities.
+
+\ldots
 
 https://developer.ibm.com/articles/l-fuse/
 https://engineering.facile.it/blog/eng/write-filesystem-fuse/
 https://maastaar.net/fuse/linux/filesystem/c/2016/05/21/writing-a-simple-filesystem-using-fuse/
-
-And how to implement them
-
-\section{Modularity}\label{sec:modularity}
-
-Explain how to expand the VFS further - how to add new modules\ldots
