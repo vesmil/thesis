@@ -1,6 +1,8 @@
 \chapter{Analysis}
 \label{chap:analysis}
 
+\xxx{From this point on, the document is a mess.}
+
 \section{Analysis of Alternatives}\label{sec:alternatives}
 
 In order to assess the potential benefits of the proposed virtual file system, it is essential to examine alternative solutions and compare their capabilities, limitations, and applicability.
@@ -14,11 +16,11 @@ Furthermore, several virtual file systems (VFS) with versioning capabilities hav
 \begin{itemize}
     \item User space file systems implemented with FUSE:
     \begin{itemize}
-        \item \href{https://github.com/FooSoft/vfs}{A simple versioning file system for Linux using FUSE}, written in Go.
-        \item \href{https://www.usenix.org/legacy/events/usenix04/tech/freenix/cornell.html}{Wayback: A User-level Versioning File System for Linux}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE.
+        \item A simple versioning file system for Linux using FUSE~\cite{simple_vfs}, written in Go.
+        \item Wayback: A User-level Versioning File System for Linux~\cite{wayback_vfs}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE.
     \end{itemize}
-    \item \href{https://osm.hpi.de/vvfs/}{Copy-on-Write Version Support for VFS under Linux} by Stephan Müller and Sven Widmer, implemented as a kernel patch.
-    \item \href{https://wiki.tcl-lang.org/page/A+versioning+virtual+filesystem}{A versioning virtual filesystem by Steve Huntley}, written in Tcl.
+    \item Copy-on-Write Version Support for VFS under Linux by Stephan Müller and Sven Widmer~\cite{vvfs}, implemented as a kernel patch.
+    \item A versioning virtual filesystem by Steve Huntley~\cite{huntley_vvfs}, written in Tcl.
     However, this solution primarily serves as a language demonstration rather than a practical implementation.
 \end{itemize}
 
@@ -51,9 +53,9 @@ It is arguable whether it is the best choice for a C++ implementation, as it is 
 Although FUSE was initially designed for Linux, variants are available for other platforms, ensuring cross-platform compatibility:
 
 \begin{itemize}
-    \item \textbf{Linux}: \href{https://github.com/libfuse/libfuse}{libfuse} - The reference implementation of FUSE.
-    \item \textbf{macOS}: \href{https://osxfuse.github.io/}{FUSE for macOS} - A macOS port of FUSE.
-    \item \textbf{Windows}: \href{https://github.com/billziss-gh/winfsp}{WinFsp} - A Windows File System Proxy that provides FUSE-compatible functionality.
+    \item \textbf{Linux}: libfuse - The reference implementation of FUSE~\cite{libfuse}.
+    \item \textbf{macOS}: FUSE for macOS - A macOS port of FUSE~\cite{osxfuse}.
+    \item \textbf{Windows}: WinFsp - A Windows File System Proxy that provides FUSE-compatible functionality~\cite{winfsp}.
 \end{itemize}
 
 To develop a new file system using FUSE, a handler program connected to the provided libfuse library must be created.
@@ -63,11 +65,11 @@ Upon mounting, the handler is registered with the kernel.
 When a user initiates read, write, or stat requests for the newly mounted file system, the kernel forwards these I/O requests to the handler, which processes them accordingly.
 The handler's response is then relayed back to the user by the kernel, ensuring a seamless interaction between the custom file system and the operating system.
 
+%! suppress = MissingLabel
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{img/fuse_diagram}
     \caption{FUSE flow-chart diagram}
-    \label{fig:fuse-diagram}
 \end{figure}
 
 Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is the preferred choice for implementing the proposed VFS.
@@ -79,11 +81,13 @@ While FUSE serves as the foundation for the VFS implementation, several other li
 
 \subsection{Encryption}\label{subsec:encryption-analysis}
 
-\href{https://www.cryptopp.com/}{Crypto++} is a comprehensive, open-source C++ class library that provides a wide array of cryptographic schemes, including encryption, hashing, and authentication algorithms.\ By incorporating Crypto++ into the project, file-level encryption can be implemented within the VFS, ensuring the security and privacy of stored data.
+Crypto++~\cite{crypto_pp} is a comprehensive, open-source C++ class library that provides a wide array of cryptographic schemes, including encryption, hashing, and authentication algorithms.
+By incorporating Crypto++ into the project, file-level encryption can be implemented within the VFS, ensuring the security and privacy of stored data.
 
 \subsection{Testing}\label{subsec:gtest}
 
-\href{https://github.com/google/googletest}{Google Test}, also known as gtest, is a popular and versatile C++ testing framework developed by Google.\ This library allows for efficient testing of individual components and the overall functionality of the VFS. Through the use of gtest, the quality, reliability, and performance of the custom VFS can be assessed, ensuring that it meets the requirements and expectations outlined in this thesis.
+Google Test~\cite{google_test}, also known as gtest, is a popular and versatile C++ testing framework developed by Google.
+This library allows for efficient testing of individual components and the overall functionality of the VFS. Through the use of gtest, the quality, reliability, and performance of the custom VFS can be assessed, ensuring that it meets the requirements and expectations outlined in this thesis.
 \ldots
 
 \section{Build system and multiplatform challenges}\label{sec:build-system-and-multiplatform-challenges}

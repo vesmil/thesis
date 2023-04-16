@@ -10,28 +10,28 @@ Either I would be writing C++ code without utilizing objects but then would usin
 Or I could implement a singleton wrapper with only static methods.
 
 Fortunately I wouldn't be starting from the ground up, as there are already existing repositories that provide an incomplete solution to this problem.
-The one I end up using as a foundation is fusexx, which I found most suitable for my needs.
+The one I end up using as a foundation is fusexx~\cite{fusexx}, which I found most suitable for my needs.
 
 But still, I wanted to make significant changes to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
 The first step was to refactor the code to use modern C++ features, such as removing C-style casts and similar.
 I also had to solve numerous warnings and in few places a completely rewrote some methods to make them more readable or efficient.
 
-\xxx{TODO: Add more details about fusexx and ref}
+I also considered use of fusepp~\cite{fusepp} as an alternative to fusexx, but it was slightly older and din't fit my needs as well.
 
 \section{Architecture}\label{sec:architecture}
 
-When determining the architecture of the custom Virtual File System (VFS), several approaches were considered. I
-n this section, we will discuss the thought process behind the chosen architecture.
-
+When determining the architecture of the custom Virtual File System (VFS), several approaches were considered.
 It is important to note that the core VFS implementation was not the primary focus of this thesis.
 Consequently, extensive optimization efforts were not prioritized.
 The result of this is that the entire file system is stored in memory, which may not be the most efficient approach.
 However, such implementation details can be easily replaced, allowing for future improvements in the overall design.
 
-\subsection{Modularity}
+\xxx{I guess I should really rewrite the in memory part - that's just a temporary solution.}
+
+\subsection{Modularity}\label{subsec:modularity}
 
 The VFS is designed to be modular, allowing for the addition of new features without the need to modify the core implementation.
 
 \xxx{Describe two approaches - one with a single VFS class and other with File, Directory, and VFS classes}
 
-\ldots
+\xxx{Explain what a decorator is. and how it is used in this project.}
