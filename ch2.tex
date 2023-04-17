@@ -25,9 +25,10 @@ Furthermore, several virtual file systems (VFS) with versioning capabilities hav
 \end{itemize}
 
 These existing solutions have various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
-While VFS with encryption is less common, there also exists a non-virtual alternative as \ldots % https://learn.microsoft.com/en-gb/windows/win32/fileio/file-encryption?redirectedfrom=MSDN
-The closest example to the desired functionality is \href{https://github.com/rmind/rvault}{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
-However, this does does differ from the intended functionality of the proposed VFS.
+While VFS with encryption is less common, there also exists a non-virtual alternative as \xxx{TODO} \ldots % https://learn.microsoft.com/en-gb/windows/win32/fileio/file-encryption?redirectedfrom=MSDN
+
+The closest example to the desired functionality is rvault~\cite{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
+However, this does does differ from the intended functionality of the proposed VFS\@.
 
 The main competition thus stems from higher-level applications that provide versioning and encryption features.
 These applications have their own set of limitations, such as requiring a constantly running background program with access to all files and offering limited extensibility for incorporating other features.
