@@ -4,27 +4,27 @@ This thesis demonstrated the reasonableness of implementing an extensible Virtua
 The developed VFS prototype is easily extensible and includes modules for versioning and encryption.
 Although the current implementation may not be optimal, there is room for improvement.
 
-\section{Evaluation}
+\section{Evaluation}\label{sec:evaluation}
 
-\subsection{Usability}
+\subsection{Usability}\label{subsec:usability}
 
 The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
 The features are currently accessed through a command-line interface (CLI), which is simple to use but could be improved over time.
 Despite the limited effort put into developing the CLI, it remains a functional and accessible interface.
 
-\subsection{Reliability and Security}
+\subsection{Reliability and Security}\label{subsec:reliability-and-security}
 
 The VFS implementation has undergone testing through unit tests using Google Test, ensuring good code coverage and the core features, such as encryption and communication with kernel code, rely on well-tested external libraries.
 
 However, there is still room for improvement in the core VFS core implementation to further enhance its reliability.
 
-\subsection{Performance}
+\subsection{Performance}\label{subsec:performance}
 
 Performance was not the primary focus of this project, as it is still a prototype.
 For that reason there were no performance tests conducted.
 On the other hand there are no known performance bottlenecks in the current implementation, as the VFS is built on top of the FUSE library, which is known for its high performance.
 
-\section{Future Work}
+\section{Future Work}\label{sec:future-work}
 
 There are several avenues for future development and research to further improve the results of this thesis:
 
