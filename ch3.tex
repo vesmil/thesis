@@ -65,15 +65,16 @@ class CustomVfs { /.../ };
 
 class VfsDecorator : public CustomVfs {
 public:
-explicit VfsDecorator(std::shared_ptr<CustomVfs> wrapped_vfs);
+explicit VfsDecorator(CustomVfs& wrapped_vfs);
 
 protected:
-std::shared_ptr<CustomVfs> wrapped_vfs_;
+CustomVfs& wrapped_vfs_;
 };
 
 class EncryptionVfs : public VfsDecorator {
 public:
-explicit EncryptionVfs(std::shared_ptr<CustomVfs> wrapped_vfs);
+explicit EncryptionVfs(CustomVfs& wrapped_vfs);
+
 int read(/.../) override;
 int write(/.../) override;
 
@@ -92,11 +93,11 @@ The use of this pattern is then demonstrated in the following code snippet, whic
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 int main(int argc, char* argv[]) {
-    custom_vfs = std::make_shared<CustomVfs>();
-    std::shared_ptr<VersioningVfs> versioned_vfs = std::make_shared<VersioningVfs>(custom_vfs);
-    std::shared_ptr<EncryptionVfs> enc_vers_vfs = std::make_shared<EncryptionVfs>(versioned_vfs);
+    CustomVfs custom_vfs();
+    VersioningVfs versioned_vfs(custom_vfs);
+    EncryptionVfs enc_vers_vfs(versioned_vfs);
 
-    enc_vers_vfs->main(argc, argv);
+    enc_vers_vfs.main(argc, argv);
     return 0;
 }
 \end{lstlisting}
@@ -126,12 +127,15 @@ This is because the VFS features are accessed through standard filesystem operat
 Additionally, the hooks allow for the seamless integration of new features, such as encryption and versioning, without the need to modify the core VFS implementation as can be seen in the following code example:
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int EncryptionVfs::read(const std::string& file_path, char* buffer, size_t size, off_t offset) {
+int EncryptionVfs::read(const std::string &file_path,
+                     char *buffer,
+                     size_t size,
+                     off_t offset) {
     if (is_encryption_hook(file_path)) {
-        return handle_encryption_hook(buffer, size, offset);
-    } else {
-        // Do normal read operation...
+        return handle_hook(file_path, buffer, size, offset);
     }
+
+    // Do normal read operation...
 }
 \end{lstlisting}
 

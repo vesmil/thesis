@@ -29,22 +29,45 @@ This is in my implementation done in the \texttt{FuseWrapper} class and all the 
 
 \section{Encryption}\label{sec:encryption}
 
-\xxx{TODO}
+I will use a Crypto++ to handle the encryption and decryption of files within the custom VFS\@.
+In order to use an user-provided password, Advanced Encryption Standard (AES) algorithm will be utilized.
+AES is a widely-used symmetric encryption algorithm that provides a good balance between security and performance.
+Alternatives include other symmetric encryption algorithms like DES (Data Encryption Standard) and 3DES (Triple DES), but they are slower and less secure compared to AES.
 
-What is best way to encrypt a file with user provided password?
+To integrate the encryption, I have modified the existing read and write operations to include the encryption and decryption processes.
+The following code snippet demonstrates how to wrap the read operation with encryption.
 
-Using AES\ldots from Crypto++
-
-Some code snippet that just shows wrapping read and write operations.
-
-\ldots
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int EncryptionVfs::read(const std::string &file_path,
+                     char *buffer,
+                     size_t size,
+                     off_t offset) {
+    wrapped_vfs_->read(file_path, buffer, size, offset);
+    decrypt(buffer, size, password);
+}
+\end{lstlisting}
 
 \section{Versioning}\label{sec:versioning2}
 
-\xxx{TODO}
+Instead of using a diff-based approach for versioning, I have chosen to store the entire file in the versioning system as it simplifies the implementation.
+Diff-based approach could be implemented in the future.
 
-I have decided to not do diff but just store the whole file in the versioning system.
+Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
+The following code snippet shows high-level overview of how to wrap the write operation with versioning functionality.
 
-Also just show how wraping read and write operations works.
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int VersioningVfs::write(const std::string &file_path,
+                     char *buffer,
+                     size_t size,
+                     off_t offset) {
+    char* prev_buffer;
+    read_prev_version(file_path, prev_buffer);
 
-Also show the hook in read that \ldots
+    if (prev_buffer != buffer) {
+        // This will store an invisible copy of the file
+        store_version(file_path, buffer, size);
+    }
+
+    wrapped_vfs_->write(file_path, buffer, size, offset);
+}
+\end{lstlisting}
