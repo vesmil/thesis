@@ -31,7 +31,7 @@ However, such implementation details can be easily replaced, allowing for future
 \xxx{If I am able to complete the VFS and tools on time I will rewrite the ugly temp solution. If not I will describe it better here. \ldots}
 
 Two approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
 
 Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
 
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
 }
 \end{lstlisting}
 
-Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS.
+Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS\@.
 
 \subsection{Access to VFS features}\label{subsec:access-to-vfs-features}
 

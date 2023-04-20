@@ -15,7 +15,7 @@ Furthermore, several virtual file systems (VFS) with versioning capabilities hav
     \item User space file systems implemented with FUSE:
     \begin{itemize}
         \item A simple versioning file system for Linux using FUSE~\cite{simple_vfs}, written in Go.
-        \item Wayback: A User-level Versioning File System for Linux~\cite{wayback_vfs}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE.
+        \item Wayback: A User-level Versioning File System for Linux~\cite{wayback_vfs}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE\@.
     \end{itemize}
     \item Copy-on-Write Version Support for VFS under Linux by Stephan Müller and Sven Widmer~\cite{vvfs}, implemented as a kernel patch.
     \item A versioning virtual filesystem by Steve Huntley~\cite{huntley_vvfs}, written in Tcl.
@@ -45,7 +45,7 @@ Writing kernel drivers provides low-level access to the operating system, but it
 This method can be time-consuming, error-prone, and challenging to maintain.
 
 An alternative to writing kernel drivers is a library such as using FUSE, a popular tool for creating virtual file systems in user space without modifying kernel code.
-FUSE offers a comprehensive API for defining file system operations, making it an appropriate choice for building a VFS.
+FUSE offers a comprehensive API for defining file system operations, making it an appropriate choice for building a VFS\@.
 It allows developers to focus on the functionality and logic of their custom file system, rather than the intricate details of kernel programming.
 Yet, FUSE is not without its limitations.
 It is arguable whether it is the best choice for a C++ implementation, as it is written in C, but more on that later.
@@ -58,7 +58,7 @@ Although FUSE was initially designed for Linux, variants are available for other
     \item \textbf{Windows}: WinFsp - A Windows File System Proxy that provides FUSE-compatible functionality~\cite{winfsp}.
 \end{itemize}
 
-Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS.
+Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS\@.
 This approach enables the development of a cross-platform VFS with versioning and encryption capabilities while avoiding the complexity of kernel driver development.
 
 \section{Other libraries}\label{sec:other-libraries-analysis}
