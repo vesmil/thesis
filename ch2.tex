@@ -1,15 +1,13 @@
 \chapter{Analysis}
 \label{chap:analysis}
 
-\xxx{From this point on, the document is a mess.}
-
 \section{Analysis of Alternatives}\label{sec:alternatives}
 
-In order to assess the potential benefits of the proposed virtual file system, it is essential to examine alternative solutions and compare their capabilities, limitations, and applicability.
+In order to judge the potential benefits of the proposed virtual file system, it is essential to examine alternative solutions and compare their capabilities, limitations, and applicability.
 This section will analyze existing non-virtual and virtual file systems with versioning and encryption features, as well as higher-level applications offering similar functionality.
 
-Non-virtual versioning file systems is well documented concept, and there are several implementations available.
-\xxx{At least describe some of the from \href{https://en.wikipedia.org/wiki/Versioning_file_system}{wikipedia page}}.
+Non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
+Notable non-virtual versioning file systems include OpenVMS, a versioning file system from Digital Equipment Corporation that automatically creates new instances of files with version numbers appended, and NILFS, a Linux-based log-structured file system that supports versioning and continuous snapshotting of the entire file system.
 
 Furthermore, several virtual file systems (VFS) with versioning capabilities have been developed:
 
@@ -25,10 +23,11 @@ Furthermore, several virtual file systems (VFS) with versioning capabilities hav
 \end{itemize}
 
 These existing solutions have various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
-While VFS with encryption is less common, there also exists a non-virtual alternative as \xxx{TODO} \ldots % https://learn.microsoft.com/en-gb/windows/win32/fileio/file-encryption?redirectedfrom=MSDN
+While virtual file systems with encryption are basically nonexistent, there are non-virtual alternatives such as the Encrypted File System (EFS).
+EFS provides cryptographic protection of individual files on NTFS file system volumes using a public-key system, enhancing the security of sensitive data, especially on lost or stolen devices.
 
 The closest example to the desired functionality is rvault~\cite{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
-However, this does does differ from the intended functionality of the proposed VFS\@.
+However, this does differ from the intended functionality of the proposed VFS\@.
 
 The main competition thus stems from higher-level applications that provide versioning and encryption features.
 These applications have their own set of limitations, such as requiring a constantly running background program with access to all files and offering limited extensibility for incorporating other features.
@@ -59,38 +58,35 @@ Although FUSE was initially designed for Linux, variants are available for other
     \item \textbf{Windows}: WinFsp - A Windows File System Proxy that provides FUSE-compatible functionality~\cite{winfsp}.
 \end{itemize}
 
-To develop a new file system using FUSE, a handler program connected to the provided libfuse library must be created.
-The primary objective of this handler program is to define the file system's behavior in response to read, write, and stat requests.
-Additionally, the handler program is responsible for mounting the new file system.
-Upon mounting, the handler is registered with the kernel.
-When a user initiates read, write, or stat requests for the newly mounted file system, the kernel forwards these I/O requests to the handler, which processes them accordingly.
-The handler's response is then relayed back to the user by the kernel, ensuring a seamless interaction between the custom file system and the operating system.
-
-%! suppress = MissingLabel
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{img/fuse_diagram}
-    \caption{FUSE flow-chart diagram}
-\end{figure}
-
-Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is the preferred choice for implementing the proposed VFS.
+Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS.
 This approach enables the development of a cross-platform VFS with versioning and encryption capabilities while avoiding the complexity of kernel driver development.
 
 \section{Other libraries}\label{sec:other-libraries-analysis}
 
-While FUSE serves as the foundation for the VFS implementation, several other libraries will be employed to address various aspects of the project.
+Altough FUSE serves as the foundation for the VFS implementation, several other libraries will be employed to address various aspects of the project.
 
 \subsection{Encryption}\label{subsec:encryption-analysis}
 
-Crypto++~\cite{crypto_pp} is a comprehensive, open-source C++ class library that provides a wide array of cryptographic schemes, including encryption, hashing, and authentication algorithms.
-By incorporating Crypto++ into the project, file-level encryption can be implemented within the VFS, ensuring the security and privacy of stored data.
+Crypto++~\cite{crypto_pp} is an extensive, open-source C++ class library that offers a broad range of cryptographic schemes, encompassing encryption, hashing, and authentication algorithms.
+By integrating Crypto++ into the custom VFS, file-level encryption can be achieved, ensuring the security and privacy of the data stored within.
+
 
 \subsection{Testing}\label{subsec:gtest}
 
-Google Test~\cite{google_test}, also known as gtest, is a popular and versatile C++ testing framework developed by Google.
-This library allows for efficient testing of individual components and the overall functionality of the VFS. Through the use of gtest, the quality, reliability, and performance of the custom VFS can be assessed, ensuring that it meets the requirements and expectations outlined in this thesis.
-\ldots
+Google Test~\cite{google_test}, commonly referred to as gtest, is a widely-used and adaptable C++ testing framework developed by Google.
+This library enables efficient testing of individual components and the overall functionality of the custom VFS\@.
+By employing gtest, the quality, reliability, and performance of the custom VFS can be evaluated, guaranteeing that it fulfills the requirements and expectations outlined in this thesis.
 
-\section{Build system and multiplatform challenges}\label{sec:build-system-and-multiplatform-challenges}
+\section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
 
-Use of CMake, problem with M1 Mac and Windows\ldots even though portable
+CMake~\cite{cmake} is an open-source build system.
+It was chosen was chosen as the build system for this project due to its cross-platform compatibility, ease of use, and broad support for various platforms.
+It generates native build environments, such as Makefiles or project files for integrated development environments (IDEs).
+
+\subsection{Platform-Specific Challenges}\label{subsec:platform-specific-challenges}
+
+Despite CMake's cross-platform capabilities, certain platform-specific challenges were encountered during the development process.
+When attempting to run applications on an M1 Mac, I encountered an issue where there were no compatible binaries available for the hardware.
+While I could have built the applications from source, I did not have a specific reason to do so for my thesis.
+Additionally, the osxfuse port had not been updated for five years, further complicating matters.
+On Windows, the use of WinFsp~\cite{winfsp} was necessary to provide FUSE compatibility, presenting additional challenges for seamless cross-platform development.

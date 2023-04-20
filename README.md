@@ -18,7 +18,9 @@ Motivation...
 
 ## TODO
 
-- [ ] Setup the CI/CD for GitLab
-- [ ] Fill in the template
-- [ ] Theoretical introduction
-- [ ] ...
+- [X] Setup the CI/CD for GitLab
+- [X] Fill in the template
+- [X] Theoretical introduction
+- [ ] Body...
+- [ ] Conclusion
+- [ ] How to
