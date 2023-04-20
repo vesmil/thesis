@@ -1,36 +1,46 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-\section{FUSE Operations}\label{sec:fuse-ops}
+\section{Essential FUSE Operations}\label{sec:fuse-ops}
 
-Some valuable resources for learning about and working with FUSE include an IBM Developer article~\cite{ibm_fuse}, a tutorial from Facile Engineering~\cite{facile_fuse}, and a guide to writing a simple filesystem using FUSE~\cite{maastaar_fuse}.
-
-To successfully implement the custom Virtual File System (VFS), various FUSE operations are required.
-Some of the essential operations include getattr, readdir, open, read, write, mkdir, and rmdir, among others.
-These operations are responsible for handling basic file system functionalities.
-
-A brief overview of some crucial FUSE operations:
+To successfully implement a custom Virtual File System (VFS) using FUSE, it is essential to define and integrate various FUSE operations.
+This section provides a brief overview of some essential FUSE operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
 
 \begin{itemize}
-    \item \textbf{getattr}: Retrieves the file or directory attributes, such as size, access permissions, and timestamps.
-    \item \textbf{readdir}: Lists the contents of a directory.
-    \item \textbf{open}: Opens a file for reading or writing.
-    \item \textbf{read}: Reads data from an open file.
+    \item \textbf{getattr}: Retrieves the metadata of a given path.
+    This operation is always called before any other operation made on the filesystem.
+    It is responsible for reading the file or directory attributes, such as size, access permissions, and timestamps.
+    \item \textbf{readdir}: Lists the contents of a directory, filling a buffer with the structure of the accessed directory.
+    \item \textbf{open}: Called when the system requests a file to be opened.
+    \item \textbf{read}: Called when FUSE is reading data from an opened file.
+    It should return exactly the number of bytes requested and fill the buffer with the content of those bytes.
     \item \textbf{write}: Writes data to an open file.
     \item \textbf{mkdir}: Creates a new directory.
     \item \textbf{rmdir}: Deletes an existing directory.
-    \xxx{\ldots}
+    \item \textbf{rename}: Renames a file or directory.
+    \item \textbf{truncate}: Changes the size of a file.
 \end{itemize}
 
-To implement these FUSE operations, each operation's function must be defined in the custom VFS\@.
-These functions will be responsible for performing the corresponding file system tasks and interacting with the underlying data structures.
+Besides these operations a full-featured filesystem might need operations such as \texttt{mknod}, \texttt{unlink}, \texttt{symlink}, \texttt{link}, \texttt{chmod}, \texttt{chown}, \texttt{utime}, \texttt{statfs}, \texttt{flush}, \texttt{release}, \texttt{fsync}, \texttt{setxattr}, \texttt{getxattr}, \texttt{listxattr}, and \texttt{removexattr}.
 
-\xxx{Some pseudo code...}
+To create a filesystem with FUSE, a structure variable of type fuse\_operations should be declared and passed to the fuse\_main function.
+The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
+This is in my implementation done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
 
-\section{Modularity}\label{sec:modularity}
+\section{Encryption}
 
-One of the primary goals in designing the custom VFS is to ensure modularity, enabling easy expansion and the addition of new features or modules.
-This modular approach allows developers to build upon the existing VFS without making extensive changes to the core implementation.
+What is best way to encrypt a file with user provided password?
 
-To achieve modularity, the VFS should be designed with well-defined interfaces and organized in a way that promotes separation of concerns.
-This can be accomplished by organizing the code into distinct components, each responsible for specific tasks or features, such as encryption, versioning, or other desired functionalities.
+Using AES\ldots from Crypto++
+
+Some code snippet that just shows wrapping read and write operations.
+
+\ldots
+
+\section{Versioning}
+
+I have decided to not do diff but just store the whole file in the versioning system.
+
+Also just show how wraping read and write operations works.
+
+Also show the hook in read that \ldots

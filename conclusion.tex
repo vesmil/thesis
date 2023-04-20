@@ -1,9 +1,39 @@
 \chapwithtoc{Conclusion and Future Work}
 
+This thesis demonstrated the reasonableness of implementing an extensible Virtual File System (VFS).
+The developed VFS prototype is easily extensible and includes modules for versioning and encryption.
+Although the current implementation may not be optimal, there is room for improvement.
+
+\section{Evaluation}
+
+\subsection{Usability}
+
+The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
+The features are currently accessed through a command-line interface (CLI), which is simple to use but could be improved over time.
+Despite the limited effort put into developing the CLI, it remains a functional and accessible interface.
+
+\subsection{Reliability and Security}
+
+The VFS implementation has undergone testing through unit tests using Google Test, ensuring good code coverage and the core features, such as encryption and communication with kernel code, rely on well-tested external libraries.
+
+However, there is still room for improvement in the core VFS core implementation to further enhance its reliability.
+
+\subsection{Performance}
+
+Performance was not the primary focus of this project, as it is still a prototype.
+For that reason there were no performance tests conducted.
+On the other hand there are no known performance bottlenecks in the current implementation, as the VFS is built on top of the FUSE library, which is known for its high performance.
+
+\section{Future Work}
+
+There are several avenues for future development and research to further improve the results of this thesis:
+
 \begin{itemize}
-\item Was the problem stated in the introduction solved? (Ideally include a list of successfully achieved goals.)
-\item What is the quality of the result?
-Is the problem solved for good and the mankind does not need to ever think about it again, or just partially improved upon? (Is the incompleteness caused by overwhelming problem complexity that would be out of thesis scope, or any theoretical reasons, such as computational hardness?)
-\item Does the result have any practical applications that improve upon something realistic?
-\item Is there any good future development or research direction that could further improve the results of this thesis? (This is often summarized in a separate subsection called `Future work'.)
+    \item \textbf{Optimization}: The current VFS implementation can be optimized for better performance, both in terms of storage efficiency and processing speed.
+    \item \textbf{GUI Integration}: The VFS features can be integrated into a graphical user interface and even to some already existing file managers to provide users with an even more intuitive and visually appealing interface.
+    \item \textbf{Additional Features}: New features or modules can be developed and integrated into the VFS, such as compression, deduplication, or support for different storage backends (e.g., cloud storage or distributed file systems).
+    \item \textbf{Real-world Deployment}: The VFS can be further refined and tested for deployment in real-world scenarios, where its performance, reliability, and usability can be assessed in more diverse and demanding environments.
 \end{itemize}
+
+In conclusion, this thesis has demonstrated the viability of creating an extensible Virtual File System with support for encryption and versioning.
+Future work can build upon this foundation to develop a more robust, performant, and feature-rich VFS suitable for a wide range of applications.

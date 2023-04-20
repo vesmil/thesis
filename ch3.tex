@@ -4,35 +4,139 @@
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
 Incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
-The problem is that FUSE expects a C struct with pointers to functions, which poses a problem for non-static C++ methods.
-To solve this issue, two solutions can be considered.
-Either I would be writing C++ code without utilizing objects but then would using C++ instead of C be rather pointless.
-Or I could implement a singleton wrapper with only static methods.
+The problem arises from FUSE expecting a C struct with pointers to functions, which poses a problem for non-static C++ methods.
+To solve this issue, two solutions can be considered: either writing C++ code without utilizing objects, rendering the use of C++ instead of C rather pointless, or implementing a singleton wrapper with only static methods.
 
-From the way I put it it might be evident, that I have decided for the latter.
-Fortunately I didn't have to start from the ground up, as there are already existing repositories that provide an incomplete solution to this problem.
-The one I end up using as a foundation is fusexx~\cite{fusexx}, which I found most suitable for my needs.
+As is evident, the latter solution was chosen.
+Fortunately, there was no need to start from scratch, as existing repositories already provide an incomplete solution to this problem.
+The foundation for this project was built upon the fusexx~\cite{fusexx} repository, which was found most suitable for the needs of this thesis.
 
-But still, I wanted to make significant changes to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
+However, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
 The first step was to refactor the code to use modern C++ features, such as removing C-style casts and similar.
-I also had to solve numerous warnings and in few places a completely rewrote some methods to make them more readable or efficient.
+Numerous warnings were resolved, and in some cases, methods were completely rewritten to improve readability and efficiency.
 
-I also considered use of fusepp~\cite{fusepp} as an alternative to fusexx, but it was slightly older and din't fit my needs as well.
+There was also a third, rather ``hacky'' solution, which involved beside other implementation details using a data field in the FUSE context to store a pointer to the C++ object.
+Something similar is done in the fusepp~\cite{fusepp} repository.
+But this approach didn't seem to be the most elegant solution, and it was decided to use the singleton wrapper instead.
+Furthermore, the fusepp repository was not updated for several years and thus couldn't be used as a base for the project as opposed to fusexx.
 
 \section{Architecture}\label{sec:architecture}
 
-When determining the architecture of the custom Virtual File System (VFS), several approaches were considered.
-It is important to note that the core VFS implementation was not the primary focus of this thesis.
+Once the foundation was laid, the next step was to design a core VFS\@.
+It is important to note that this implementation was not the primary focus of this thesis.
 Consequently, extensive optimization efforts were not prioritized.
-The result of this is that the entire file system is stored in memory, which may not be the most efficient approach.
-However, such implementation details can be easily replaced, allowing for future improvements in the overall design.
+The result of this is that the entire file system is stored in memory, which is quite frankly a terrible idea.
+However, such implementation details can be easily replaced, allowing for future improvements.
 
-\xxx{I guess I should really rewrite the in memory part - that's just a temporary solution.}
+\xxx{If I am able to complete the VFS and tools on time I will rewrite the ugly temp solution. If not I will describe it better here. \ldots}
+
+Two approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
+
+Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
+
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int main(int argc, char* argv[]) {
+    CustomVfs custom_vfs();
+    custom_vfs.main(argc, argv);
+    return 0;
+}
+\end{lstlisting}
+
+The arguments passed to the \texttt{main} method are simply forwarded to the FUSE library.
+This allows the user to specify the mount point and other options.
 
 \subsection{Modularity}\label{subsec:modularity}
 
 The VFS is designed to be modular, allowing for the addition of new features without the need to modify the core implementation.
+To achieve this, the decorator pattern is used.
+The decorator pattern is a structural design pattern that involves a set of decorator classes used to wrap concrete components.
+Decorator classes mirror the types of the components they decorate, sharing the same interface but adding or overriding behavior.
 
-\xxx{Describe two approaches - one with a single VFS class and other with File, Directory, and VFS classes}
+In the context of this project, the decorator pattern is utilized to add versioning and encryption features without modifying the core VFS implementation.
+For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inheriting from the \texttt{VfsDecorator} class.
+The \texttt{VfsDecorator} class, in turn, inherits from the base \texttt{CustomVfs} class.
+The decorator class wraps an instance of the base VFS class, allowing it to perform additional encryption-related tasks when reading or writing files.
 
-\xxx{Explain what a decorator is. and how it is used in this project.}
+Here is a simplified code of the decorator pattern used in this project:
+
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+class CustomVfs { /.../ };
+
+class VfsDecorator : public CustomVfs {
+public:
+explicit VfsDecorator(std::shared_ptr<CustomVfs> wrapped_vfs);
+
+protected:
+std::shared_ptr<CustomVfs> wrapped_vfs_;
+};
+
+class EncryptionVfs : public VfsDecorator {
+public:
+explicit EncryptionVfs(std::shared_ptr<CustomVfs> wrapped_vfs);
+int read(/.../) override;
+int write(/.../) override;
+
+/.../
+
+private:
+CryptoPP::byte key_[CryptoPP::AES::DEFAULT_KEYLENGTH];
+CryptoPP::byte iv_[CryptoPP::AES::BLOCKSIZE];
+};
+\end{lstlisting}
+
+The \texttt{VfsDecorator} class wraps an instance of \texttt{CustomVfs} and can be extended by specific decorator implementations, such as \texttt{EncryptionVfs}.
+This design allows for the seamless integration of new features, such as encryption or versioning, without modifying the core VFS implementation.
+
+The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
+
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int main(int argc, char* argv[]) {
+    custom_vfs = std::make_shared<CustomVfs>();
+    std::shared_ptr<VersioningVfs> versioned_vfs = std::make_shared<VersioningVfs>(custom_vfs);
+    std::shared_ptr<EncryptionVfs> enc_vers_vfs = std::make_shared<EncryptionVfs>(versioned_vfs);
+
+    enc_vers_vfs->main(argc, argv);
+    return 0;
+}
+\end{lstlisting}
+
+Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS.
+
+\subsection{Access to VFS features}\label{subsec:access-to-vfs-features}
+
+A crucial aspect of the architecture is determining the method by which users can access the added VFS features.
+In this implementation, hooks have been designed to integrate seamlessly with standard filesystem operations.
+Additionally, a simple command-line interface (CLI) has been implemented to facilitate access to the VFS features, such as encryption and versioning.
+
+These hooks function by intercepting attempts to read a file with a specific name.
+The filesystem then captures this operation, performs the requested action, and returns the result as though it was read from the file.
+This approach allows users to interact with the VFS features without deviating from standard filesystem operations.
+
+The CLI consists of two primary components: one for encryption and another for versioning.
+Users can execute commands related to these features via the CLI, making it a user-friendly and accessible interface for interacting with the VFS\@.
+Commands for encryption may include encryption key management and selecting encryption algorithms, while versioning commands may involve creating new versions, listing available versions, and reverting to a previous version.
+
+Although the current implementation utilizes a command-line interface, the hooks can potentially be integrated into a graphical user interface (GUI) in the future.
+Incorporating the VFS features into a GUI would provide users with an even more intuitive and visually appealing interface for managing encryption and versioning.
+However, the development of a GUI was beyond the scope of this thesis.
+
+Benefits of this approach include the ability to easily integrate the VFS features into existing applications, such as file managers.
+This is because the VFS features are accessed through standard filesystem operations, which are already supported by most applications.
+Additionally, the hooks allow for the seamless integration of new features, such as encryption and versioning, without the need to modify the core VFS implementation as can be seen in the following code example:
+
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int EncryptionVfs::read(const std::string& file_path, char* buffer, size_t size, off_t offset) {
+    if (is_encryption_hook(file_path)) {
+        return handle_encryption_hook(buffer, size, offset);
+    } else {
+        // Do normal read operation...
+    }
+}
+\end{lstlisting}
+
+Similarly, hooks can be implemented for the versioning feature, allowing users to interact with versioning functionality through standard filesystem operations.
+
+
+
+
