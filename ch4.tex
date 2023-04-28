@@ -1,6 +1,7 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
+
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
 To successfully implement a custom Virtual File System (VFS) using FUSE, it is essential to define and integrate various FUSE operations.
@@ -25,7 +26,24 @@ Besides these operations a full-featured filesystem might need operations such a
 
 To create a filesystem with FUSE, a structure variable of type fuse\_operations should be declared and passed to the fuse\_main function.
 The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
-This is in my implementation done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
+This is \xxx{...} done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
+
+The final design consists of a single \texttt{CustomVfs} class, which is responsible for handling all file system operations.
+This particular class mainly redirects the operations to the appropriate system calls, which are then handled by the operating system.
+
+Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
+
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+int main(int argc, char* argv[]) {
+    CustomVfs custom_vfs();
+    custom_vfs.main(argc, argv);
+    return 0;
+}
+\end{lstlisting}
+
+The arguments passed to the \texttt{main} method are simply forwarded to the FUSE library.
+This allows the user to specify the mount point and other options.
+
 
 \section{Encryption}\label{sec:encryption}
 
@@ -48,6 +66,7 @@ int EncryptionVfs::read(const std::string &file_path,
 \end{lstlisting}
 
 \xxx{Caching those? Specific key?}
+
 
 \section{Versioning}\label{sec:versioning2}
 

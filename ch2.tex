@@ -1,6 +1,7 @@
 \chapter{Analysis}
 \label{chap:analysis}
 
+
 \section{Analysis of Alternatives}\label{sec:alternatives}
 
 In order to judge the potential benefits of the proposed virtual file system, it is essential to examine alternative solutions to adding custom features and compare their capabilities, limitations, and applicability.
@@ -37,6 +38,7 @@ Despite the limitations of existing solutions, it is worth noting that some oper
 MacOS's Time Machine offers versioning capabilities, allowing users to revert to previous versions of files or restore deleted data.
 Furthermore, macOS incorporates FileVault, a native full-disk encryption solution that secures data.
 However, these features are not available on other platforms, and they may not provide the desired level of control over the process.
+
 
 \section{FUSE}\label{sec:fuse}
 
@@ -87,6 +89,7 @@ Although FUSE was initially designed for Linux, variants are available for other
 Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS\@.
 This approach enables the development of a cross-platform VFS with versioning and encryption capabilities while avoiding the complexity of kernel driver development.
 
+
 \section{Other libraries}\label{sec:other-libraries-analysis}
 
 Although FUSE serves as the foundation for the VFS implementation, several other libraries will be employed to address various aspects of the project.
@@ -111,6 +114,7 @@ By employing gtest, the quality, reliability, and performance of the custom VFS 
 
 \xxx{Boost program options mainly for support tools}
 
+
 \section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
 
 CMake~\cite{cmake} is an open-source build system.
@@ -124,3 +128,5 @@ When attempting to run applications on an M1 Mac, I encountered an issue where t
 While I could have built the applications from source, I did not have a specific reason to do so for my thesis.
 Additionally, the osxfuse port had not been updated for five years, further complicating matters.
 On Windows, the use of WinFsp~\cite{winfsp} was necessary to provide FUSE compatibility, presenting additional challenges for seamless cross-platform development.
+
+\xxx{Maybe move? Also mention docker and gitlab yml}

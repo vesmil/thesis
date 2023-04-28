@@ -6,58 +6,58 @@
 
 % top part of the layout, this actually differs between faculties
 
-\def\ThesisTitleXmff{%
-  \ifEN
-    \centerline{\mbox{\includegraphics[width=166mm]{img/logo-en.pdf}}}
-  \else
-    \centerline{\mbox{\includegraphics[width=166mm]{img/logo-cs.pdf}}}
-  \fi
-  \vspace{-8mm}\vfill%
-  {\bf\Large\ThesisTypeTitle}
-  \vfill%
-  {\LARGE\ThesisAuthor}\par
-  \vspace{15mm}%
-  {\LARGE\bfseries\ThesisTitle}
-  \vfill%
-  \Department}
-\def\ThesisTitleCuniLogo#1{%
-  {\large\UKName\par\medskip\par\UKFaculty }
-  \vfill%
-  {\bf\Large\ThesisTypeTitle}
-  \vfill%
-  \includegraphics[width=70mm]{#1}
-  \vfill%
-  {\LARGE\ThesisAuthor}\par
-  \vspace{15mm}%
-  {\LARGE\bfseries\ThesisTitle}
-  \vfill%
-  \Department\par}
-\def\ThesisTitleXcuni{\ThesisTitleCuniLogo{img/uklogo.pdf}}
-\def\ThesisTitleXnatur{\ThesisTitleCuniLogo{img/naturlogo.pdf}}
+    \def\ThesisTitleXmff{%
+        \ifEN
+        \centerline{\mbox{\includegraphics[width=166mm]{img/logo-en.pdf}}}
+        \else
+        \centerline{\mbox{\includegraphics[width=166mm]{img/logo-cs.pdf}}}
+        \fi
+        \vspace{-8mm}\vfill%
+        {\bf\Large\ThesisTypeTitle}
+        \vfill%
+        {\LARGE\ThesisAuthor}\par
+        \vspace{15mm}%
+        {\LARGE\bfseries\ThesisTitle}
+        \vfill%
+        \Department}
+    \def\ThesisTitleCuniLogo#1{%
+            {\large\UKName\par\medskip\par\UKFaculty }
+        \vfill%
+        {\bf\Large\ThesisTypeTitle}
+        \vfill%
+        \includegraphics[width=70mm]{#1}
+        \vfill%
+        {\LARGE\ThesisAuthor}\par
+        \vspace{15mm}%
+        {\LARGE\bfseries\ThesisTitle}
+        \vfill%
+        \Department\par}
+    \def\ThesisTitleXcuni{\ThesisTitleCuniLogo{img/uklogo.pdf}}
+    \def\ThesisTitleXnatur{\ThesisTitleCuniLogo{img/naturlogo.pdf}}
 
 % choose the correct page and print it
-\csname ThesisTitleX\ThesisTitleStyle\endcsname
+    \csname ThesisTitleX\ThesisTitleStyle\endcsname
 % latex corner: X is the new @
 
-\vfill
+    \vfill
 
-{
-\centerline{\vbox{\halign{\hbox to 0.45\hsize{\hfil #}&\hskip 0.5em\parbox[t]{0.45\hsize}{\raggedright #}\cr
-\ifEN Supervisor of the \ThesisGenitive thesis:
-\else Vedoucí \ThesisGenitive práce: \fi
-& \Supervisor \cr
-\noalign{\vspace{2mm}}
-\ifEN Study programme: \else Studijní program: \fi
-& \StudyProgramme \cr
-\noalign{\vspace{2mm}}
-\ifEN Study branch: \else Studijní obor: \fi
-& \StudyBranch \cr
-}}}}
+    {
+        \centerline{\vbox{\halign{\hbox to 0.45\hsize{\hfil #}&\hskip 0.5em\parbox[t]{0.45\hsize}{\raggedright #}\cr
+        \ifEN Supervisor of the \ThesisGenitive thesis:
+        \else Vedoucí \ThesisGenitive práce: \fi
+        & \Supervisor \cr
+        \noalign{\vspace{2mm}}
+        \ifEN Study programme: \else Studijní program: \fi
+        & \StudyProgramme \cr
+        \noalign{\vspace{2mm}}
+        \ifEN Study branch: \else Studijní obor: \fi
+        & \StudyBranch \cr
+        }}}}
 
-\vfill
+    \vfill
 
-\ifEN Prague \else Praha \fi
-\YearSubmitted
+    \ifEN Prague \else Praha \fi
+    \YearSubmitted
 
 \end{center}
 
@@ -101,14 +101,14 @@ práce jako školního díla podle §60 odst. 1 autorského zákona.
 
 \ifEN
 \hbox{\hbox to 0.5\hsize{%
-In \hbox to 6em{\dotfill} date \hbox to 6em{\dotfill}
-\hss}\hbox to 0.5\hsize{\dotfill\quad}}
+    In \hbox to 6em{\dotfill} date \hbox to 6em{\dotfill}
+    \hss}\hbox to 0.5\hsize{\dotfill\quad}}
 \smallskip
 \hbox{\hbox to 0.5\hsize{}\hbox to 0.5\hsize{\hfil Author's signature\hfil}}
 \else
 \hbox{\hbox to 0.5\hsize{%
-V \hbox to 6em{\dotfill} dne \hbox to 6em{\dotfill}
-\hss}\hbox to 0.5\hsize{\dotfill\quad}}
+    V \hbox to 6em{\dotfill} dne \hbox to 6em{\dotfill}
+    \hss}\hbox to 0.5\hsize{\dotfill\quad}}
 \smallskip
 \hbox{\hbox to 0.5\hsize{}\hbox to 0.5\hsize{\hfil Podpis autora\hfil}}
 \fi

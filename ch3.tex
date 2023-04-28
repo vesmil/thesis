@@ -1,6 +1,7 @@
 \chapter{Design and Architecture}
 \label{chap:design-and-architecture}
 
+
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
 Incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
@@ -20,31 +21,16 @@ Something similar is done in the fusepp~\cite{fusepp} repository.
 But this approach didn't seem to be the most elegant solution, and it was decided to use the singleton wrapper instead.
 Furthermore, the fusepp repository was not updated for several years and thus couldn't be used as a base for the project as opposed to fusexx.
 
+
 \section{Architecture}\label{sec:architecture}
 
 Once the foundation was laid, the next step was to design a core VFS\@.
-It is important to note that this implementation was not the primary focus of this thesis.
-Consequently, extensive optimization efforts were not prioritized.
-The result of this is that the entire file system is stored in memory, which is quite frankly a terrible idea.
+It is important to note that this implementation was not the primary focus of this thesis as it was rather focused on providing modularity and extensibility.
+The result of this is that the entire file system is built on top of already present filesystem in the operating system.
 However, such implementation details can be easily replaced, allowing for future improvements.
 
-\xxx{If I am able to complete the VFS and tools on time I will rewrite the ugly temp solution. If not I will describe it better here. \ldots}
-
-Two approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
-
-Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
-
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int main(int argc, char* argv[]) {
-    CustomVfs custom_vfs();
-    custom_vfs.main(argc, argv);
-    return 0;
-}
-\end{lstlisting}
-
-The arguments passed to the \texttt{main} method are simply forwarded to the FUSE library.
-This allows the user to specify the mount point and other options.
+Multiple approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE as I will still need to somehow bound those classes into one.
 
 \subsection{Modularity}\label{subsec:modularity}
 
