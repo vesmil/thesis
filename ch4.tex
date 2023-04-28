@@ -29,8 +29,8 @@ This is in my implementation done in the \texttt{FuseWrapper} class and all the 
 
 \section{Encryption}\label{sec:encryption}
 
-I will use a Crypto++ to handle the encryption and decryption of files within the custom VFS\@.
-In order to use an user-provided password, Advanced Encryption Standard (AES) algorithm will be utilized.
+As indicated earlier I will use a libsodium to handle the encryption and decryption of files within the custom VFS\@.
+In order to use an user-provided password or a stored key, Advanced Encryption Standard (AES) algorithm will be utilized.
 AES is a widely-used symmetric encryption algorithm that provides a good balance between security and performance.
 Alternatives include other symmetric encryption algorithms like DES (Data Encryption Standard) and 3DES (Triple DES), but they are slower and less secure compared to AES.
 
@@ -46,6 +46,8 @@ int EncryptionVfs::read(const std::string &file_path,
     decrypt(buffer, size, password);
 }
 \end{lstlisting}
+
+\xxx{Caching those? Specific key?}
 
 \section{Versioning}\label{sec:versioning2}
 

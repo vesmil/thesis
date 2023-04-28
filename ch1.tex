@@ -71,35 +71,6 @@ To perform a specific operation on a file, the VFS first translates the user-spa
 As long as the file is open, the corresponding dentry and VFS inode remain in use~\cite{vfs}.
 
 
-\section{FUSE}\label{sec:fuse}
-
-\xxx{presunnout}
-
-FUSE (named after Filesystem in Userspace) is an open-source software interface that allows developers to create custom file systems in user space without the need for kernel modifications.
-It operates by providing a bridge between the kernel's VFS layer and user-space file system implementations.
-The kernel communicates with the user-space file system using a well-defined API, allowing developers to create file systems without the need for kernel-level programming.
-This abstraction greatly simplifies the development process and reduces the risks associated with kernel modifications.
-
-To develop a new file system using FUSE, a handler program connected to the provided libfuse library must be created.
-The primary objective of this handler program is to define the file system's behavior in response to read, write, and stat requests.
-Additionally, the handler program is responsible for mounting the new file system.
-Upon mounting, the handler is registered with the kernel.
-When a user initiates read, write, or stat requests for the newly mounted file system, the kernel forwards these I/O requests to the handler, which processes them accordingly.
-The handler's response is then relayed back to the user by the kernel, ensuring a seamless interaction between the custom file system and the operating system.
-
-The FUSE flow-chart diagram created by Wikipedia user named Sven~\cite{fuse-diagram} depicted in Figure~\ref{fig:fuse-diagram} effectively illustrates the process involved in handling a command like `ls', from its initial submission to the Virtual File System (VFS) layer, through the FUSE kernel module, to a handler program in user space and back.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{img/fuse_diagram}
-    \caption{FUSE flow-chart diagram}\label{fig:fuse-diagram}
-\end{figure}
-
-FUSE has gained widespread adoption due to its ease of use and modularity.
-Many popular file systems have been implemented using FUSE, such as SSHFS, GlusterFS, S3FS and NTFS-3G, among others.
-These implementations demonstrate the versatility and robustness of the FUSE framework in handling a wide range of file system requirements.
-
-
 \section{Encryption}\label{sec:encryption-approaches}
 
 In this thesis, I will mainly use encryption as a process of applying cryptographic algorithms to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.

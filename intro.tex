@@ -1,22 +1,23 @@
 \chapwithtoc{Introduction}
 
-\xxx{prenseji cil}
+As the significance of data continues to grow, many users require advanced features such as versioning or file-level encryption for their data storage.
+The main goal of this thesis is thus to prototype a modular and easily extensible virtual file system (VFS) as a comprehensive solution for these advanced storage needs.
+The created VFS should also provide prototypes of modules for encryption and versioning, seamlessly integrating them into the core functionality with minimal user effort.
 
-As the significance of data continues to grow, multiple users require advanced features such as versioning or file-level encryption for their data storage.
-This thesis presents a solution to this challenge by prototyping a virtual file system (VFS) that seamlessly integrates these features into existing file systems, enhancing their functionality with minimal effort from the user.
-Specifically, the proposed VFS enables users to create snapshots for later rollbacks and effortlessly encrypt individual files or entire directories with a password, providing temporary decryption as needed.
+Specifically, the proposed VFS prototypes should enable users to create snapshots for later rollbacks and let them easily encrypt individual files or entire directories with a password or key, providing temporary decryption as needed.
 
-Currently, users wanting the mentioned features must rely on a set of separate external programs.
-For instance, versioning is often achieved through the well-known \texttt{git}, which creates a repository to store file changes in a \texttt{.git} directory, but this might be rather inconvenient in daily usage.
-While there are a few file system-level versioning solutions available, they tend to be outdated, platform-specific, and difficult to use.
+Currently, there is no simple way to add or even stack those features onto an existing file systems, and users seeking additional features must rely on separate external programs.
+For example, versioning is often achieved through \texttt{git}, which creates a repository to store file changes in a \texttt{.git} directory, but may be inconvenient for daily usage.
+While some file system-level versioning solutions exist, they are often outdated, platform-specific, and difficult to use.
 To password-protect files, users can choose from a wide array of software, such as Folder Lock, Gpg, or Encrypto, yet no single solution offers this particular feature at a lower level.
 
-The primary issue with these programs, which this thesis seeks to address, lies in the necessity of accessing files through specialized software and exposing implementation details.
-In contrast, the proposed VFS serves as an intermediate layer between the operating system and specific file systems, delivering the desired features in a more streamlined and user-friendly manner.
+The primary issue with these programs, which this thesis aims to address, is the necessity of accessing files through specialized software and exposing implementation details.
+In contrast, the proposed VFS acts as an intermediate layer between the operating system and specific file systems, delivering desired features in a more streamlined and user-friendly manner.
 
-\xxx{vic konkretne}
-
-In the subsequent chapters of this thesis, we'll take a closer look at the VFS idea, exploring what it does, how it works, and its connection to file systems and FUSE. We'll discuss the analysis of alternatives conducted to determine the project's feasibility and the choices made to ensure the VFS is reliable and efficient, including the rationale behind the selection of libraries used.
-Additionally, we'll describe how FUSE was adapted for usage in C++.
-We'll also cover how versioning and file-level encryption were incorporated, and ways to utilize the system's flexible design to include more features.
-Lastly, we'll evaluate the VFS's performance, usability, and security to understand its overall effectiveness.
+The thesis is structured as follows: Chapter 1 provides a theoretical overview of file systems, virtual file systems, encryption, and versioning.
+Chapter 2 delves into the analysis of alternatives, the rationale behind the project's choices, and the explanations of FUSE and other libraries employed for encryption and testing.
+Cross-platform build systems and platform-specific challenges are also discussed.
+In Chapter 3, the design and architecture of the VFS solution are described, including the adaptation of FUSE for usage in C++ and the modular architecture that allows access to various VFS features.
+Chapter 4 details the implementation of essential FUSE operations, prototyping encryption, and versioning in the VFS and discussing the methods and strategies employed.
+Finally, in Chapter 5, the usability, reliability, security, and performance of the VFS are evaluated, providing insights into its overall effectiveness.
+The conclusion summarizes the findings and discusses future work for system enhancement, while Appendix A offers a guide on using the custom VFS.
