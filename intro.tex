@@ -1,5 +1,7 @@
 \chapwithtoc{Introduction}
 
+\xxx{prenseji cil}
+
 As the significance of data continues to grow, multiple users require advanced features such as versioning or file-level encryption for their data storage.
 This thesis presents a solution to this challenge by prototyping a virtual file system (VFS) that seamlessly integrates these features into existing file systems, enhancing their functionality with minimal effort from the user.
 Specifically, the proposed VFS enables users to create snapshots for later rollbacks and effortlessly encrypt individual files or entire directories with a password, providing temporary decryption as needed.
@@ -11,6 +13,8 @@ To password-protect files, users can choose from a wide array of software, such 
 
 The primary issue with these programs, which this thesis seeks to address, lies in the necessity of accessing files through specialized software and exposing implementation details.
 In contrast, the proposed VFS serves as an intermediate layer between the operating system and specific file systems, delivering the desired features in a more streamlined and user-friendly manner.
+
+\xxx{vic konkretne}
 
 In the subsequent chapters of this thesis, we'll take a closer look at the VFS idea, exploring what it does, how it works, and its connection to file systems and FUSE. We'll discuss the analysis of alternatives conducted to determine the project's feasibility and the choices made to ensure the VFS is reliable and efficient, including the rationale behind the selection of libraries used.
 Additionally, we'll describe how FUSE was adapted for usage in C++.
