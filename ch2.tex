@@ -4,7 +4,8 @@
 
 \section{Analysis of Alternatives}\label{sec:alternatives}
 
-In order to judge the potential benefits of the proposed virtual file system, it is essential to examine alternative solutions to adding custom features and compare their capabilities, limitations, and applicability.
+As there is no existing virtual file system designed to layer additional features on top of existing file systems, the proposed solution is unique.
+So, order to judge the potential benefits of the proposed VFS, it is essential to examine alternative solutions to having those custom features and compare their capabilities, limitations, and applicability.
 This section will analyze existing non-virtual and virtual file systems with versioning and encryption features, as well as higher-level applications offering similar functionality.
 
 Non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
@@ -66,9 +67,9 @@ FUSE has gained widespread adoption due to its ease of use and modularity.
 Many popular file systems have been implemented using FUSE, such as SSHFS, GlusterFS, S3FS and NTFS-3G, among others.
 These implementations demonstrate the versatility and robustness of the FUSE framework in handling a wide range of file system requirements.
 
-\subsection{Rationale and Alternatives}\label{sec:fuse-analysis}
+\subsection{Rationale and Alternatives}\label{subsec:fuse-analysis}
 
-In the development of a virtual file system, there are two primary approaches to consider: writing kernel drivers or utilizing a user space library.
+In the development of a virtual file system there are two primary approaches to consider: writing kernel drivers or utilizing a user space library.
 Writing kernel drivers provides low-level access to the operating system, but it requires extensive knowledge of the kernel, as well as platform-specific implementations.
 This method can be time-consuming, error-prone, and challenging to maintain.
 
@@ -97,7 +98,7 @@ Although FUSE serves as the foundation for the VFS implementation, several other
 \subsection{Encryption}\label{subsec:encryption-analysis}
 
 Initially, Crypto++~\cite{crypto_pp} was considered for integration into the custom VFS, given its comprehensive open-source C++ class library covering a wide array of cryptographic schemes, such as encryption, hashing, and authentication algorithms.
-Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS.
+Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS\@.
 
 However, the implementation of Crypto++ led to various issues, primarily complicating the build process.
 As a result, I decided to switch to libsodium~\cite{libsodium}, a more user-friendly alternative.
@@ -110,23 +111,6 @@ Google Test~\cite{google_test}, commonly referred to as gtest, is a widely-used 
 This library enables efficient testing of individual components and the overall functionality of the custom VFS\@.
 By employing gtest, the quality, reliability, and performance of the custom VFS can be evaluated, guaranteeing that it fulfills the requirements and expectations outlined in this thesis.
 
-\subsection{Options parsing}
+\subsection{Options parsing}\label{subsec:options-parsing}
 
 \xxx{Boost program options mainly for support tools}
-
-
-\section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
-
-CMake~\cite{cmake} is an open-source build system.
-It was chosen was chosen as the build system for this project due to its cross-platform compatibility, ease of use, and broad support for various platforms.
-It generates native build environments, such as Makefiles or project files for integrated development environments (IDEs).
-
-\subsection{Platform-Specific Challenges}\label{subsec:platform-specific-challenges}
-
-Despite CMake's cross-platform capabilities, certain platform-specific challenges were encountered during the development process.
-When attempting to run applications on an M1 Mac, I encountered an issue where there were no compatible binaries available for the hardware.
-While I could have built the applications from source, I did not have a specific reason to do so for my thesis.
-Additionally, the osxfuse port had not been updated for five years, further complicating matters.
-On Windows, the use of WinFsp~\cite{winfsp} was necessary to provide FUSE compatibility, presenting additional challenges for seamless cross-platform development.
-
-\xxx{Maybe move? Also mention docker and gitlab yml}

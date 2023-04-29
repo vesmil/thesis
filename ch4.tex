@@ -1,94 +1,29 @@
-\chapter{Implementation}
-\label{chap:implementation}
+\chapter{Preparation}
+\label{chap:preparation}
 
+With architecture and design decisions made, it is time to start implementing the VFS\@.
+In this rather brief chapter, I will discuss the tools and technologies used in the development process.
 
-\section{Essential FUSE Operations}\label{sec:fuse-ops}
+\xxx{...}
 
-To successfully implement a custom Virtual File System (VFS) using FUSE, it is essential to define and integrate various FUSE operations.
-This section provides a brief overview of some essential FUSE operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
+\section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
 
-\begin{itemize}
-    \item \textbf{getattr}: Retrieves the metadata of a given path.
-    This operation is always called before any other operation made on the filesystem.
-    It is responsible for reading the file or directory attributes, such as size, access permissions, and timestamps.
-    \item \textbf{readdir}: Lists the contents of a directory, filling a buffer with the structure of the accessed directory.
-    \item \textbf{open}: Called when the system requests a file to be opened.
-    \item \textbf{read}: Called when FUSE is reading data from an opened file.
-    It should return exactly the number of bytes requested and fill the buffer with the content of those bytes.
-    \item \textbf{write}: Writes data to an open file.
-    \item \textbf{mkdir}: Creates a new directory.
-    \item \textbf{rmdir}: Deletes an existing directory.
-    \item \textbf{rename}: Renames a file or directory.
-    \item \textbf{truncate}: Changes the size of a file.
-\end{itemize}
+CMake~\cite{cmake} is an open-source build system.
+It was chosen as the build system for this project due to its cross-platform compatibility, ease of use, and broad support for various platforms.
+It generates native build environments, such as Makefiles or project files for integrated development environments (IDEs).
 
-Besides these operations a full-featured filesystem might need operations such as \texttt{mknod}, \texttt{unlink}, \texttt{symlink}, \texttt{link}, \texttt{chmod}, \texttt{chown}, \texttt{utime}, \texttt{statfs}, \texttt{flush}, \texttt{release}, \texttt{fsync}, \texttt{setxattr}, \texttt{getxattr}, \texttt{listxattr}, and \texttt{removexattr}.
+\subsection{Platform-Specific Challenges}\label{subsec:platform-specific-challenges}
 
-To create a filesystem with FUSE, a structure variable of type fuse\_operations should be declared and passed to the fuse\_main function.
-The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
-This is \xxx{...} done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
+Despite CMake's cross-platform capabilities, certain platform-specific challenges were encountered during the development process.
+When attempting to run applications on an M1 Mac, I encountered an issue where there were no compatible binaries available for the hardware.
+While I could have built the applications from source, I did not have a specific reason to do so for my thesis.
+Additionally, the osxfuse port had not been updated for five years, further complicating matters.
+On Windows, the use of WinFsp~\cite{winfsp} is necessary to provide FUSE compatibility, presenting additional challenges for seamless cross-platform development.
 
-The final design consists of a single \texttt{CustomVfs} class, which is responsible for handling all file system operations.
-This particular class mainly redirects the operations to the appropriate system calls, which are then handled by the operating system.
+\section{Gitlab CI}\label{sec:gitlab-ci}
 
-Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
+\xxx{...}
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int main(int argc, char* argv[]) {
-    CustomVfs custom_vfs();
-    custom_vfs.main(argc, argv);
-    return 0;
-}
-\end{lstlisting}
+\section{Docker}\label{sec:docker}
 
-The arguments passed to the \texttt{main} method are simply forwarded to the FUSE library.
-This allows the user to specify the mount point and other options.
-
-
-\section{Encryption}\label{sec:encryption}
-
-As indicated earlier I will use a libsodium to handle the encryption and decryption of files within the custom VFS\@.
-In order to use an user-provided password or a stored key, Advanced Encryption Standard (AES) algorithm will be utilized.
-AES is a widely-used symmetric encryption algorithm that provides a good balance between security and performance.
-Alternatives include other symmetric encryption algorithms like DES (Data Encryption Standard) and 3DES (Triple DES), but they are slower and less secure compared to AES.
-
-To integrate the encryption, I have modified the existing read and write operations to include the encryption and decryption processes.
-The following code snippet demonstrates how to wrap the read operation with encryption.
-
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int EncryptionVfs::read(const std::string &file_path,
-                     char *buffer,
-                     size_t size,
-                     off_t offset) {
-    wrapped_vfs_->read(file_path, buffer, size, offset);
-    decrypt(buffer, size, password);
-}
-\end{lstlisting}
-
-\xxx{Caching those? Specific key?}
-
-
-\section{Versioning}\label{sec:versioning2}
-
-Instead of using a diff-based approach for versioning, I have chosen to store the entire file in the versioning system as it simplifies the implementation.
-Diff-based approach could be implemented in the future.
-
-Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
-The following code snippet shows high-level overview of how to wrap the write operation with versioning functionality.
-
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int VersioningVfs::write(const std::string &file_path,
-                     char *buffer,
-                     size_t size,
-                     off_t offset) {
-    char* prev_buffer;
-    read_prev_version(file_path, prev_buffer);
-
-    if (prev_buffer != buffer) {
-        // This will store an invisible copy of the file
-        store_version(file_path, buffer, size);
-    }
-
-    wrapped_vfs_->write(file_path, buffer, size, offset);
-}
-\end{lstlisting}
+\xxx{...}

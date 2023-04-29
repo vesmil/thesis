@@ -15,7 +15,7 @@ Let's start with what a file system is and what it does, as it is important for 
 
 A file system is a critical component of any operating system, tasked with managing and organizing data stored on a device.
 As described by Oja et al.~\cite{oja-fs}, a filesystem represents the methods and data structures used by an operating system to maintain files on a disk or partition, that is, how files are organized on the disk.
-This consist of multiple operations such as creation, reading, modifying, and deleting files or directories.
+This consists of multiple operations such as creation, reading, modifying, and deleting files or directories.
 This is done in order to allow users and applications to interact seamlessly with the underlying storage medium.
 
 It is important to distinguish between a disk or partition and the file system it contains.
@@ -37,52 +37,48 @@ The VFS functions as an intermediary, enabling applications to access various fi
 
 According to a book by David A. Rusling~\cite{rusling-linux}, the VFS manages various mounted file systems by maintaining data structures that describe the entire virtual file system and the real mounted file systems.
 The VFS uses superblocks and inodes, similar to the EXT2 file system, to describe files and directories within the system.
-Each file system registers with the VFS during operating system initialization.
+Each file system register with the VFS during operating system initialization.
 File system modules are loaded as needed, allowing VFS to read their superblocks.
 The VFS maintains a list of mounted file systems and their VFS superblocks, with each superblock containing pointers to specific file system functions.
-he VFS efficiently maps information for various file systems, including EXT2.
 
 The VFS inodes are traversed as the system's processes access directories and files.
 Frequently accessed inodes are kept in the inode cache for quicker access.
-Additionally, the Linux file systems use a common buffer cache, independent of the file systems, to cache data buffers from underlying devices.
+Additionally, Linux VFS uses a common buffer cache, independent of the file systems, to cache data buffers from underlying devices.
 
-The VFS plays a critical role in operating system design as it not only offers file system independence, but also provides benefits such as improved security or better performance.
+VFS also plays a critical role in operating system design as it not only offers file system independence, but also provides benefits such as improved security or better performance.
 In this thesis, I will also demonstrate that the extensibility of the VFS is a valuable advantage, enabling the incorporation of advanced features without requiring kernel modifications.
 
 \subsection{VFS Operations}\label{subsec:vfs-operations}
 
 The Virtual File System (VFS) provides a range of operations to interact with files and directories.
 These operations are implemented as system calls, such as \texttt{open(2)}, \texttt{stat(2)}, \texttt{read(2)}, \texttt{write(2)}, and \texttt{chmod(2)}, which are called from a process context.
-The VFS operations can be grouped into three main categories: directory entry cache (dcache), inode object, and file object operations~\cite{vfs}.
 
-\textbf{Directory Entry Cache (dcache)} operations deal with the translation of pathnames (filenames) into specific dentries.
-The VFS uses the dcache to implement system calls like \texttt{open(2)}, \texttt{stat(2)}, and \texttt{chmod(2)}.
-Dentries exist only in RAM for performance reasons and are not saved to disk.
+The way this is implemented in Linux VFS is described by an article by Richard Gooch and Pekka Enberg~\cite{vfs}.
+During a system call, the VFS translates a pathname into a directory entry (dentry) by searching through the dentry cache.
+However, if the cache is too small to fit all dentries in RAM, the VFS may have to create dentries and load inodes to resolve the pathname.
+Each dentry typically has a pointer to an inode, which is a file system object that may be on disk or in memory.
 
-\textbf{Inode Object} operations involve filesystem objects such as regular files, directories, and other entities.
-Inodes can reside on disk (for block device filesystems) or in memory (for pseudo filesystems).
-When required, inodes on disk are copied into memory, and changes are written back to disk.
-Inodes can be referenced by multiple dentries, for example, through hard links.
+When a file is opened, a file structure is allocated and initialized with a pointer to the dentry and file operation member functions taken from the inode data.
+The \texttt{open()} file method is then called to enable the file system implementation to perform its work.
+Finally, the file structure is placed into the file descriptor table for the process.
 
-\textbf{File Object} operations pertain to files opened by a process, also known as ``open file descriptions'' in POSIX terminology.
-File objects are represented by the \texttt{struct file\_operations} structure, which contains a variety of member functions that define how the VFS can manipulate an open file, such as reading, writing, and closing files.
-
-To perform a specific operation on a file, the VFS first translates the user-space file descriptor into the appropriate file structure and then calls the required file structure method.
-As long as the file is open, the corresponding dentry and VFS inode remain in use~\cite{vfs}.
+To read, write, and close files, the user-space file descriptor is used to call the appropriate file structure method.
+As long as the file is open, the corresponding dentry and VFS inode remain in use.
 
 
 \section{Encryption}\label{sec:encryption-approaches}
 
-In this thesis, I will mainly use encryption as a process of applying cryptographic algorithms to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
+Another concept, that has to be at least briefly discussed, is encryption.
+The encryption is simply a process of applying cryptographic algorithms (encoding) information in such a way that only authorized parties can access it.
+In this thesis, I will mainly use encryption as a mean to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
 Utilizing encryption enables users to effectively safeguard their data against unauthorized access, data breaches, and other malicious activities.
 
-Within the scope of file and directory encryption, symmetric key algorithms, such as the Advanced Encryption Standard (AES), might be employed due to their computational efficiency and robust security properties.
+In file and directory encryption, symmetric key algorithms, such as the Advanced Encryption Standard (AES), might be employed due to their computational efficiency and robust security properties.
 To generate the encryption key from a user-provided password, password-based key derivation functions (PBKDFs), including bcrypt, scrypt, or Argon2, could be leveraged.
-
 
 \section{Versioning}\label{sec:versioning}
 
-Versioning is a technique used to maintain multiple copies or states of a file or directory, allowing users to access and restore previous versions as needed.
+Versioning is simply a technique used to maintain multiple copies or states of a file or directory, allowing users to access and restore previous versions as needed.
 It enables tracking of changes made to files over time, facilitating collaboration and recovery from accidental data loss or corruption.
 
 Usually, versioning is implemented by storing multiple copies of a file or directory, each representing a different version.

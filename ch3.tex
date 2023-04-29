@@ -4,29 +4,31 @@
 
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
-Incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
+Properly incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
 The problem arises from FUSE expecting a C struct with pointers to functions, which poses a problem for non-static C++ methods.
 To solve this issue, two solutions can be considered: either writing C++ code without utilizing objects, rendering the use of C++ instead of C rather pointless, or implementing a singleton wrapper with only static methods.
 
 As is evident, the latter solution was chosen.
-Fortunately, there was no need to start from scratch, as existing repositories already provide an incomplete solution to this problem.
+Fortunately, there was no need to start from scratch, as existing repositories already provide a solution to this problem.
+However, none of them were complete and up-to-date, and I still had to write some portion of the code myself.
+
 The foundation for this project was built upon the fusexx~\cite{fusexx} repository, which was found most suitable for the needs of this thesis.
+But as I said, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
+The first step was therefore to refactor the code to use modern C++ features and resolve numerous clang-tidy warnings.
+Moreover, the repository was not updated for several years, and it was necessary to the change some of the code's version-specific parts.
+And as a final touch, some methods were completely rewritten to improve readability or efficiency.
 
-However, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
-The first step was to refactor the code to use modern C++ features, such as removing C-style casts and similar.
-Numerous warnings were resolved, and in some cases, methods were completely rewritten to improve readability and efficiency.
-
-There was also a third, rather ``hacky'' solution, which involved beside other implementation details using a data field in the FUSE context to store a pointer to the C++ object.
+Needless to say, there was also a third, rather ``hacky'' solution, which involved beside other implementation details using a data field in the FUSE context to store a pointer to the C++ object.
 Something similar is done in the fusepp~\cite{fusepp} repository.
-But this approach didn't seem to be the most elegant solution, and it was decided to use the singleton wrapper instead.
-Furthermore, the fusepp repository was not updated for several years and thus couldn't be used as a base for the project as opposed to fusexx.
+But this approach did not seem to be the most elegant solution, and it was decided to use the singleton wrapper instead.
+Furthermore, the fusepp repository was not updated for even longer and would be harder to be used as a base for the project.
 
 
 \section{Architecture}\label{sec:architecture}
 
-Once the foundation was laid, the next step was to design a core VFS\@.
+Once the foundation was laid; the next step was to design a core VFS\@.
 It is important to note that this implementation was not the primary focus of this thesis as it was rather focused on providing modularity and extensibility.
-The result of this is that the entire file system is built on top of already present filesystem in the operating system.
+The result of this is that the entire core VFS is built on top of already present filesystem in the operating system.
 However, such implementation details can be easily replaced, allowing for future improvements.
 
 Multiple approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
@@ -40,7 +42,7 @@ The decorator pattern is a structural design pattern that involves a set of deco
 Decorator classes mirror the types of the components they decorate, sharing the same interface but adding or overriding behavior.
 
 In the context of this project, the decorator pattern is utilized to add versioning and encryption features without modifying the core VFS implementation.
-For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inheriting from the \texttt{VfsDecorator} class.
+For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inherited from the \texttt{VfsDecorator} class.
 The \texttt{VfsDecorator} class, in turn, inherits from the base \texttt{CustomVfs} class.
 The decorator class wraps an instance of the base VFS class, allowing it to perform additional encryption-related tasks when reading or writing files.
 
@@ -63,12 +65,6 @@ explicit EncryptionVfs(CustomVfs& wrapped_vfs);
 
 int read(/.../) override;
 int write(/.../) override;
-
-/.../
-
-private:
-CryptoPP::byte key_[CryptoPP::AES::DEFAULT_KEYLENGTH];
-CryptoPP::byte iv_[CryptoPP::AES::BLOCKSIZE];
 };
 \end{lstlisting}
 
@@ -113,12 +109,12 @@ This is because the VFS features are accessed through standard filesystem operat
 Additionally, the hooks allow for the seamless integration of new features, such as encryption and versioning, without the need to modify the core VFS implementation as can be seen in the following code example:
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int EncryptionVfs::read(const std::string &file_path,
+int EncryptionVfs::read(const std::string &ppath,
                      char *buffer,
                      size_t size,
                      off_t offset) {
-    if (is_encryption_hook(file_path)) {
-        return handle_hook(file_path, buffer, size, offset);
+    if (is_encryption_hook(path)) {
+        return handle_hook(path, buffer, size, offset);
     }
 
     // Do normal read operation...
@@ -127,6 +123,52 @@ int EncryptionVfs::read(const std::string &file_path,
 
 Similarly, hooks can be implemented for the versioning feature, allowing users to interact with versioning functionality through standard filesystem operations.
 
+\subsection{Architectural overview}\label{subsec:overview}
 
+\xxx{Some intro about the diagram}
+
+\begin{tikzpicture}
+    \umlclass[x=0, y=0]{FuseWrapper}{
+        -- std::string fuse\_library
+    }{
+        + virtual write() \\
+        + virtual read() \\
+        + virtual open() \\
+        + virtual main()
+        + ... \\
+    }
+
+    \umlclass[x=6, y=0]{CustomVfs}{
+        -- std::string mountpoint \\
+        -- std::string backing\_dir
+    }{
+        + write() \\
+        + read() \\
+        + open() \\
+        + main() \\
+        + ... \\
+    }
+
+    \umlclass[x=12, y=0]{VfsDecorator}{
+        -- CustomVfs\& wrapped\_vfs
+    }
+
+    \umlclass[x=10, y=-4]{EncryptionVfs}{
+    }{
+        + write() \\
+        + read()
+    }
+
+    \umlclass[x=14, y=-4]{VersioningVfs}{
+    }{
+        + write() \\
+        + read()
+    }
+
+    \umlinherit{CustomVfs}{FuseWrapper}
+    \umlinherit{VfsDecorator}{CustomVfs}
+    \umlinherit{EncryptionVfs}{VfsDecorator}
+    \umlinherit{VersioningVfs}{VfsDecorator}
+\end{tikzpicture}
 
 
