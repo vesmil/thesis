@@ -125,50 +125,21 @@ Similarly, hooks can be implemented for the versioning feature, allowing users t
 
 \subsection{Architectural overview}\label{subsec:overview}
 
-\xxx{Some intro about the diagram}
+I will conclude this chapter by providing an overview of the architecture of the VFS\@.
+The architecture of our system is designed using object-oriented principles to ensure modularity, extensibility, and maintainability.
+The core of the system is built around the FuseWrapper class, which provides a base implementation for interacting with the FUSE library.
+By deriving from this base class, we can create custom virtual file systems with various features and functionality.
 
-\begin{tikzpicture}
-    \umlclass[x=0, y=0]{FuseWrapper}{
-        -- std::string fuse\_library
-    }{
-        + virtual write() \\
-        + virtual read() \\
-        + virtual open() \\
-        + virtual main()
-        + ... \\
-    }
+The CustomVfs class inherits from FuseWrapper and serves as a foundation for more specialized virtual file systems.
+By utilizing the decorator pattern, we implement additional functionality in separate classes, such as EncryptionVfs and VersioningVfs, which both inherit from the VfsDecorator class.
+This approach allows us to easily extend the system with new features while minimizing the impact on existing code.
 
-    \umlclass[x=6, y=0]{CustomVfs}{
-        -- std::string mountpoint \\
-        -- std::string backing\_dir
-    }{
-        + write() \\
-        + read() \\
-        + open() \\
-        + main() \\
-        + ... \\
-    }
+The key components of the architecture, along with their relationships and key methods, are illustrated in Figure~\ref{fig:uml_diagram}.
+The diagram shows the main classes, their inheritance relationships, and the methods that define their behavior.
 
-    \umlclass[x=12, y=0]{VfsDecorator}{
-        -- CustomVfs\& wrapped\_vfs
-    }
-
-    \umlclass[x=10, y=-4]{EncryptionVfs}{
-    }{
-        + write() \\
-        + read()
-    }
-
-    \umlclass[x=14, y=-4]{VersioningVfs}{
-    }{
-        + write() \\
-        + read()
-    }
-
-    \umlinherit{CustomVfs}{FuseWrapper}
-    \umlinherit{VfsDecorator}{CustomVfs}
-    \umlinherit{EncryptionVfs}{VfsDecorator}
-    \umlinherit{VersioningVfs}{VfsDecorator}
-\end{tikzpicture}
-
-
+\begin{figure}[ht]
+    \centering
+    \input{architecture}
+    \caption{UML diagram of the system architecture.}
+    \label{fig:uml_diagram}
+\end{figure}
