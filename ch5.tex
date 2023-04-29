@@ -58,10 +58,8 @@ The final design incorporates a single \texttt{CustomVfs} class, which is tasked
 This class primarily directs operations to the relevant system calls, which are subsequently processed by the operating system.
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Wrapping the read operation with encryption.}, label={lst:read}]
-int EncryptionVfs::read(const std::string &file_path,
-                     char *buffer,
-                     size_t size,
-                     off_t offset) {
+int EncVfs::read(const std::string &file_path,
+                 char *buffer, size_t size, off_t offset) {
     wrapped_vfs_->read(file_path, buffer, size, offset);
     decrypt(buffer, size, password);
 }
@@ -79,18 +77,16 @@ Similar to the encryption implementation, the read and write operations were wra
 The following code snippet shows a high-level overview of how to wrap the write operation with versioning functionality.
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int VersioningVfs::write(const std::string &file_path,
-                     char *buffer,
-                     size_t size,
-                     off_t offset) {
+int VersVfs::write(const std::string &file_path,
+                   char *buf, size_t size, off_t off) {
     char* prev_buffer;
     read_prev_version(file_path, prev_buffer);
 
     if (prev_buffer != buffer) {
-        // This will store an invisible copy of the file
-        store_version(file_path, buffer, size);
+        // Stores an invisible copy of the file
+        store_version(file_path, buf, size);
     }
 
-    wrapped_vfs_->write(file_path, buffer, size, offset);
+    wrapped_vfs_->write(file_path, buf, size, off);
 }
 \end{lstlisting}
