@@ -5,7 +5,6 @@ stages:
 latexmk:
   stage: build
   image: aergus/latex
-
   script: |
     apt-get update && apt-get install -y bzip2 && \
     wget https://perso.ensta-paris.fr/~kielbasi/tikzuml/var/files/src/tikzuml-v1.0-2016-03-29.tbz -O /tmp/tikzuml.tbz && \
