@@ -4,7 +4,7 @@
 
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
-Properly incorporating FUSE in C++ presents many challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
+Properly incorporating FUSE in C++ presents many design challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
 The problem arises from FUSE expecting a C struct with pointers to functions, which poses a problem for non-static C++ methods.
 To solve this issue, two solutions can be considered: either writing C++ code without utilizing objects, rendering the use of C++ instead of C rather pointless, or implementing a singleton wrapper with only static methods.
 
@@ -139,7 +139,9 @@ The diagram shows the main classes, their inheritance relationships, and some of
 
 \begin{figure}[ht]
     \centering
-    \input{architecture}
+    \scalebox{0.8}{
+        \input{architecture}
+    }
     \caption{UML diagram of the system architecture.}
     \label{fig:uml_diagram}
 \end{figure}

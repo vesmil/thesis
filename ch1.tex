@@ -1,9 +1,6 @@
 \chapter{Theoretical overview}
 \label{chap:refs}
 
-
-\section{Introduction}\label{sec:introduction}
-
 The development of a custom Virtual File System (VFS) with versioning and encryption capabilities requires an understanding of several key concepts and technologies.
 This chapter aims to provide the necessary background and context to deeper understand the VFS implementation discussed in later chapters.
 Even for those already familiar with the subject, a brief refresher might be helpful.
@@ -75,6 +72,7 @@ Utilizing encryption enables users to effectively safeguard their data against u
 
 In file and directory encryption, symmetric key algorithms, such as the Advanced Encryption Standard (AES), might be employed due to their computational efficiency and robust security properties.
 To generate the encryption key from a user-provided password, password-based key derivation functions (PBKDFs), including bcrypt, scrypt, or Argon2, could be leveraged.
+
 
 \section{Versioning}\label{sec:versioning}
 

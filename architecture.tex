@@ -1,7 +1,6 @@
-
 \begin{tikzpicture}
     \umlclass[x=0, y=0]{FuseWrapper}{
-        + static struct fuse\_operations ops
+        -- static struct fuse\_operations ops
     }{
         + main(\ldots) \{\ fuse\_main(\ldots, \&ops, this);\ \} \\
         \\
@@ -11,35 +10,34 @@
         + \ldots
     }
 
-    \umlclass[x=0, y=-5.2]{CustomVfs}{
+    \umlclass[x=0, y=-5.1]{CustomVfs}{
         -- std::string mountpoint \\
         -- std::string backing\_dir
     }{
         + write(\ldots) \\
         + read(\ldots) \\
         + open(\ldots) \\
-        + main(\ldots) \\
         + \ldots
     }
 
-    \umlclass[x=0, y=-9]{VfsDecorator}{
+    \umlclass[x=0, y=-8.8]{VfsDecorator}{
         -- CustomVfs\& wrapped\_vfs
     }
 
-    \umlclass[x=-2, y=-11.7]{EncryptionVfs}{
+    \umlclass[x=-2, y=-12.4]{EncryptionVfs}{
     }{
         + write(\ldots) \\
         + read(\ldots) \\
-        \# encrypt(\ldots) \\
-        \# decrypt(\ldots) \\
+        -- encrypt(\ldots) \\
+        -- decrypt(\ldots) \\
         \ldots
     }
 
-    \umlclass[x=2, y=-11.7]{VersioningVfs}{
+    \umlclass[x=2, y=-12.2]{VersioningVfs}{
     }{
         + write(\ldots) \\
         + read(\ldots) \\
-        \# revert(\ldots) \\
+        -- revert(\ldots) \\
         \ldots
     }
 

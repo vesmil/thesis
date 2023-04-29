@@ -1,29 +1,36 @@
 \chapter{Preparation}
 \label{chap:preparation}
 
-With architecture and design decisions made, it is time to start implementing the VFS\@.
-In this rather brief chapter, I will discuss the tools and technologies used in the development process.
+With the architecture and design decisions established, the focus now shifts to the implementation of the custom and extendable VFS\@.
+This concise chapter will outline the tools and technologies employed throughout the development process, ensuring a solid foundation for the implementation phase.
 
-\xxx{...}
 
 \section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
 
-CMake~\cite{cmake} is an open-source build system.
-It was chosen as the build system for this project due to its cross-platform compatibility, ease of use, and broad support for various platforms.
-It generates native build environments, such as Makefiles or project files for integrated development environments (IDEs).
+CMake~\cite{cmake}, an open-source build system, was selected for this project due to its cross-platform compatibility, user-friendliness, and extensive support for various platforms.
+CMake generates native build environments, such as Makefiles or project files for integrated development environments (IDEs), streamlining the development process.
 
 \subsection{Platform-Specific Challenges}\label{subsec:platform-specific-challenges}
 
-Despite CMake's cross-platform capabilities, certain platform-specific challenges were encountered during the development process.
-When attempting to run applications on an M1 Mac, I encountered an issue where there were no compatible binaries available for the hardware.
-While I could have built the applications from source, I did not have a specific reason to do so for my thesis.
-Additionally, the osxfuse port had not been updated for five years, further complicating matters.
-On Windows, the use of WinFsp~\cite{winfsp} is necessary to provide FUSE compatibility, presenting additional challenges for seamless cross-platform development.
+Despite the cross-platform advantages provided by CMake, several platform-specific challenges arose during development.
+For instance, running applications on an M1 Mac proved difficult due to the lack of compatible binaries for the hardware.
+While building the applications from source was an option, there was no compelling reason to do so for the purposes of this thesis.
+Furthermore, the osxfuse port had not received an update in five years, exacerbating the situation.
+On Windows, WinFsp~\cite{winfsp} is required to ensure FUSE compatibility, introducing additional hurdles for seamless cross-platform development.
+
 
 \section{Gitlab CI}\label{sec:gitlab-ci}
 
-\xxx{...}
+The MFF faculty GitLab instance was utilized for this project\cite{gitlab_mff}.
+GitLab CI/CD pipelines were employed to automate various tasks, such as checking code formatting with clang-format, building the project, running Google Test unit tests, and providing the ability to download build artifacts.
+This approach facilitated a more efficient and organized development process.
+
 
 \section{Docker}\label{sec:docker}
 
-\xxx{...}
+Docker\cite{docker} was incorporated into the project for several reasons.
+First, it allowed for the creation of a consistent and reproducible development environment, ensuring that the project could be built and run across different platforms without issues.
+Additionally, Docker provided two methods for running the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
+By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS.
+
+\xxx{Provide example commands?}

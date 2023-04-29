@@ -1,6 +1,7 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
+Once the preparation phase was complete, it was time to begin the implementation of the custom and extendable VFS\@.
 
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
@@ -28,12 +29,14 @@ To create a filesystem with FUSE, a structure variable of type fuse\_operations 
 The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
 This is \xxx{...} done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
 
+\xxx{How were they implemented? Using backing directory, etc.}
+
 The final design consists of a single \texttt{CustomVfs} class, which is responsible for handling all file system operations.
 This particular class mainly redirects the operations to the appropriate system calls, which are then handled by the operating system.
 
-Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.
+Using the base VFS is as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.\ref{lst:main}
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Main method of the \texttt{CustomVfs} class.}, label={lst:main}]
 int main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     custom_vfs.main(argc, argv);
@@ -47,15 +50,14 @@ This allows the user to specify the mount point and other options.
 
 \section{Encryption}\label{sec:encryption}
 
-As indicated earlier I will use a libsodium to handle the encryption and decryption of files within the custom VFS\@.
-In order to use an user-provided password or a stored key, Advanced Encryption Standard (AES) algorithm will be utilized.
-AES is a widely-used symmetric encryption algorithm that provides a good balance between security and performance.
-Alternatives include other symmetric encryption algorithms like DES (Data Encryption Standard) and 3DES (Triple DES), but they are slower and less secure compared to AES.
+As mentioed earlier, in order to develop a filesystem using FUSE, a variable of the fuse\_operations structure type should be defined and subsequently passed to the fuse\_main function.
+The fuse\_operations structure comprises pointers to functions that will be invoked upon the corresponding action being requested and that was ex
+This process is facilitated by the \texttt{FuseWrapper} class, while other classes focus on implementing the necessary functions.
 
-To integrate the encryption, I have modified the existing read and write operations to include the encryption and decryption processes.
-The following code snippet demonstrates how to wrap the read operation with encryption.
+The final design incorporates a single \texttt{CustomVfs} class, which is tasked with managing all filesystem operations.
+This class primarily directs operations to the relevant system calls, which are subsequently processed by the operating system.
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Wrapping the read operation with encryption.}, label={lst:read}]
 int EncryptionVfs::read(const std::string &file_path,
                      char *buffer,
                      size_t size,
@@ -65,7 +67,7 @@ int EncryptionVfs::read(const std::string &file_path,
 }
 \end{lstlisting}
 
-\xxx{Caching those? Specific key?}
+\xxx{Caching those? Specific key? TODO after implementation.}
 
 
 \section{Versioning}\label{sec:versioning2}
@@ -74,7 +76,7 @@ Instead of using a diff-based approach for versioning, I have chosen to store th
 Diff-based approach could be implemented in the future.
 
 Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
-The following code snippet shows high-level overview of how to wrap the write operation with versioning functionality.
+The following code snippet shows a high-level overview of how to wrap the write operation with versioning functionality.
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 int VersioningVfs::write(const std::string &file_path,
