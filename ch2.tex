@@ -11,16 +11,16 @@ By thoroughly analyzing existing alternatives and exploring necessary components
 
 The proposed solution presents a unique approach, as there is currently no existing virtual file system specifically designed to layer additional features atop pre-existing file systems.
 Nevertheless, FUSE, the very library which was employed in developing this VFS, could be viewed as its competition, given that it can be utilized to enhance existing file systems with added features.
-However, FUSE is a low-level library that demands considerable effort to use effectively.
-Furthermore, even if a developer undertakes the challenge of creating a custom FUSE module, they would essentially be replicating the objectives of this thesis.
+On the contrary, FUSE demands considerable effort to build a custom file system from scratch, and even if a developer undertakes the challenge, they would essentially be replicating a simplified version of this thesis' objective.
 
 However, using VFS is not the only way to achieve the desired functionality off adding features, and in order to judge the potential benefits of our VFS, it is essential to individually examine alternative solutions that simply provide custom features on top of existing file systems.
 This section will analyse existing non-virtual and virtual file systems with versioning and encryption features, as well as higher-level applications offering similar functionality.
 
 Non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
 Notable non-virtual versioning file systems include OpenVMS, a versioning file system from Digital Equipment Corporation that automatically creates new instances of files with version numbers appended, and NILFS, a Linux-based log-structured file system that supports versioning and continuous snapshotting of the entire file system.
+And even though these solutions would be viable options, they are not really user-friendly nor easily extensible.
 
-Furthermore, several virtual file systems (VFS) with versioning capabilities have been developed:
+Still, several virtual file systems (VFS) with versioning capabilities have been developed:
 
 \begin{itemize}
     \item User space file systems implemented with FUSE:
@@ -35,22 +35,23 @@ Furthermore, several virtual file systems (VFS) with versioning capabilities hav
 
 These existing solutions have various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
 
-While virtual file systems with encryption are basically nonexistent, there are non-virtual alternatives such as the Encrypted File System (EFS) which provides cryptographic protection of individual files on NTFS file system volumes using a public-key system.
-And surely enough, such solutions are viable options, but they from my personal experience lack the configurability and flexibility that a virtual file system can provide.
+While virtual file systems with encryption are basically nonexistent, there are again non-virtual alternatives such as the Encrypted File System (EFS) which provides cryptographic protection of individual files on NTFS file system volumes using a public-key system.
+And surely enough, such solutions are viable options, but they from my personal experience lack the configurability and flexibility that a virtual file system can provide, and once more the extensibility is limited.
 For instance, as a dual-boot user, if I would like to have my files encrypted on the common partition, it would be not possible or at least very difficult to achieve with existing solutions.
 
 Moving back to the VFS domain, the closest example to the desired functionality is rvault~\cite{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
-However, this does differ from the intended functionality of the proposed VFS\@.
+However, this does differ from the intended functionality of the proposed VFS and could not be considered as alternative, rather it may serve as a source of inspiration.
 
 The main competition thus stems from higher-level applications that provide versioning and encryption features.
-These applications have their own set of limitations, such as requiring a constantly running background program with access to all files and offering limited extensibility for incorporating other features.
-In most instances, integrating additional functionalities with these applications would not be practical or feasible.
+These are usually easily combinable and could mean a practical alternative to the proposed VFS\@.
+One might even argue that the proposed VFS is an so-called ``overkill'', and using these applications would be a more practical solution.
+Conversely, applications like this have their own set of limitations, such as requiring a constantly running background program with access to all files, and even though I might repeat myself, the extensibility and portability is limited.
 
-Despite the limitations of existing solutions, it is worth noting that some operating systems, specifically macOS, provide built-in support for versioning and encryption features.
-MacOS's Time Machine offers versioning capabilities, allowing users to revert to previous versions of files or restore deleted data.
+Despite the limitations of existing solutions, it is worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
+For example, MacOS's Time Machine offers versioning capabilities, allowing users to revert to previous versions of files or restore deleted data.
 However, these features are not available on other platforms, and they may not provide the desired level of control over the process.
 
-In conclusion, while there are several existing solutions that offer versioning and encryption features, they are either platform-specific or lack the desired level of control.
+In conclusion, while there are several existing solutions that offer versioning and encryption features, they are either platform-specific, lack the desired level of control or extensibility.
 Additionally, there are no existing virtual file systems that provide the desired functionality.
 
 

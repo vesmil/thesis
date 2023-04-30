@@ -43,6 +43,9 @@
 
     \umlinherit{CustomVfs}{FuseWrapper}
     \umlinherit{VfsDecorator}{CustomVfs}
+    \coordinate (M) at ([xshift=1cm]VfsDecorator.east |- CustomVfs);
+    \umlaggreg[geometry=-|]{VfsDecorator}{M};
+    \umlassoc[geometry=--]{M}{CustomVfs};
     \umlinherit{EncryptionVfs}{VfsDecorator}
     \umlinherit{VersioningVfs}{VfsDecorator}
 \end{tikzpicture}

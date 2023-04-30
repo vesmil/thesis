@@ -7,14 +7,15 @@ Created as a FUSE (Filesystem in Userspace) module using C++, the VFS should be 
 The created VFS should also provide prototypes of modules for encryption and versioning, seamlessly integrating them into the core functionality with minimal user effort.
 Specifically, the proposed VFS prototypes should enable users to create snapshots for later rollbacks and let them easily encrypt individual files or entire directories with a password or key, providing temporary decryption as needed.
 
-Currently, there is no straightforward method for adding or layering these features onto an existing file system, and users who desire such additional functionality must rely on separate external programs.
+Currently, there is no straightforward method for adding, let alone layering, these features onto an existing file system, and users who desire such additional functionality must rely on separate external programs.
 For example, versioning is often achieved through software such as \texttt{git}, which creates a repository to store file changes in a \texttt{.git} directory, but solutions like this may be inconvenient for daily usage.
 Even though some more suitable solutions exist, they are usually not provided on file system-level, and the few rare exceptions that do exist are often outdated, platform-specific, and difficult to use.
 
 Similarly, to password-protect files, users can choose from a wide array of software, such as Folder Lock, Gpg, or Encrypto, and there are even some file systems that support file-level encryption, such as NTFS or APFS\@.
 The primary issue with these programs, which this thesis aims to address, is the necessity of accessing files through specialized software, exposing implementation detail or overall being inconvenient to use.
 In contrast, the proposed VFS acts as an intermediate layer between the operating system and specific file systems, delivering desired features in a more streamlined and user-friendly manner.
-Not to mention the fact that the VFS does not have the limitations of such program, as it can be mounted on top of any file system, including even a network file systems; and its features could also be easily layered on top of each other.
+Not to mention the fact that the VFS does not have the limitations of such program, as it can be mounted on top of any file system, including even a network file systems.
+Besides that, features could also be easily layered on top of each other as opposed to using separate programs, where, for example, versioning an encrypted file would be obviously rather problematic.
 However, this VFS is not intended to be a replacement for existing solutions, but rather a proof of concept that demonstrates the feasibility of creating a modular and extensible VFS\@.
 
 The thesis is structured as follows: Chapter 1 provides a theoretical overview of file systems, virtual file systems, encryption, and versioning.

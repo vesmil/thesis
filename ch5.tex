@@ -59,8 +59,8 @@ This class primarily directs operations to the relevant system calls, which are 
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Wrapping the read operation with encryption.}, label={lst:read}]
 int EncVfs::read(const std::string &file_path,
-                 char *buffer, size_t size, off_t offset) {
-    wrapped_vfs_->read(file_path, buffer, size, offset);
+                 char *buffer, size_t size, off_t off) {
+    wrapped_vfs_->read(file_path, buffer, size, off);
     decrypt(buffer, size, password);
 }
 \end{lstlisting}
