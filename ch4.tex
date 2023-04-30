@@ -27,7 +27,11 @@ This approach facilitated a more efficient and organized development process.
 
 \subsection{Testing}\label{subsec:testing}
 
-\xxx{...}
+For testing purposes, Google Test was integrated into the GitLab CI/CD pipelines.
+This allowed for the execution of simple tests on every commit, such as creating directories and files.
+To optimize the testing process, the tests were run on a shared mountpoint that was cleared every time, although this approach is not ideal as it can make it harder to determine the root cause of a failure.
+Nonetheless, the primary purpose of these tests was to ensure that basic functionality was not broken with each commit, rather than to diagnose the cause of any failures that occurred.
+Overall, the use of GitLab CI/CD and Google Test improved the development process by providing automated testing and facilitating more organized project management.
 
 \section{Docker}\label{sec:docker}
 
@@ -36,4 +40,32 @@ First, it allowed for the creation of a consistent and reproducible development 
 Additionally, Docker provided two methods for running the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
 By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS.
 
-\xxx{Provide example commands?}
+To create the Docker environment for the project, we started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS\@.
+These dependencies included FUSE, GTest, Boost Program Option, and Libsodium.
+
+The following code block shows the Docker commands used to create and run the custom VFS container, along with explanations of each command in the comments:
+
+\xxx{Make more specific and test it}
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+
+# Create a Docker volume to persist test data
+docker volume create customvfs-test
+
+# Build the custom VFS Docker image based on the Dockerfile in the current directory
+docker build -t customvfs .
+
+# Run the custom VFS Docker container with the following settings to mount the customvfs-test volume and see the debug output
+docker run --name customvfs-container --rm -it --privileged -v customvfs-test:/mnt/test customvfs
+
+# Run a second Docker container and mount the volumes from the customvfs-container to test the VFS
+docker run --rm -it --privileged --volumes-from customvfs-container ubuntu:20.04 bash
+\end{lstlisting}
+
+An alternative method for running the custom VFS Docker container is to omit the volume mount and run the container in the background:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+docker run -d --name customvfs-container --privileged customvfs
+\end{lstlisting}
+
+Overall, the incorporation of Docker into the project provided a consistent and reproducible development environment, simplified the deployment process, and allowed for easier debugging and testing of the custom VFS.
