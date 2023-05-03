@@ -29,24 +29,32 @@ Furthermore, the fusepp repository was not updated for even longer and would be 
 Once the foundation was laid; the next step was to design a core VFS\@.
 It is important to note that this implementation was not the primary focus of this thesis as it was rather focused on providing modularity and extensibility.
 The result of this is that the entire core VFS is built on top of already present filesystem in the operating system.
+It is based on simply using a backing directory to store all the files and directories.
 However, such implementation details can be easily replaced, allowing for future improvements.
 
-Multiple approaches were contemplated: one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE as I will still need to somehow bound those classes into one.
+Still there were some design decisions to be made regarding the object-oriented design of the VFS\@.
+And multiple approaches were contemplated: mainly one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
+The reason for that is I would still need to somehow bound all those classes into one meaning at least the wrapper would have to be more complicated.
+Another concern regarding the second approach is that it would be harder to make the VFS extensible, but more on that in the following sections.
 
 \subsection{Modularity}\label{subsec:modularity}
 
 The VFS is designed to be modular, allowing for the addition of new features without the need to modify the core implementation.
-To achieve this, the decorator pattern is used.
+To achieve this, the decorator pattern was selected as the primary design pattern for this project.
 The decorator pattern is a structural design pattern that involves a set of decorator classes used to wrap concrete components.
 Decorator classes mirror the types of the components they decorate, sharing the same interface but adding or overriding behavior.
 
-In the context of this project, the decorator pattern is utilized to add versioning and encryption features without modifying the core VFS implementation.
+The benefit of this pattern is that it allows for the dynamic addition of new features to an object without modifying its implementation.
+Also it is possible to combine multiple decorators to add multiple features to the same object at the same time.
+These properties make the decorator pattern a perfect fit for this project.
+
+The decorator pattern is thus used to implement the add VFS prototypes, such as encryption and versioning.
 For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inherited from the \texttt{VfsDecorator} class.
 The \texttt{VfsDecorator} class, in turn, inherits from the base \texttt{CustomVfs} class.
 The decorator class wraps an instance of the base VFS class, allowing it to perform additional encryption-related tasks when reading or writing files.
 
-Here is a simplified code of the decorator pattern used in this project:
+To showcase that, here is a code snippet of simplified version of the decorator pattern implementation:
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 class CustomVfs { /.../ };
