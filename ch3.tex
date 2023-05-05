@@ -54,7 +54,7 @@ For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inhe
 The \texttt{VfsDecorator} class, in turn, inherits from the base \texttt{CustomVfs} class.
 The decorator class wraps an instance of the base VFS class, allowing it to perform additional encryption-related tasks when reading or writing files.
 
-To showcase that, here is a code snippet of simplified version of the decorator pattern implementation:
+Following code snippet showcase the standard implementation of decorator pattern:
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 class CustomVfs { /.../ };
@@ -76,8 +76,10 @@ int write(/.../) override;
 };
 \end{lstlisting}
 
-The \texttt{VfsDecorator} class wraps an instance of \texttt{CustomVfs} and can be extended by specific decorator implementations, such as \texttt{EncryptionVfs}.
-This design allows for the seamless integration of new features, such as encryption or versioning, without modifying the core VFS implementation.
+But since I currently don't require holding reference to underlying VFS I am able to have even simplified implementation without boiler-plate code.
+As I use the CustomVfs it is more like a value type, meaning it's behaviour is defined not by its reference but the values inside it.
+This allows me to simply copy construct a previous decorator that acts the same.
+This might need to be changed in the future, and that is also the primary reason for mentioning this pattern.
 
 The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
 
@@ -94,9 +96,20 @@ int main(int argc, char* argv[]) {
 
 Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS\@.
 
+\subsection{Modularity caveats}\label{subsec:modularity-cavs}
+
+Unfortunate thing about this modularity design is complications with accessing the files other ways then using the parent decorator.
+To demonstrate my point I will explain the complication with combing versioning and encryption.
+With that you have to consider what do you want to perform first.
+In case of first versioning and then encryption you have to encrypt all the concerned files.
+In case of first encrypting and then versioning you loose the ability to version the diff-based way.
+
+This order decision has to be done by the person creating the result vfs but it's my responsibility to provide sufficient tools.
+For the described example it means simply that each decorator has to able to ask it's parent for all concerned files.
+
 \subsection{Access to VFS features}\label{subsec:access-to-vfs-features}
 
-A crucial aspect of the architecture is determining the method by which users can access the added VFS features.
+Another crucial aspect of the architecture is determining the method by which users can access the added VFS features.
 In this implementation, hooks have been designed to integrate seamlessly with standard filesystem operations.
 Additionally, a simple command-line interface (CLI) has been implemented to facilitate access to the VFS features, such as encryption and versioning.
 
