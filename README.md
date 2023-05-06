@@ -22,9 +22,7 @@ Motivation...
 
 ## TODO
 
-- [X] Setup the CI/CD for GitLab
-- [X] Fill in the template
-- [X] Theoretical introduction
-- [ ] Body...
-- [ ] Conclusion
+- [ ] Docker
+- [ ] Implementation
+- [ ] Comparison
 - [ ] How to
