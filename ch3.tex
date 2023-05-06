@@ -34,7 +34,7 @@ However, such implementation details can be easily replaced, allowing for future
 
 Still there were some design decisions to be made regarding the object-oriented design of the VFS\@.
 And multiple approaches were contemplated: mainly one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
 The reason for that is I would still need to somehow bound all those classes into one meaning at least the wrapper would have to be more complicated.
 Another concern regarding the second approach is that it would be harder to make the VFS extensible, but more on that in the following sections.
 
@@ -76,10 +76,10 @@ int write(/.../) override;
 };
 \end{lstlisting}
 
-But since I currently don't require holding reference to underlying VFS I am able to have even simplified implementation without boiler-plate code.
-As I use the CustomVfs it is more like a value type, meaning it's behaviour is defined not by its reference but the values inside it.
-This allows me to simply copy construct a previous decorator that acts the same.
-This might need to be changed in the future, and that is also the primary reason for mentioning this pattern.
+It's important to note that I currently do not require holding reference to underlying VFS I am able to have partly simplified implementation without boiler-plate code.
+The reason behind that is that I use the CustomVfs more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
+This allows me to simply copy construct the parent \textt{CustomVfs} object with passed decorator.
+Still, I will rather keep the \texttt{wrapped\_vfs\_} field as it might be useful in case someone would want to extend the VFS in the future.
 
 The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
 
@@ -104,7 +104,7 @@ With that you have to consider what do you want to perform first.
 In case of first versioning and then encryption you have to encrypt all the concerned files.
 In case of first encrypting and then versioning you loose the ability to version the diff-based way.
 
-This order decision has to be done by the person creating the result vfs but it's my responsibility to provide sufficient tools.
+This order decision has to be done by the person creating the result vfs but it is my responsibility to provide sufficient tools.
 For the described example it means simply that each decorator has to able to ask it's parent for all concerned files.
 
 \subsection{Access to VFS features}\label{subsec:access-to-vfs-features}

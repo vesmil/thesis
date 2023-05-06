@@ -33,41 +33,19 @@ To optimize the testing process, the tests were run on a shared mountpoint that 
 Nonetheless, the primary purpose of these tests was to ensure that basic functionality was not broken with each commit, rather than to diagnose the cause of any failures that occurred.
 Overall, the use of GitLab CI/CD and Google Test improved the development process by providing automated testing and more organized project management.
 
+
 \section{Docker}\label{sec:docker}
 
 Docker\cite{docker} was also incorporated into the project because of several reasons.
 First, it allowed for the creation of a consistent and reproducible development environment, ensuring that the project could be built and run across different platforms without issues.
 This came in handy because as I wrote this thesis partly using the aforementioned M1 mac, and partly using a Linux machine.
-Additionally, Docker provided two methods for deubgging or even demoing the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
-By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS.
 
-To create the Docker environment for the project, we started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS\@.
+Additionally, Docker provided two methods for debugging or even demoing the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
+By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VF\@.
+
+To create the Docker environment for the project, I started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS\@.
 These dependencies included FUSE, GTest, Boost Program Option, and Libsodium.
-
-The following code block shows the Docker commands used to create and run the custom VFS container.
-
-The first step is optimal, depending whether the container will be used for debugging or actual use, we can create a Docker volume.
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-docker volume create customvfs-test
-\end{lstlisting}
-
-Next, we build the Docker image:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-docker build -t customvfs .
-\end{lstlisting}
-
-And after that, we have multiple options for running the container.
-Depending on whether we created a Docker volume, we can either mount it or not.
-In case of mounting to an actual directory, replace the \texttt{customvfs-test} with the path to the directory.
-
-\xxx{TODO create a shell program that will allow to run the container with different options}
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-docker run --name customvfs-container --rm -it --privileged -v customvfs-test:/mnt/fs customvfs
-\end{lstlisting}
-
-\xxx{We also have the option to run the container in the background. And that would require diffrent command passed to docker.}
+Then I copied the source code into the container and built the project.
+More information about how exactly it was done and how to use it can be found in the appendix~\ref{sec:docker-guide}.
 
 Overall, the incorporation of Docker into the project provided a consistent and reproducible development environment, simplified the deployment process, and allowed for easier debugging and testing of the custom VFS.

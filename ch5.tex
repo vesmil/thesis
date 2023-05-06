@@ -1,29 +1,30 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-Once the preparation phase was complete, it was time to begin the implementation of the custom and extendable VFS\@.
+Once the preparation phase was complete, it was time to begin the implementation itself.
+
 
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
-To successfully implement a custom Virtual File System (VFS) using FUSE, it is essential to define and integrate various FUSE operations.
-This section provides a brief overview of some essential FUSE operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
+It was first essential to define and integrate various FUSE operations.
+This section provides a brief overview of some of the essential operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
 
 \begin{itemize}
     \item \textbf{getattr}: Retrieves the metadata of a given path.
     This operation is always called before any other operation made on the filesystem.
     It is responsible for reading the file or directory attributes, such as size, access permissions, and timestamps.
     \item \textbf{readdir}: Lists the contents of a directory, filling a buffer with the structure of the accessed directory.
+    \item \textbf{mknod}: Creates a non-directory node, such as a file.
+    \item \textbf{unlink}: Deletes a file.
     \item \textbf{open}: Called when the system requests a file to be opened.
-    \item \textbf{read}: Called when FUSE is reading data from an opened file.
-    It should return exactly the number of bytes requested and fill the buffer with the content of those bytes.
+    \item \textbf{read}: Called when FUSE is reading data from an opened file, while filling the buffer with the content of those bytes.
     \item \textbf{write}: Writes data to an open file.
     \item \textbf{mkdir}: Creates a new directory.
     \item \textbf{rmdir}: Deletes an existing directory.
     \item \textbf{rename}: Renames a file or directory.
-    \item \textbf{truncate}: Changes the size of a file.
 \end{itemize}
 
-Besides these operations a full-featured filesystem might need operations such as \texttt{mknod}, \texttt{unlink}, \texttt{symlink}, \texttt{link}, \texttt{chmod}, \texttt{chown}, \texttt{utime}, \texttt{statfs}, \texttt{flush}, \texttt{release}, \texttt{fsync}, \texttt{setxattr}, \texttt{getxattr}, \texttt{listxattr}, and \texttt{removexattr}.
+Besides these operations a full-featured filesystem might need operations such as \texttt{truncate}, \texttt{symlink}, \texttt{link}, \texttt{chmod}, \texttt{chown}, \texttt{utime}, \texttt{statfs}, \texttt{flush}, \texttt{release}, \texttt{fsync}, \texttt{setxattr}, \texttt{getxattr}, \texttt{listxattr}, and \texttt{removexattr}.
 
 To create a filesystem with FUSE, a structure variable of type fuse\_operations should be declared and passed to the fuse\_main function.
 The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
@@ -53,18 +54,21 @@ This allows the user to specify the mount point and other options such as the de
 
 \section{Encryption}\label{sec:encryption}
 
-To implement the protype module of encryption, I have chosen to use the AES-256 algorithm from the libsodium library\ref{subsec:encryption-analysis} as it is a widely used and secure algorithm.
-\xxx{What about speed}
+To implement the prototype module of encryption, I have chosen to use the XChaCha20-Poly1305 as described in the initial chapter~\ref{subsec:xchacha20-poly1305}.
+I particularly used this algorithm implemented by the libsodium library\ref{subsec:encryption-analysis}.
 
-The encryption and decryption is done on opening and closing the file, respectively.
+The encryption and decryption of files is trivially done on opening and closing the file, respectively.
+However the situation is more complicated when it comes to directories.
+The main problem is deciding when to encrypt and decrypt the files in the directory.
+I have decided to solve it \xxx{TODO}.
 
-\xxx{What about directories?}
+Another complication lies in the combination of encryption and versioning.
+\ldots
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Wrapping the read operation with encryption.}, label={lst:read}]
-int EncVfs::read(const std::string &file_path,
-                 char *buffer, size_t size, off_t off) {
-    wrapped_vfs_->read(file_path, buffer, size, off);
-    decrypt(buffer, size, password);
+int EncVfs::open() {
+    wrapped_vfs_->open();
+    decrypt_file();
 }
 \end{lstlisting}
 

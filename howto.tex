@@ -8,7 +8,35 @@ On Debian-based Linux systems (such as Ubuntu), you may install these dependenci
 
 \xxx{I will just copy-paste it from the final CI/CD script}
 
-\xxx{Docker}
+\section{Running the VFS using Docker}\label{sec:docker-guide}
+
+The following code block shows the Docker commands used to create and run the custom VFS container.
+
+The first step is optimal, depending whether the container will be used for debugging or actual use, we can create a Docker volume.
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+docker volume create customvfs-test
+\end{lstlisting}
+
+Next, we build the Docker image:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+docker build -t customvfs .
+\end{lstlisting}
+
+And after that, we have multiple options for running the container.
+Depending on whether we created a Docker volume, we can either mount it or not.
+In case of mounting to an actual directory, replace the \texttt{customvfs-test} with the path to the directory.
+
+\xxx{TODO create a shell program that will allow to run the container with different options}
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+docker run --name customvfs-container --rm -it --privileged \
+-v customvfs-test:/mnt/fs customvfs
+\end{lstlisting}
+
+\xxx{We also have the option to run the container in the background. And that would require diffrent command passed to docker.}
+
 
 \xxx{What about other platforms?}
 
