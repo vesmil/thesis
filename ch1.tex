@@ -65,25 +65,18 @@ As long as the file is open, the corresponding dentry and VFS inode remain in us
 
 \section{Encryption}\label{sec:encryption-approaches}
 
-Another concept, that has to be at least briefly discussed, is encryption.
-It is simply a process of applying cryptographic algorithms (encoding) information in such a way that only authorized parties can access it.
-In this thesis, I will mainly use encryption as a mean to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
-Utilizing encryption enables users to effectively safeguard their data against unauthorized access, data breaches, and other malicious activities.
+Another concept that has to be briefly discussed is encryption. It is simply a process of applying cryptographic algorithms (encoding) to information in such a way that only authorized parties can access it.
+In this thesis, I will mainly use encryption as a means to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key. Utilizing encryption enables users to effectively safeguard their data against unauthorized access, data breaches, and other malicious activities.
 
-In file and directory encryption, symmetric key algorithms, such as the Advanced Encryption Standard (AES), might be employed due to their computational efficiency and robust security properties.
-To generate the encryption key from a user-provided password, password-based key derivation functions (PBKDFs) could be leveraged.
+In file and directory encryption, symmetric key algorithms are employed due to their computational efficiency and robust security properties. While the Advanced Encryption Standard (AES) is a widely used option, I have decided to use the more modern and faster XChaCha20-Poly1305 algorithm for this thesis. To generate the encryption key from a user-provided password, password-based key derivation functions can be leveraged.
 
-\subsection{AES256}\label{subsec:aes}
+\subsection{XChaCha20-Poly1305}\label{subsec:xchacha20-poly1305}
 
-AES256 is a widely used symmetric key encryption algorithm that employs a block cipher method to transform plaintext data into ciphertext.
-The algorithm uses a fixed block size of 128 bits and supports key sizes of 128, 192, or 256 bits, where the longer key length provides stronger security.
-AES operates through a series of rounds, with each round applying a substitution-permutation network (SPN) to the data.
-The SPN consists of four functions: substitution, permutation, bitwise XOR, and matrix multiplication.
+XChaCha20-Poly1305 is a symmetric encryption algorithm that combines the XChaCha20 stream cipher with the Poly1305 message authentication code (MAC) to provide both confidentiality and integrity. This modern encryption algorithm is considered faster than AES, especially in software implementations, making it a suitable choice for this thesis.
 
-To encrypt data using AES256, a user first generates a secret key, which is a random sequence of bits with a length of 256 bits.
-Then, AES uses the secret key to transform the plaintext into ciphertext by performing a series of SPN rounds.
-The ciphertext can only be decrypted back to its original plaintext form using the same secret key that was used to encrypt it.
-The secret key is typically used directly as the encryption key, while a password-based key derivation function (PBKDF) can be utilized to derive an encryption key from a password.
+The algorithm uses a 256-bit key and a 192-bit nonce. The larger nonce size in XChaCha20-Poly1305 reduces the risk of nonce reuse, which can compromise security. To encrypt data using XChaCha20-Poly1305, a user first generates a secret key, which is a random sequence of bits with a length of 256 bits. Then, the algorithm uses the secret key to transform the plaintext into ciphertext. The ciphertext can only be decrypted back to its original plaintext form using the same secret key that was used to encrypt it.
+
+Like with AES, a password-based key derivation function (PBKDF) can be utilized to derive an encryption key from a password. This enables users to access their encrypted data using a memorizable password rather than having to manage and store a long, randomly generated encryption key.
 
 \section{Versioning}\label{sec:versioning}
 

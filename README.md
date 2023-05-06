@@ -2,7 +2,7 @@
 
 *Author: Milan Veselý*
 
-> This repository contains only the thesis, the sourcode can be
+> This repository contains only the thesis, the sourcecode can be
 > found [here](https://gitlab.mff.cuni.cz/teaching/theses/yaghob/vesely-milan/source-code),
 
 Readable document can be obtained from CI/CD pipeline or using provided Make file.
