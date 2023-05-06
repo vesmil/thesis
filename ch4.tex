@@ -25,6 +25,9 @@ The MFF faculty GitLab instance was utilized for this project\cite{gitlab_mff}.
 GitLab CI/CD pipelines were employed to automate various tasks, such as checking code formatting with clang-format, building the project, running Google Test unit tests, and providing the ability to download build artifacts.
 This approach facilitated a more efficient and organized development process.
 
+Regarding the clang-format check, the project was configured to use the Google C++ style guide\cite{google_cpp_style_guide} with a few minor modifications.
+I also adhered to the Google style guide for the naming convention, which unfortunately is not enforced by the clang-format tool.
+
 \subsection{Testing}\label{subsec:testing}
 
 For testing purposes, Google Test was integrated into the GitLab CI/CD pipelines.

@@ -130,7 +130,7 @@ This is because the VFS features are accessed through standard filesystem operat
 Additionally, the hooks allow for the seamless integration of new features, such as encryption and versioning, without the need to modify the core VFS implementation as can be seen in the following code example:
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
-int EncryptionVfs::read(const std::string &ppath,
+int EncryptionVfs::write(const std::string &ppath,
                      char *buffer,
                      size_t size,
                      off_t offset) {
@@ -138,7 +138,7 @@ int EncryptionVfs::read(const std::string &ppath,
         return handle_hook(path, buffer, size, offset);
     }
 
-    // Do normal read operation...
+    // Do normal write operation...
 }
 \end{lstlisting}
 

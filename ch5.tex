@@ -57,26 +57,27 @@ This allows the user to specify the mount point and other options such as the de
 To implement the prototype module of encryption, I have chosen to use the XChaCha20-Poly1305 as described in the initial chapter~\ref{subsec:xchacha20-poly1305}.
 I particularly used this algorithm implemented by the libsodium library\ref{subsec:encryption-analysis}.
 
-The encryption and decryption of files is trivially done on opening and closing the file, respectively.
-However the situation is more complicated when it comes to directories.
-The main problem is deciding when to encrypt and decrypt the files in the directory.
-I have decided to solve it \xxx{TODO}.
+There are two main approaches to use the added encryption functionality.
+The first approach is to use a user-defined password, which is then employed to generate the encryption key.
+This method is not very practical, as the user has to manually lock and unlock files, since there is no mechanism to request the password when accessing a file.
 
-Another complication lies in the combination of encryption and versioning.
-\ldots
+The second approach involves using a key file.
+This method is more convenient, as users can store the key file in a secure location and access their files without additional steps.
+However, this brings up the question of when to encrypt and decrypt the files.
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Wrapping the read operation with encryption.}, label={lst:read}]
-int EncVfs::open() {
-    wrapped_vfs_->open();
-    decrypt_file();
-}
-\end{lstlisting}
+Encryption and decryption of files are easily performed upon opening and closing the file, respectively.
+In contrast, handling directories is more complicated, as there is no way to identify when the directory is being accessed.
+As a result, I have chosen to temporarily decrypt file names when reading the directory, while individual file contents are decrypted only when the file is opened.
+This approach reduces unnecessary encryption and decryption operations and maintains relatively fast performance.
 
+The encryption itself was done by asking the parent vfs for the proper file path and then using the libsodium library to encrypt or decrypt the file.
+Encryption of directories was then done by simply encrypting the files and their names in the directory recursively.
 
 \section{Versioning}\label{sec:versioning2}
 
-Instead of using a diff-based approach for versioning, I have chosen to store the entire file in the versioning system as it simplifies the implementation.
-Diff-based approach could be implemented in the future.
+The versioning module prototype is as of now rather limited since implementing a full-featured versioning system would be a significant undertaking.
+Namely, instead of using a diff-based approach for versioning, I have chosen to store the entire file in the versioning system as it simplifies the implementation.
+Diff-based approach could be then implemented in the future.
 
 Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
 The following code snippet shows a high-level overview of how to wrap the write operation with versioning functionality.
@@ -84,16 +85,17 @@ The following code snippet shows a high-level overview of how to wrap the write 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 int VersVfs::write(const std::string &file_path,
                    char *buf, size_t size, off_t off) {
-    char* prev_buffer;
-    read_prev_version(file_path, prev_buffer);
-
-    if (prev_buffer != buffer) {
-        // Stores an invisible copy of the file
-        store_version(file_path, buf, size);
+    store_previous_version(file_path);
+    if (off > 0) {
+        prepare_newfile_for_write(file_path);
     }
 
     wrapped_vfs_->write(file_path, buf, size, off);
 }
 \end{lstlisting}
 
-\xxx{TODO: describe the operations and how exactly they are implemented - v suffix, hiding them from readdir }
+Meaning, the current version is always stored in a file with the real name, whereas the previous versions are suffixed with special symbol and their version number.
+With this approach operations such as restore, delete, or list are relatively straightforward to implement.
+Restore just creates a new stored version with the current content of the file and renames the restored version to the real name.
+Delete operation then simply removes the file and all its versions.
+And listing just finds all the files with the real name and the special symbol and returns them.
