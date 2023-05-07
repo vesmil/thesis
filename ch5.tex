@@ -6,7 +6,7 @@ Once the preparation phase was complete, it was time to begin the implementation
 
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
-It was first essential to define and integrate various FUSE operations.
+Initially, it was necessary to identify and incorporate various FUSE operations.
 This section provides a brief overview of some of the essential operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
 
 \begin{itemize}
@@ -82,6 +82,7 @@ Diff-based approach could be then implemented in the future.
 Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
 The following code snippet shows a high-level overview of how to wrap the write operation with versioning functionality.
 
+\xxx{TODO capiton all listings}
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
 int VersVfs::write(const std::string &file_path,
                    char *buf, size_t size, off_t off) {
@@ -94,8 +95,8 @@ int VersVfs::write(const std::string &file_path,
 }
 \end{lstlisting}
 
-Meaning, the current version is always stored in a file with the real name, whereas the previous versions are suffixed with special symbol and their version number.
-With this approach operations such as restore, delete, or list are relatively straightforward to implement.
+That means the current version is always stored in a file with the real name, whereas the previous versions are suffixed with special symbol and their version number.
+With this approach, operations such as restore, delete, or list are relatively straightforward to implement.
 Restore just creates a new stored version with the current content of the file and renames the restored version to the real name.
 Delete operation then simply removes the file and all its versions.
-And listing just finds all the files with the real name and the special symbol and returns them.
+And listing operation just finds all the files with the real name and the special symbol and returns them.

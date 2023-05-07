@@ -30,12 +30,13 @@ I also adhered to the Google style guide for the naming convention, which unfort
 
 \subsection{Testing}\label{subsec:testing}
 
-For testing purposes, Google Test was integrated into the GitLab CI/CD pipelines.
+For the testing purposes, Google Test was integrated into the GitLab CI/CD pipelines.
 This allowed for the execution of simple tests on every commit, such as creating directories and files.
 To optimize the testing process, the tests were run on a shared mountpoint that was cleared every time, although this approach is not ideal as it can make it harder to determine the root cause of a failure.
 Nonetheless, the primary purpose of these tests was to ensure that basic functionality was not broken with each commit, rather than to diagnose the cause of any failures that occurred.
 Overall, the use of GitLab CI/CD and Google Test improved the development process by providing automated testing and more organized project management.
 
+\xxx{Describe test more}
 
 \section{Docker}\label{sec:docker}
 
