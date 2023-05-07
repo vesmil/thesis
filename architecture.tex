@@ -26,18 +26,24 @@
 
     \umlclass[x=-2, y=-12.4]{EncryptionVfs}{
     }{
-        + write(\ldots) \\
-        + read(\ldots) \\
+        + open(\ldots) \\
+        + release(\ldots) \\
         -- encrypt(\ldots) \\
         -- decrypt(\ldots) \\
         \ldots
     }
 
-    \umlclass[x=2, y=-12.2]{VersioningVfs}{
+    \umlclass[x=4, y=-12.2]{VersioningVfs}{
     }{
-        + write(\ldots) \\
-        + read(\ldots) \\
+x       + write(\ldots) \\
         -- revert(\ldots) \\
+        \ldots
+    }
+
+    \umlclass[x=-6, y=-12.2]{Encryptor}{
+    }{
+        + encrypt(\ldots) \\
+        + decrypt(\ldots) \\
         \ldots
     }
 
@@ -48,6 +54,5 @@
     \umlassoc[geometry=--]{M}{CustomVfs};
     \umlinherit{EncryptionVfs}{VfsDecorator}
     \umlinherit{VersioningVfs}{VfsDecorator}
+    \umlassoc[geometry=|-]{Encryptor}{EncryptionVfs}
 \end{tikzpicture}
-
-\xxx{Encryptor at least}

@@ -56,7 +56,7 @@ The decorator class wraps an instance of the base VFS class, allowing it to perf
 
 Following code snippet showcase the standard implementation of decorator pattern:
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={Decorator pattern implementation},basicstyle=\ttfamily\small]
 class CustomVfs { /.../ };
 
 class VfsDecorator : public CustomVfs {
@@ -83,7 +83,7 @@ Still, I will rather keep the \texttt{wrapped\_vfs\_} field as it might be usefu
 
 The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={VFS initialization and usage},basicstyle=\ttfamily\small]
 int main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     VersioningVfs versioned_vfs(custom_vfs);
@@ -129,7 +129,7 @@ Benefits of this approach include the ability to easily integrate the VFS featur
 This is because the VFS features are accessed through standard filesystem operations, which are already supported by most applications.
 Additionally, the hooks allow for the seamless integration of new features, such as encryption and versioning, without the need to modify the core VFS implementation as can be seen in the following code example:
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={Example of hook implementation}, basicstyle=\ttfamily\small]
 int EncryptionVfs::write(const std::string &ppath,
                      char *buffer,
                      size_t size,
@@ -163,8 +163,7 @@ The diagram shows the main classes, their inheritance relationships, and some of
     \scalebox{1}{
         \input{architecture}
     }
+    \vspace{15pt}
     \caption{UML diagram of the system architecture.}
     \label{fig:uml_diagram}
 \end{figure}
-
-\xxx{Common parts?}

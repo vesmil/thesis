@@ -1,25 +1,63 @@
-\section{Evaluation}\label{sec:evaluation}
+\chapter{Evaluation}\label{chap:evaluation}
 
-\xxx{Intro}
+Once the implementation of the custom VFS is complete, it is necessary to evaluate the project.
+The evaluation is performed in terms of its functionality, usability, reliability, security, and performance.
 
-\subsection{Usability}\label{subsec:usability}
+\section{Usability}\label{sec:usability}
 
 The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
 The features are currently accessed through a command-line interface (CLI), which is simple to use but could be improved over time.
 Despite the limited effort put into developing the CLI, it remains a functional and accessible interface.
 
-\subsection{Reliability and Security}\label{subsec:reliability-and-security}
+In future iterations, the usability of the custom VFS could be further enhanced by providing a graphical user interface (GUI) to make it even more accessible for users who are not familiar with command-line interfaces.
+Moreover, more detailed documentation and tutorials could be provided to facilitate user onboarding and promote the adoption of the custom VFS.
+
+\section{Reliability and Security}\label{sec:reliability-and-security}
 
 The VFS implementation has undergone testing through unit tests using Google Test, ensuring good code coverage and the core features, such as encryption and communication with kernel code, rely on well-tested external libraries.
 
-However, there is still room for improvement in the core VFS core implementation to further enhance its reliability.
+However, there is still room for improvement in the core VFS implementation to further enhance its reliability.
+In future iterations, a more extensive suite of tests could be developed, covering not only unit tests but also integration and stress tests.
+This would help ensure that the VFS behaves correctly under various scenarios and is resilient against potential failures.
 
-\subsection{Performance}\label{subsec:performance}
+In terms of security, the implemented encryption relies on the Libsodium library, which is a well-tested and widely used library for encryption.
+
+\section{Performance}\label{sec:performance}
 
 Performance was not the primary focus of this project, as it is still a prototype.
-For that reason there were no performance tests conducted.
-On the other hand there are no known performance bottlenecks in the current implementation, as the VFS is built on top of the FUSE library, which is known for its high performance.
+For that reason, there were no performance tests conducted.
+On the other hand, there are no known performance bottlenecks in the current implementation, as the VFS is built on top of the FUSE library, which is known for its high performance.
 
-\subsection{Feature overview}\label{subsec:feature-overview}
+Future work could involve conducting performance tests to identify potential areas of improvement and optimize the VFS accordingly.
+This would be particularly important for applications with high I/O demands or large-scale deployments.
 
-\xxx{\ldots}
+\section{Feature overview}\label{sec:feature-overview}
+
+To provide a comprehensive understanding of the custom VFS's capabilities, we compare it to other alternatives in the table below:
+
+\xxx{TODO}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \textbf{Feature} & \textbf{Custom VFS} & \textbf{Alternative 1} & \textbf{Alternative 2} & \textbf{Alternative 3}\
+        \hline
+        Modularity & \checkmark & & & \
+        \hline
+        Versioning & \checkmark & & \checkmark & \
+        \hline
+        Encryption & \checkmark & \checkmark & & \
+        \hline
+        Performance & & \checkmark & \checkmark & \checkmark \
+        \hline
+        Reliability & & \checkmark & & \checkmark \
+        \hline
+        Usability & & & \checkmark & \
+        \hline
+    \end{tabular}
+    \caption{Feature comparison between the custom VFS and other alternatives}
+    \label{tab:feature-comparison}
+\end{table}
+
+As the table shows, the custom VFS stands out with its\ldots

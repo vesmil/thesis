@@ -38,9 +38,9 @@ The exact way this is done is using a backing directory, which is mounted to the
 This particular directory is then used to store all the files and directories that are created by the user by simply forwarding the operations to the backing directory.
 Consequently, the debugging process is simplified as the user can easily access the backing directory and verify that the operations are being handled correctly.
 
-Using the base VFS is also then as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet.\ref{lst:main}
+Using the base VFS is also then as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet~\ref{lst:main}.
 
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Main method of the \texttt{CustomVfs} class.}, label={lst:main}]
+\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Main method of the \texttt{CustomVfs} class}, label={lst:main}]
 int main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     custom_vfs.main(argc, argv);
@@ -82,8 +82,7 @@ Diff-based approach could be then implemented in the future.
 Similar to the encryption implementation, the read and write operations were wrapped to include versioning.
 The following code snippet shows a high-level overview of how to wrap the write operation with versioning functionality.
 
-\xxx{TODO capiton all listings}
-\begin{lstlisting}[language=c++, basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={Write with versioning functionality}, basicstyle=\ttfamily\small]
 int VersVfs::write(const std::string &file_path,
                    char *buf, size_t size, off_t off) {
     store_previous_version(file_path);

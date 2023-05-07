@@ -1,25 +1,18 @@
 \chapwithtoc{Conclusion and Future Work}
 
-\xxx{better repeat goals}
-% The main goal of this thesis is thus to create a modular and easily extensible virtual file system (VFS) in user space as a comprehensive solution for these advanced storage needs.
-% Created as a FUSE (Filesystem in Userspace) module using C++, the VFS should be able to be mounted irrespective of the underlying file system.
-% The created VFS should also provide prototypes of modules for encryption and versioning, seamlessly integrating them into the core functionality with minimal user effort.
-% Specifically, the proposed VFS prototypes should enable users to create snapshots for later rollbacks and let them easily encrypt individual files or entire directories with a password or key, providing temporary decryption as needed.
-% Not to mention the fact that the VFS does not have the limitations of such program, as it can be mounted on top of any file system, including even a network file systems; and its features could also be easily layered on top of each other.
-% However, this VFS is not intended to be a replacement for existing solutions, but rather a proof of concept that demonstrates the feasibility of creating a modular and extensible VFS\@.
+This thesis has successfully presented the design and implementation of a modular and easily extensible Virtual File System (VFS) in user space.
+Moreover, I have provided prototypes for encryption and versioning modules, which seamlessly integrate with the core functionality and require minimal user effort.
+The proposed VFS prototypes enable users to create snapshots for potential rollbacks and effortlessly encrypt individual files or entire directories using a password or key, offering temporary decryption when necessary.
+Importantly, the VFS transcends the limitations of similar programs, as it can be mounted on any file system, including network file systems, and its features can be easily layered on top of one another.
 
-This thesis demonstrated the reasonableness of implementing an extensible Virtual File System (VFS).
-The developed VFS prototype is easily extensible and includes modules for versioning and encryption.
-Although the current implementation may not be optimal, there is room for improvement.
-
-Namely, there are several avenues for future development and research to further improve the results of this thesis:
+As we look ahead, there are several opportunities for future development and research to enhance the results of this thesis:
 
 \begin{itemize}
-    \item \textbf{Optimization}: The current VFS implementation can be optimized for better performance, both in terms of storage efficiency and processing speed.
-    \item \textbf{GUI Integration}: The VFS features can be integrated into a graphical user interface and even to some already existing file managers to provide users with an even more intuitive and visually appealing interface.
-    \item \textbf{Additional Features}: New features or modules can be developed and integrated into the VFS, such as versioning based on diff, compression, deduplication, or support for different storage backends (e.g., cloud storage or distributed file systems).
-    \item \textbf{Real-world Deployment}: The VFS can be further refined and tested for deployment in real-world scenarios, where its performance, reliability, and usability can be assessed in more diverse and demanding environments.
+    \item \textbf{Optimization}: The current VFS implementation can be optimized for improved performance, encompassing both storage efficiency and processing speed.
+    \item \textbf{GUI Integration}: Integrating the VFS features into a graphical user interface or even existing file managers will provide users with a more intuitive and visually appealing experience.
+    \item \textbf{Additional Features}: Developers can create and incorporate new features or modules into the VFS, such as versioning based on diff, compression, deduplication, or support for various storage backends (e.g., cloud storage or distributed file systems).
+    \item \textbf{Real-world Deployment}: Refining and testing the VFS for real-world deployment will enable the evaluation of its performance, reliability, and usability in more diverse and demanding environments.
 \end{itemize}
 
-In conclusion, this thesis has demonstrated the viability of creating an extensible Virtual File System with support for encryption and versioning.
-Future work can build upon this foundation to develop a more robust, performant, and feature-rich VFS suitable for a wide range of applications.
+In conclusion, this thesis has substantiated the feasibility of creating an extensible Virtual File System with support for encryption and versioning.
+Future work can expand upon this foundation, developing a more robust, efficient, and feature-rich VFS suitable for a wide range of applications.
