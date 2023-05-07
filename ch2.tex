@@ -36,33 +36,33 @@ Still, several virtual file systems (VFS) with versioning capabilities have been
 
 These existing solutions are also not without various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
 
-Third option for versioning is to use higher-level applications.
+The third option for versioning is to use higher-level applications.
 These applications usually offer a wide range of features while still allowing extendability.
 Some of the most popular applications include Git, Subversion, Time Machine, and Dropbox.
-On truthfully, using these applications would be a practical solution, as they are well-maintained and offer a wide range of features.
+And to be honest, using these applications would be a practical solution, as they are well-maintained and offer a wide range of features.
 
 Regarding encryption, while such focused VFSs are basically nonexistent, there are several non-virtual file systems that offer encryption capabilities, such as the EFS which provides cryptographic protection of individual files on NTFS file system volumes using a public-key system.
 And surely enough, such solutions are viable options, but they from my personal experience lack the configurability and flexibility that a virtual file system can provide, and once more the extensibility is limited.
 For instance, as a dual-boot user, if I would like to have my files encrypted on the common partition, it would be not possible or at least very difficult to achieve with existing solutions.
 
 Moving back to the VFS domain, the closest example to the desired functionality is rvault~\cite{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
-However, this does differ from the intended functionality of the proposed VFS and could not be considered as alternative, rather it may serve as a source of inspiration.
+However, this does differ from the intended functionality of the proposed VFS and could not be considered as an alternative, rather it may serve as a source of inspiration.
 Again, the competition is mainly higher-level applications, such as Folder Lock, Gpg, or Encrypto.
 
 \subsection{Drawbacks of higher-level applications}\label{subsec:drawbacks-of-higher-level-applications}
 
-Since we now established that the main competition is higher-level applications, let us examine why devevloing proposed VFS is still a reasonable idea even though one might label it as ``overkill''.
+Since we now established that the main competition is higher-level applications, let us examine why developing proposed VFS is still a reasonable idea even though one might label it as ``overkill''.
 While I am not saying that higher-level applications are not a viable option, they are not meant for the same user base.
 
 Depending on specific solution, negative aspects could include problematic layering of additional features, limited multi-platform support and leaking implementation details to the user.
-And even more importantly, users are limited to use that particular application, while with VFS they can use any application they want.
-Yet, for the usage of VFS to be convinient, user's application of choice would need to be slightly modified.
+And even more importantly, users are limited to using that particular application, while with VFS they can use any application they want.
+Yet, for the usage of VFS to be convenient, user's application of choice would need to be slightly modified.
 
-On that note, is is also worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
-For example, MacOS's Time Machine offers versioning capabilities, allowing users to revert to previous versions of files or restore deleted data.
+On that note, it is also worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
+For example, MacOS's Time Machine offers versioning the way that it is possible to revert to previous versions of files or restore deleted data.
 However, these features are not available on other platforms, and they may not provide the desired level of control over the process.
 
-In conclusion, while there are several existing solutions that offer versioning and encryption features, they are either platform-specific, lack the desired level of control or extensibility.
+So, while there are several existing solutions that offer versioning and encryption features, they are usually platform-specific, lack the desired level of control or extensibility.
 Additionally, there are no existing virtual file systems that provide the desired functionality.
 
 
@@ -127,14 +127,14 @@ Initially, Crypto++~\cite{crypto_pp} was considered for integration into the cus
 Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS\@.
 
 However, the implementation of Crypto++ led to various issues, primarily complicating the build process.
-As a result, I decided to switch to libsodium~\cite{libsodium}, a more user-friendly alternative.
-This modern, easy-to-use software library offers a robust selection of encryption, decryption, and cryptographic functions while maintaining a focus on simplicity and efficiency.
-By incorporating libsodium, the custom VFS can achieve the desired level of data protection without incurring the complexities associated with Crypto++.
+As a result, I decided to switch to libsodium~\cite{libsodium}, which is a more user-friendly alternative.
+It offers a robust selection of encryption, decryption, and cryptographic functions while maintaining a focus on simplicity and efficiency.
+With that, the custom VFS can achieve the desired level of data protection without incurring the complexities associated with Crypto++.
 
 \subsection{Testing}\label{subsec:gtest}
 
-Google Test~\cite{google_test}, commonly referred to as gtest, is a widely-used and adaptable C++ testing framework developed by Google.
-This library enables efficient testing of individual components and the overall functionality of the custom VFS\@.
+Google Test~\cite{google_test}, commonly referred to as gtest, is a widely-used C++ testing framework developed by Google.
+This library enables testing of individual components and the overall functionality of the custom VFS\@.
 By employing gtest, the quality, reliability, and performance of the custom VFS can be evaluated, guaranteeing that it fulfills the requirements and expectations outlined in this thesis.
 
 \subsection{Options parsing}\label{subsec:options-parsing}
