@@ -78,7 +78,7 @@ int write(/.../) override;
 
 It's important to note that I currently do not require holding reference to underlying VFS I am able to have partly simplified implementation without boiler-plate code.
 The reason behind that is that I use the CustomVfs more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
-This allows me to simply copy construct the parent \textt{CustomVfs} object with passed decorator.
+This allows me to simply copy construct the parent \texttt{CustomVfs} object with passed decorator.
 Still, I will rather keep the \texttt{wrapped\_vfs\_} field as it might be useful in case someone would want to extend the VFS in the future.
 
 The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
