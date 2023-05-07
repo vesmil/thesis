@@ -73,6 +73,7 @@ This approach reduces unnecessary encryption and decryption operations and maint
 The encryption itself was done by asking the parent vfs for the proper file path and then using the libsodium library to encrypt or decrypt the file.
 Encryption of directories was then done by simply encrypting the files and their names in the directory recursively.
 
+
 \section{Versioning}\label{sec:versioning2}
 
 The versioning module prototype is as of now rather limited since implementing a full-featured versioning system would be a significant undertaking.

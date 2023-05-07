@@ -19,7 +19,7 @@ It is important to distinguish between a disk or partition and the file system i
 While some programs operate directly on raw disk sectors or partitions, which could potentially damage or corrupt existing file systems, most programs interact with a file system.
 
 There are various types of file systems, each tailored for specific operating systems and purposes.
-Notable file systems include NTFS (New Technology File System) for Windows, HFS+ for macOS, and ext4 (fourth extended filesystem) for Linux.
+Notable file systems include NTFS for Windows, HFS+ for macOS, and ext4 for Linux.
 Cross-platform compatibility can be attained using universal file systems like FAT32 or exFAT, which are compatible with multiple operating systems.
 
 File systems employ diverse techniques to organize data, such as partitioning, allocation units, and indexing.
@@ -66,7 +66,7 @@ As long as the file is open, the corresponding dentry and VFS inode remain in us
 \section{Encryption}\label{sec:encryption-approaches}
 
 Another concept that has to be briefly discussed is encryption.
-It is simply a process of applying cryptographic algorithms (encoding) to information in such a way that only authorized parties can access it.
+It is simply a process of applying cryptographic algorithms to information in such a way that only authorized parties can access it.
 In this thesis, I will use encryption as a means to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
 Utilizing encryption enables users to effectively safeguard their data against unauthorized access, data breaches, and other malicious activities.
 
@@ -87,9 +87,10 @@ To encrypt data using XChaCha20-Poly1305, a user first generates a secret key, w
 Then, the algorithm uses the secret key to transform the plaintext into ciphertext.
 The ciphertext can only be decrypted back to its original plaintext form using the same secret key that was used to encrypt it.
 
+
 \section{Versioning}\label{sec:versioning}
 
-Versioning is simply a technique used to maintain multiple copies or states of a file or directory, allowing users to access and restore previous versions as needed.
+Last but not least, versioning is a technique used to maintain multiple copies or states of a file or directory, allowing users to access and restore previous versions as needed.
 It enables tracking of changes made to files over time, facilitating collaboration and recovery from accidental data loss or corruption.
 
 Usually, versioning is implemented by storing multiple copies of a file or directory, each representing a different version.

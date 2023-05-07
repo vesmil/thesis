@@ -16,9 +16,10 @@ On the contrary, FUSE demands considerable effort to build a custom file system 
 However, using VFS is not the only way to achieve the desired functionality off adding features, and in order to judge the potential benefits of our VFS, it is essential to individually examine alternative solutions that simply provide custom features on top of existing file systems.
 This section will analyse existing non-virtual and virtual file systems with versioning and encryption features, as well as higher-level applications offering similar functionality.
 
-Non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
+Let us start with versioning; non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
 Notable non-virtual versioning file systems include OpenVMS, a versioning file system from Digital Equipment Corporation that automatically creates new instances of files with version numbers appended, and NILFS, a Linux-based log-structured file system that supports versioning and continuous snapshotting of the entire file system.
-And even though these solutions would be viable options, they are not really user-friendly nor easily extensible.
+And even though these solutions would be viable options, they are not what I would consider user-friendly.
+They also offer limited configurability and extensibility, which is a significant drawback for a user who wants to customize the versioning process.
 
 Still, several virtual file systems (VFS) with versioning capabilities have been developed:
 
@@ -33,21 +34,31 @@ Still, several virtual file systems (VFS) with versioning capabilities have been
     However, this solution primarily serves as a language demonstration rather than a practical implementation.
 \end{itemize}
 
-These existing solutions have various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
+These existing solutions are also not without various constraints, such as being platform-specific (mainly Linux-only) or discontinued.
 
-While virtual file systems with encryption are basically nonexistent, there are again non-virtual alternatives such as the Encrypted File System (EFS) which provides cryptographic protection of individual files on NTFS file system volumes using a public-key system.
+Third option for versioning is to use higher-level applications.
+These applications usually offer a wide range of features while still allowing extendability.
+Some of the most popular applications include Git, Subversion, Time Machine, and Dropbox.
+On truthfully, using these applications would be a practical solution, as they are well-maintained and offer a wide range of features.
+
+Regarding encryption, while such focused VFSs are basically nonexistent, there are several non-virtual file systems that offer encryption capabilities, such as the EFS which provides cryptographic protection of individual files on NTFS file system volumes using a public-key system.
 And surely enough, such solutions are viable options, but they from my personal experience lack the configurability and flexibility that a virtual file system can provide, and once more the extensibility is limited.
 For instance, as a dual-boot user, if I would like to have my files encrypted on the common partition, it would be not possible or at least very difficult to achieve with existing solutions.
 
 Moving back to the VFS domain, the closest example to the desired functionality is rvault~\cite{rvault}, which focuses on encrypting small files (passwords, keys, and secrets) and makes them accessible through one-time password authentication.
 However, this does differ from the intended functionality of the proposed VFS and could not be considered as alternative, rather it may serve as a source of inspiration.
+Again, the competition is mainly higher-level applications, such as Folder Lock, Gpg, or Encrypto.
 
-The main competition thus stems from higher-level applications that provide versioning and encryption features.
-These are usually easily combinable and could mean a practical alternative to the proposed VFS\@.
-One might even argue that the proposed VFS is an so-called ``overkill'', and using these applications would be a more practical solution.
-Conversely, applications like this have their own set of limitations, such as requiring a constantly running background program with access to all files, and even though I might repeat myself, the extensibility and portability is limited.
+\subsection{Drawbacks of higher-level applications}\label{subsec:drawbacks-of-higher-level-applications}
 
-Despite the limitations of existing solutions, it is worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
+Since we now established that the main competition is higher-level applications, let us examine why devevloing proposed VFS is still a reasonable idea even though one might label it as ``overkill''.
+While I am not saying that higher-level applications are not a viable option, they are not meant for the same user base.
+
+Depending on specific solution, negative aspects could include problematic layering of additional features, limited multi-platform support and leaking implementation details to the user.
+And even more importantly, users are limited to use that particular application, while with VFS they can use any application they want.
+Yet, for the usage of VFS to be convinient, user's application of choice would need to be slightly modified.
+
+On that note, is is also worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
 For example, MacOS's Time Machine offers versioning capabilities, allowing users to revert to previous versions of files or restore deleted data.
 However, these features are not available on other platforms, and they may not provide the desired level of control over the process.
 
@@ -56,7 +67,6 @@ Additionally, there are no existing virtual file systems that provide the desire
 
 
 \section{Necessary libraries}\label{sec:libs}
-
 
 In the development of a virtual file system, there are two primary approaches to consider: writing kernel drivers or utilizing a user space library.
 Writing kernel drivers offers low-level access to the operating system but requires extensive knowledge of the kernel and platform-specific implementations.
@@ -97,7 +107,7 @@ Many popular file systems have been implemented using FUSE, such as SSHFS, Glust
 These implementations demonstrate the versatility and robustness of the FUSE framework in handling a wide range of file system requirements.
 
 Yet, FUSE is not without its limitations.
-It is arguable whether it is the best choice for a C++ implementation, as it is written in C, but more on that later\ref{sec:fuse-in-cpp}.
+It is arguable whether it is the best choice for a C++ implementation, as it is written in C, but more on that later~\ref{sec:fuse-in-cpp}.
 Another complication is its probability.
 Fortunately, even though FUSE was initially designed for Linux, variants are available for other platforms, ensuring cross-platform compatibility:
 
@@ -143,7 +153,7 @@ Someone might argue that there are better alternatives to the libraries mentione
 And I would honestly agree with that.
 However, I was not able to research and test all the available options, and I had to make a choice based on the information I had at the time, while optimizing for the most popular and widely-used libraries.
 
-But what I originally meant by ``space for improvement'' is that there are still some areas where libraries could be used instead of reinventing the wheel.
+But what I originally meant by space for improvement is that there are still some areas where libraries could be used instead of ``reinventing the wheel''.
 Namely, the custom VFS has its own implementation of paths, configuration files, and logging.
-But it is hard to say whether it is a good or a bad thing as all of these implementations are very simple and straightforward.
+But it is hard to say whether it is a good or a bad thing as all of these implementations are elementary and straightforward.
 Furthermore, all of these implementations are writen as such that they can be easily replaced with a library if needed.

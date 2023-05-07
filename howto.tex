@@ -1,12 +1,11 @@
 \chapter{Using this custom VFS}
 
-\ldots
-
 \section*{Compilation and setup}
 
 On Debian-based Linux systems (such as Ubuntu), you may install these dependencies with APT:
 
-\xxx{I will just copy-paste it from the final CI/CD script}
+I will just copy-paste it from the final CI/CD script
+
 
 \section{Running the VFS using Docker}\label{sec:docker-guide}
 
@@ -28,17 +27,13 @@ And after that, we have multiple options for running the container.
 Depending on whether we created a Docker volume, we can either mount it or not.
 In case of mounting to an actual directory, replace the \texttt{customvfs-test} with the path to the directory.
 
-\xxx{TODO create a shell program that will allow to run the container with different options}
-
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
 docker run --name customvfs-container --rm -it --privileged \
 -v customvfs-test:/mnt/fs customvfs
 \end{lstlisting}
 
-\xxx{We also have the option to run the container in the background. And that would require diffrent command passed to docker.}
-
-
-\xxx{What about other platforms?}
+We also have the option to run the container in the background.
+And that would require diffrent command passed to docker.
 
 \begin{Verbatim}
 apt-get install build-essential cmake libfuse-dev crypto++-dev ...
@@ -60,7 +55,7 @@ All you need to do is a directory and to run the following command:
   CustomVFS /path/to/mountpoint
 \end{Verbatim}
 
-\xxx{mby add notes about options}
+Some option notes
 
 \subsection*{Unmount the file system}
 

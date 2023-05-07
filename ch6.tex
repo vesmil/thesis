@@ -3,6 +3,7 @@
 Once the implementation of the custom VFS is complete, it is necessary to evaluate the project.
 The evaluation is performed in terms of its functionality, usability, reliability, security, and performance.
 
+
 \section{Usability}\label{sec:usability}
 
 The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
@@ -11,6 +12,7 @@ Despite the limited effort put into developing the CLI, it remains a functional 
 
 In future iterations, the usability of the custom VFS could be further enhanced by providing a graphical user interface (GUI) to make it even more accessible for users who are not familiar with command-line interfaces.
 Moreover, more detailed documentation and tutorials could be provided to facilitate user onboarding and promote the adoption of the custom VFS.
+
 
 \section{Reliability and Security}\label{sec:reliability-and-security}
 
@@ -22,6 +24,7 @@ This would help ensure that the VFS behaves correctly under various scenarios an
 
 In terms of security, the implemented encryption relies on the Libsodium library, which is a well-tested and widely used library for encryption.
 
+
 \section{Performance}\label{sec:performance}
 
 Performance was not the primary focus of this project, as it is still a prototype.
@@ -31,22 +34,28 @@ On the other hand, there are no known performance bottlenecks in the current imp
 Future work could involve conducting performance tests to identify potential areas of improvement and optimize the VFS accordingly.
 This would be particularly important for applications with high I/O demands or large-scale deployments.
 
+
 \section{Feature overview}\label{sec:feature-overview}
 
 To provide a comprehensive understanding of the custom VFS's capabilities, we compare it to other alternatives in the table below:
 
+\renewcommand{\checkmark}{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
 \begin{table}[ht]
     \centering
-    \caption{Example Table}
-    \begin{tabular}{|c|c|}
+    \caption{Custom VFS Evaluation}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \textbf{Column 1} & \textbf{Column 2} \\
+        \textbf{VFS Features}                                                           & \textbf{Simple Versioning} & \textbf{Diff-based Versioning} & \textbf{Extendibility} & \textbf{Password Protection} & \textbf{Key Protection} & \textbf{Multiplatform} \\
         \hline
-        Row 1, Cell 1 & Row 1, Cell 2 \\
+        Pick some tool for versioning + pick some tool for file/folder level encryption & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
         \hline
-        Row 2, Cell 1 & Row 2, Cell 2 \\
+        My custom VFS (lacking diff-based and GUI)                                      & \checkmark                 & \texttimes                     & \checkmark             & \checkmark & \checkmark & \checkmark \\
         \hline
-    \end{tabular}\label{tab:table}
+        Custom FUSE (no features, just extendibility)                                   & \texttimes                 & \texttimes                     & \checkmark             & \texttimes & \texttimes & \checkmark \\
+        \hline
+    \end{tabular}
+    \label{tab:vfs-evaluation}
 \end{table}
 
 As the table shows, the custom VFS stands out with its\ldots
