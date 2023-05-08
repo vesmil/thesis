@@ -32,16 +32,19 @@ I also adhered to the Google style guide for the naming convention, which unfort
 
 For the testing purposes, Google Test was integrated into the GitLab CI/CD pipelines.
 This allowed for the execution of simple tests on every commit, such as creating directories and files.
+Apart from testing the added VFS functionality, the tests also check helper class, such as the \texttt{Encryptor} class for encryption and decryption, or custom library to allow prefixing file names with additional information.
 
 To optimize the testing process, the tests were run on a shared mount-point that was cleared every time, although this approach is not ideal as it can make it harder to determine the root cause of a failure.
 Nonetheless, the primary purpose of these tests was to ensure that basic functionality was not broken with each commit, rather than to diagnose the cause of any failures that occurred.
-Overall, the use of GitLab CI/CD and Google Test improved the development process by providing automated testing and more organized project management.
 
 Originally, the tests were supposed to mount and unmount the VFS, but this proved to be problematic.
-Debugging the tests was difficult in particular, since the gdb did not handle properly detached processes and would not stop on VFS breakpoints.
+Debugging the tests was difficult in particular, since the \texttt{gdb} did not handle properly detached processes and would not stop on VFS breakpoints.
 As a result of that, mounting of the VFS is now done manually before running the tests and the mount-point needs to be passed as an argument.
 
-Apart from testing the added VFS functionality, the tests also check helper class, such as the \texttt{Encryptor} class for encryption and decryption, or custom library to allow prefixing file names with additional information.
+Another fact that proved to be problematic was that FUSE requires a kernel module.
+Because of that, I had to run the tests on a custom runner with privileged access, but as I do not want them to be running all the time, I limited the CI/CD pipeline to run only helper method tests.
+
+In the end, the tests were not as extensive as I would have liked, but they still provided a good baseline for the project.
 
 
 \section{Docker}\label{sec:docker}

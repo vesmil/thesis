@@ -1,0 +1,85 @@
+\chapter{Installation}
+
+\section{Dependencies}\label{sec:dependencies}
+
+\subsection*{Linux}
+
+On Debian-based Linux systems (such as Ubuntu), you may install these dependencies with APT:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+sudo apt-get install -y \
+     clang cmake make g++ \
+     fuse libfuse-dev libgtest-dev libsodium-dev \
+     pkg-config libboost-program-options-dev
+\end{lstlisting}
+
+\subsection*{macOS}
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+brew install --cask macfuse
+brew install libsodium
+brew install boost
+brew install googletest
+\end{lstlisting}
+
+\subsubsection{Apple Silicon}
+
+Even though supported it is not as easy as on Intel Macs.
+
+You also need to support kernel extensions on M1 Macs as \ldots
+Open recovery mode, \ldots
+
+Note: It will prompt you specifically\ldots\
+Note2:
+
+\subsection*{Windows}
+
+\xxx{Do it proerly}
+
+To set up the project on a Windows system, you will need to install the required dependencies and then configure the build system. Follow these steps:
+
+Install MSYS2: Download and run the installer from the official website (\url{https://www.msys2.org/}). This will provide a Unix-like environment on Windows and will be used to install other dependencies.
+
+Open the MSYS2 terminal (either MSYS2 MinGW 64-bit or MSYS2 MinGW 32-bit, depending on your system) and update the package database and core system packages:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+pacman -Syu
+\end{lstlisting}
+
+Install the required dependencies using the following command:
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+pacman -S
+make gcc mingw-w64-x86_64-cmake
+mingw-w64-x86_64-fuse3
+mingw-w64-x86_64-libsodium
+mingw-w64-x86_64-boost
+mingw-w64-x86_64-googletest
+\end{lstlisting}
+
+Open the MSYS2 terminal in your project directory.
+
+\subsection*{Docker}
+
+Even though there is a functional Docker file, it main purpose was for testing.
+Reason behind that being that FUSE requires kernel module and Docker does not add any significant benefits.
+\ldots
+
+\section{Build}\label{sec:build}
+
+Create a build directory and navigate to it:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+mkdir build
+cd build
+\end{lstlisting}
+
+Configure the project using CMake:
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+cmake -G "MSYS Makefiles" ..
+\end{lstlisting}
+
+Build the project:
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+make
+\end{lstlisting}
+
