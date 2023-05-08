@@ -5,20 +5,61 @@
 Mounting the file system is rather simple.
 All you need to do is a directory and to run the following command:
 
-\begin{Verbatim}
-  CustomVFS /path/to/mountpoint
-\end{Verbatim}
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+  .\customvfs_exec /path/to/mountpoint
+\end{lstlisting}
 
-Some option notes
+But there are mutliple options you can use.
+
+First of all mounting point does not have to be positional argument and you can use \texttt{-m} or \texttt{-{}-mountpoint} option.
+
+In case you want to use already existing directory in this VFS, you can use the \texttt{-b} or \texttt{-{}-backing} option with specified path to the directory.
+Note, that the directory will be altered.
+
+Another optopn you might use is \texttt{-f} or \texttt{-{}-fuse-args} which will pass following argument to the FUSE library.
+In case of multiple arguments, do not forget to use quotes.
+
+\subsection*{Example}
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+  .\customvfs_exec -b /path/to/backing/directory -m /path/to/mountpoint -f "-o nonempty -f -d"
+\end{lstlisting}
+
+This will mount the file system to \texttt{/path/to/mountpoint} with \texttt{/path/to/backing/directory} as backing directory and with \texttt{-o nonempty -f -d} as FUSE arguments.
+Meaning it will run in foreground, print debug messages and allow mounting to non-empty directory.
 
 \subsection*{Unmount the file system}
 
-\begin{Verbatim}
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
   fusermount -u /path/to/mountpoint
-\end{Verbatim}
+\end{lstlisting}
 
-You are all set.
+Or in case of macOS:
 
-Let's just learn how to use it - CLI tools
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+    umount /path/to/mountpoint
+\end{lstlisting}
+
 
 \section*{Commands}
+
+Now when you are all set up, you can start using the file system.
+All standard operations stays the same as you are used to.
+Well, that was the whole point of this project.
+
+But to you use the custom features, you need to use the separate tools.
+There are two of them, one for each feature.
+
+\subsection*{Encryption}
+
+To encrypt a file or directory, you need to use the \texttt{customvfs\_encrypt} tool.
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+  .\customvfs_encrypt /path/to/file/or/directory
+\end{lstlisting}
+
+\ldots
+
+\subsection*{Versioning}
+
+\ldots

@@ -2,41 +2,70 @@
 
 \section{Dependencies}\label{sec:dependencies}
 
-\subsection*{Linux}
+It is important to note that this project was originally meant for Linux systems.
+Because of that there might be some issues with other operating systems.
 
-On Debian-based Linux systems (such as Ubuntu), you may install these dependencies with APT:
+Before we even start, we need to clone the repository.
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-sudo apt-get install -y \
-     clang cmake make g++ \
-     fuse libfuse-dev libgtest-dev libsodium-dev \
+git clone git@gitlab.mff.cuni.cz:teaching/theses/yaghob/vesely-milan/source-code.git
+\end{lstlisting}
+
+or in case you do not have access to MFF GitLab:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+git clone https://github.com/vesmil/thesis-source
+\end{lstlisting}
+
+After that we need to install the dependencies.
+
+\subsection*{Linux}
+
+On Debian-based Linux systems (such as Ubuntu), you may install these dependencies with apt:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+sudo apt-get update && sudo apt-get install -y \
+     clang cmake make g++ fuse libfuse-dev \
+     libgtest-dev libsodium-dev \
      pkg-config libboost-program-options-dev
 \end{lstlisting}
 
+Other linux distributions may have different package names for the dependencies.
+But overall it should be similar.
+
+\subsubsection*{Docker}
+
+Even though there is a functioning Docker file, its main purpose was for testing.
+The Reason behind that is that FUSE requires kernel module, and Docker would have to reuse the host's kernel.
+This however does not provide any benefits over using the host directly.
+
+In case of different Linux distributions, however, you can use the Dockerfile in case of problems with dependencies.
+
 \subsection*{macOS}
 
+For macOS, you have to use Homebrew:
+
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-brew install --cask macfuse
-brew install libsodium
-brew install boost
-brew install googletest
+brew install --cask macfuse && \
+brew install libsodium boost googletest cmake llvm
 \end{lstlisting}
 
-\subsubsection{Apple Silicon}
+Even though macs are supported and tested for both Intel and Apple Silicon; the setup does include some extra steps.
 
-Even though supported it is not as easy as on Intel Macs.
+Namely, you need to enable support for kernel extensions.
+This is done through recovery mode, but I will not go into details as there are multiple guides on the internet on how to do that~\cite{macos-kext}.
+I may also note that in case you skip this step, the program will prompt you to do so upon running.
 
-You also need to support kernel extensions on M1 Macs as \ldots
-Open recovery mode, \ldots
-
-Note: It will prompt you specifically\ldots\
-Note2:
+Unfortunately, the current implementation of encryption module is not compatible with Apple Silicon.
+This is due to the fact that libsodium does not support it yet.
+However, the rest of the project should work just fine.
 
 \subsection*{Windows}
 
-\xxx{Do it proerly}
+\xxx{TEST IT AND ADJUST IT!}
 
-To set up the project on a Windows system, you will need to install the required dependencies and then configure the build system. Follow these steps:
+To set up the project on a Windows system, you will need to install the required dependencies and then configure the build system.
+Follow these steps:
 
 Install MSYS2: Download and run the installer from the official website (\url{https://www.msys2.org/}). This will provide a Unix-like environment on Windows and will be used to install other dependencies.
 
@@ -58,15 +87,9 @@ mingw-w64-x86_64-googletest
 
 Open the MSYS2 terminal in your project directory.
 
-\subsection*{Docker}
-
-Even though there is a functional Docker file, it main purpose was for testing.
-Reason behind that being that FUSE requires kernel module and Docker does not add any significant benefits.
-\ldots
-
 \section{Build}\label{sec:build}
 
-Create a build directory and navigate to it:
+Once the environment is set up, you can build the project.
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
 mkdir build
@@ -75,7 +98,10 @@ cd build
 
 Configure the project using CMake:
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-cmake -G "MSYS Makefiles" ..
+cmake ..
+
+# or for Windows:
+cmake -G "MSYS Makefiles"
 \end{lstlisting}
 
 Build the project:
