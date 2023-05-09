@@ -2,7 +2,7 @@
 \label{chap:refs}
 
 The development of a custom Virtual File System (VFS) with modules for versioning and encryption capabilities requires an understanding of several key concepts and technologies.
-This chapter aims to provide the necessary background and context to deeper understand the VFS implementation discussed in later chapters.
+This chapter aims to provide the necessary background and context to better understand the VFS implementation discussed in later chapters.
 Even for those already familiar with the subject, a brief refresher might be helpful.
 
 
@@ -10,8 +10,8 @@ Even for those already familiar with the subject, a brief refresher might be hel
 
 Let's start with what a file system is and what it does, as it is important for understanding the VFS itself.
 
-A file system is a critical component of any operating system, tasked with managing and organizing data stored on a device.
-As described by Oja et al.~\cite{oja-fs}, a filesystem represents the methods and data structures used by an operating system to maintain files on a disk or partition, that is, how files are organized on the disk.
+A file system is a critical component of any operating system, with the task of managing and organizing data stored on a device.
+As described by Oja et al.~\cite{oja-fs}, a file system represents the methods and data structures used by an operating system to maintain files on a disk or partition, that is, how files are organized on the disk.
 This consists of multiple operations such as creation, reading, modifying, and deleting files or directories.
 This is done in order to allow users and applications to interact seamlessly with the underlying storage medium.
 
@@ -22,20 +22,20 @@ There are various types of file systems, each tailored for specific operating sy
 Notable file systems include NTFS for Windows, HFS+ for macOS, and ext4 for Linux.
 Cross-platform compatibility can be attained using universal file systems like FAT32 or exFAT, which are compatible with multiple operating systems.
 
-File systems employ diverse techniques to organize data, such as partitioning, allocation units, and indexing.
+File systems employ diverse techniques to organize data, including partitioning, allocation units, and indexing.
 Additionally, file systems manage metadata, which is crucial for organizing and accessing stored data.
 Metadata encompasses information such as file names, creation and modification timestamps, file sizes, and access permissions.
 
 
 \section{Virtual File Systems}\label{sec:virtual-file-systems}
 
-A Virtual File System (VFS) is an essential abstraction layer in modern operating systems, designed to ease the interaction between various file systems and user applications.
+A VFS is an essential abstraction layer in modern operating systems, designed to ease the interaction between various file systems and user applications.
 The VFS functions as an intermediary, enabling applications to access various file systems through a unified interface, regardless of the underlying file system's specific characteristics or structure.
 
 According to a book by David A. Rusling~\cite{rusling-linux}, the VFS manages various mounted file systems by maintaining data structures that describe the entire virtual file system and the real mounted file systems.
 The VFS uses superblocks and inodes, similar to the EXT2 file system, to describe files and directories within the system.
 Each file system register with the VFS during operating system initialization.
-File system modules are loaded as needed, allowing VFS to read their superblocks.
+File system modules are loaded as needed, which allows VFS to read their superblocks.
 The VFS maintains a list of mounted file systems and their VFS superblocks, with each superblock containing pointers to specific file system functions.
 
 The VFS inodes are traversed as the system's processes access directories and files.
@@ -47,13 +47,13 @@ In this thesis, I will also demonstrate that the extensibility of the VFS is a v
 
 \subsection{VFS Operations}\label{subsec:vfs-operations}
 
-The Virtual File System (VFS) provides a range of operations to interact with files and directories.
+VFS provides a range of operations for interacting with files and directories.
 These operations are implemented as system calls, such as \texttt{open(2)}, \texttt{stat(2)}, \texttt{read(2)}, \texttt{write(2)}, and \texttt{chmod(2)}, which are called from a process context.
 
 The way this is implemented in Linux VFS is described by an article by Richard Gooch and Pekka Enberg~\cite{vfs}.
 During a system call, the VFS translates a pathname into a directory entry (dentry) by searching through the dentry cache.
 However, if the cache is too small to fit all dentries in RAM, the VFS may have to create dentries and load inodes to resolve the pathname.
-Each dentry typically has a pointer to an inode, which is a file system object that may be on disk or in memory.
+Each dentry typically has a pointer to an inode, which represents a file system object that may be on disk or in memory.
 
 When a file is opened, a file structure is allocated and initialized with a pointer to the dentry and file operation member functions taken from the inode data.
 The \texttt{open()} file method is then called to enable the file system implementation to perform its work.
@@ -79,13 +79,13 @@ To derive an encryption key from a user-provided password, password-based key de
 XChaCha20-Poly1305 is an advanced symmetric encryption algorithm that combines the XChaCha20 stream cipher with the Poly1305 message authentication code (MAC).
 This modern encryption algorithm is considered faster than AES, especially in software implementations, making it a suitable choice for this thesis~\cite{crypto_pp_xchacha20poly1305}.
 
-The XChaCha20 stream cipher operates using a 256-bit secret key and a 192-bit nonce.
+The XChaCha20 stream cipher operates with a 256-bit secret key and a 192-bit nonce.
 The increased nonce size in XChaCha20 significantly improves its resistance to nonce reuse attacks compared to the original ChaCha20 cipher.
 The algorithm employs a series of simple operations, such as addition, rotation, and XOR, to generate a keystream, which is subsequently combined with the plaintext to produce the ciphertext.
 
 To encrypt data using XChaCha20-Poly1305, a user first generates a secret key, which is a random sequence of 256 bits.
 Then, the algorithm uses the secret key to transform the plaintext into ciphertext.
-The ciphertext can only be decrypted back to its original plaintext form using the same secret key that was used to encrypt it.
+The ciphertext can only be decrypted back to its original plaintext form using the same secret key.
 
 
 \section{Versioning}\label{sec:versioning}
@@ -95,4 +95,4 @@ It enables tracking of changes made to files over time, facilitating collaborati
 
 Usually, versioning is implemented by storing multiple copies of a file or directory, each representing a different version.
 This approach is straightforward and easy to implement, but it can be inefficient in terms of storage space and performance.
-To address these issues, versioning can be implemented using a snapshot-based approach, which stores only the differences between versions, rather than storing multiple copies of the same file.
+To address these issues, versioning can be implemented using a diff-based approach, which stores only the differences between versions, rather than storing full copies of every version.

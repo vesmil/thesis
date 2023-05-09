@@ -4,7 +4,7 @@
 In order to determine the feasibility of the proposed VFS, it is crucial to analyse existing alternatives.
 In this chapter, we will delve into a detailed examination of various alternative solutions, highlighting their drawbacks and limitations.
 Additionally, we will explore the essential libraries and tools required for the successful implementation of the proposed solution.
-By thoroughly analyzing existing alternatives and exploring necessary components, we can better determine the viability of the proposed VFS\@.
+By thoroughly analyzing existing alternatives and exploring necessary components, we can better determine the viability of the proposed VFS.
 
 
 \section{Analysis of Alternatives}\label{sec:alternatives}
@@ -13,7 +13,7 @@ The proposed solution presents a unique approach, as there is currently no exist
 Nevertheless, FUSE, the very library which was employed in developing this VFS, could be viewed as its competition, given that it can be utilized to enhance existing file systems with added features.
 On the contrary, FUSE demands considerable effort to build a custom file system from scratch, and even if a developer undertakes the challenge, they would essentially be replicating a simplified version of this thesis' objective.
 
-However, using VFS is not the only way to achieve the desired functionality off adding features, and in order to judge the potential benefits of our VFS, it is essential to individually examine alternative solutions that simply provide custom features on top of existing file systems.
+However, using VFS is not the only way to achieve the desired functionality of adding features, and in order to judge the potential benefits of our VFS, it is essential to individually examine alternative solutions that simply provide custom features on top of existing file systems.
 This section will analyse existing non-virtual and virtual file systems with versioning and encryption features, as well as higher-level applications offering similar functionality.
 
 Let us start with versioning; non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
@@ -21,13 +21,13 @@ Notable non-virtual versioning file systems include OpenVMS, a versioning file s
 And even though these solutions would be viable options, they are not what I would consider user-friendly.
 They also offer limited configurability and extensibility, which is a significant drawback for a user who wants to customize the versioning process.
 
-Still, several virtual file systems (VFS) with versioning capabilities have been developed:
+Still, several virtual file systems with versioning capabilities have been developed:
 
 \begin{itemize}
     \item User space file systems implemented with FUSE:
     \begin{itemize}
         \item A simple versioning file system for Linux using FUSE~\cite{simple_vfs}, written in Go.
-        \item Wayback: A User-level Versioning File System for Linux~\cite{wayback_vfs}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE\@.
+        \item Wayback: A User-level Versioning File System for Linux~\cite{wayback_vfs}, developed in Perl for the USENIX 2004 Annual Technical Conference using an older version of FUSE.
     \end{itemize}
     \item Copy-on-Write Version Support for VFS under Linux by Stephan Müller and Sven Widmer~\cite{vvfs}, implemented as a kernel patch.
     \item A versioning virtual filesystem by Steve Huntley~\cite{huntley_vvfs}, written in Tcl.
@@ -56,7 +56,7 @@ While I am not saying that higher-level applications are not a viable option, th
 
 Depending on specific solution, negative aspects could include problematic layering of additional features, limited multi-platform support and leaking implementation details to the user.
 And even more importantly, users are limited to using that particular application, while with VFS they can use any application they want.
-Yet, for the usage of VFS to be convenient, user's application of choice would need to be slightly modified.
+Yet, for the usage of VFS to be convenient, the user's application of choice would need to be slightly modified.
 
 On that note, it is also worth noting that some operating systems, specifically macOS, provide built-in support for versioning and limited encryption features.
 For example, macOS's Time Machine offers versioning the way that it is possible to revert to previous versions of files or restore deleted data.
@@ -75,7 +75,7 @@ Furthermore, this would result in limited extensibility, as the kernel driver wo
 Not to mention the fact that kernel drivers are platform-specific, and they must be re-written for each platform.
 However, despite the tedious process, it may result in a more efficient and robust solution.
 
-An alternative to writing kernel drivers is using a user space file system library, such as FUSE\@.
+An alternative to writing kernel drivers is using a user space file system library, such as FUSE.
 This type of library allows developers to focus on the functionality and logic of their custom file system, rather than the intricate details of kernel programming.
 This approach is more portable and easier to maintain, but it may not be as efficient as a kernel driver.
 Nonetheless, the performance difference between the two approaches is negligible in most cases, and the benefits of using a user space library heavily outweigh the drawbacks in this particular scenario.
@@ -94,7 +94,7 @@ Upon mounting, the handler is registered with the kernel.
 When a user initiates read, write, or stat requests for the newly mounted file system, the kernel forwards these I/O requests to the handler, which processes them accordingly.
 The handler's response is then relayed back to the user by the kernel, ensuring a seamless interaction between the custom file system and the operating system.
 
-The FUSE flow-chart diagram created by Wikipedia user named Sven~\cite{fuse-diagram} depicted in Figure~\ref{fig:fuse-diagram} effectively illustrates the process involved in handling a command like `ls', from its initial submission to the Virtual File System (VFS) layer, through the FUSE kernel module, to a handler program in user space and back.
+The FUSE flow-chart diagram created by Wikipedia user named Sven~\cite{fuse-diagram} depicted in Figure~\ref{fig:fuse-diagram} effectively illustrates the process involved in handling a command like `ls', from its initial submission to the virtual file system layer, through the FUSE kernel module, to a handler program in user space and back.
 
 \begin{figure}[ht]
     \centering
@@ -108,7 +108,7 @@ These implementations demonstrate the versatility and robustness of the FUSE fra
 
 Yet, FUSE is not without its limitations.
 It is arguable whether it is the best choice for a C++ implementation, as it is written in C, but more on that later~\ref{sec:fuse-in-cpp}.
-Another complication is its probability.
+Another complication is its portability.
 Fortunately, even though FUSE was initially designed for Linux, variants are available for other platforms, ensuring cross-platform compatibility:
 
 \begin{itemize}
@@ -117,14 +117,14 @@ Fortunately, even though FUSE was initially designed for Linux, variants are ava
     \item \textbf{Windows}: WinFsp - A Windows File System Proxy that provides FUSE-compatible functionality~\cite{winfsp}.
 \end{itemize}
 
-Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS\@.
+Considering the advantages of user space development and the availability of FUSE for multiple platforms, FUSE is my preferred choice for implementing the proposed VFS.
 This approach enables the development of a cross-platform VFS with versioning and encryption capabilities while avoiding the complexity of kernel driver development.
 Still, several other libraries will need to be employed to address various aspects of the project.
 
 \subsection{Encryption}\label{subsec:encryption-analysis}
 
 Initially, Crypto++~\cite{crypto_pp} was considered for integration into the custom VFS, given its comprehensive open-source C++ class library covering a wide array of cryptographic schemes, such as encryption, hashing, and authentication algorithms.
-Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS\@.
+Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS.
 
 However, the implementation of Crypto++ led to various issues, primarily complicating the build process.
 As a result, I decided to switch to libsodium~\cite{libsodium}, which is a more user-friendly alternative.
@@ -134,7 +134,7 @@ With that, the custom VFS can achieve the desired level of data protection witho
 \subsection{Testing}\label{subsec:gtest}
 
 Google Test~\cite{google_test}, commonly referred to as gtest, is a widely-used C++ testing framework developed by Google.
-This library enables testing of individual components and the overall functionality of the custom VFS\@.
+This library enables testing of individual components and the overall functionality of the custom VFS.
 By employing gtest, the quality, reliability, and performance of the custom VFS can be evaluated, guaranteeing that it fulfills the requirements and expectations outlined in this thesis.
 
 \subsection{Options parsing}\label{subsec:options-parsing}
@@ -153,7 +153,7 @@ Someone might argue that there are better alternatives to the libraries mentione
 And I would honestly agree with that.
 However, I was not able to research and test all the available options, and I had to make a choice based on the information I had at the time, while optimizing for the most popular and widely-used libraries.
 
-But what I originally meant by space for improvement is that there are still some areas where libraries could be used instead of ``reinventing the wheel''.
+But what I originally meant by ``space for improvement'' is that there are still some areas where libraries could be used instead of ``reinventing the wheel''.
 Namely, the custom VFS has its own implementation of paths, configuration files, and logging.
-But it is hard to say whether it is a good or a bad thing as all of these implementations are elementary and straightforward.
+But it is hard to say whether this is a good or a bad thing as all of these implementations are elementary and straightforward.
 Furthermore, all of these implementations are written as such that they can be easily replaced with a library if needed.

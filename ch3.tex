@@ -5,7 +5,7 @@
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
 Properly incorporating FUSE in C++ presents many design challenges, primarily due to its interface design, which necessitates the use of a static wrapper for operations.
-The problem arises from FUSE expecting a C struct with pointers to functions, which poses a problem for non-static C++ methods.
+The issue originates from FUSE expecting a C struct with pointers to functions, which poses a problem for non-static C++ methods.
 To solve this issue, two solutions can be considered: either writing C++ code without utilizing objects, rendering the use of C++ instead of C rather pointless, or implementing a singleton wrapper with only static methods.
 
 As is evident, the latter solution was chosen.
@@ -26,15 +26,15 @@ Furthermore, the fusepp repository was not updated for even longer and would be 
 
 \section{Architecture}\label{sec:architecture}
 
-Once the foundation was laid; the next step was to design a core VFS\@.
+Once the foundation was laid, the next step was to design a core VFS.
 It is important to note that this implementation was not the primary focus of this thesis as it was rather focused on providing modularity and extensibility.
 The result of this is that the entire core VFS is built on top of already present filesystem in the operating system.
 It is based on simply using a backing directory to store all the files and directories.
 However, such implementation details can be easily replaced, allowing for future improvements.
 
-Still, there were some design decisions to be made regarding the object-oriented design of the VFS\@.
+Still, there were some design decisions to be made regarding the object-oriented design of the VFS.
 And multiple approaches were contemplated: mainly one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
 The reason for that is I would still need to somehow bound all those classes into one, meaning at least the wrapper would have to be more complicated.
 Another concern regarding the second approach is that it would be harder to make the VFS extensible, but more on that in the following sections.
 
@@ -81,7 +81,7 @@ It's important to note that I currently do use both inheritance and composition 
 The reason behind that is that it allows me to spare some boilerplate code and make the code more readable as I use the CustomVfs more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
 This allows me to simply copy construct the parent \texttt{CustomVfs} object with passed decorator.
 
-The use of this pattern is then demonstrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
+The use of this pattern is then illustrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
 
 \begin{lstlisting}[language=c++, caption={VFS initialization and usage},basicstyle=\ttfamily\small]
 int main(int argc, char* argv[]) {
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 }
 \end{lstlisting}
 
-Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS\@.
+Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS.
 
 \subsection{Modularity caveats}\label{subsec:modularity-cavs}
 
@@ -111,14 +111,14 @@ For the described example, it means simply that each decorator has to be able to
 
 Another crucial aspects of the architecture is determining the method by which users can access the added VFS features.
 In this implementation, hooks have been designed to integrate seamlessly with standard filesystem operations.
-What I mean by a hook is a file with a specific name that triggers a specific action when accessed.
+By `hook', I am referring to a file with a specific name that triggers a specific action when accessed.
 Additionally, a simple command-line interface (CLI) has been implemented to facilitate creating hooks for the VFS features.
 
 The filesystem captures the mentioned operation, performs the requested action, and returns the result of the operation to the user.
 This approach allows users to interact with the VFS features without deviating from standard filesystem operations.
 
 The CLI consists of two primary components: one for encryption and another for versioning.
-Users can execute commands related to these features via the CLI, making it a user-friendly and accessible interface for interacting with the VFS\@.
+Users can execute commands related to these features via the CLI, making it a user-friendly and accessible interface for interacting with the VFS.
 Commands for encryption may include encryption key management and selecting encryption algorithms, while versioning commands may involve creating new versions, listing available versions, and reverting to a previous version.
 
 Although the current implementation utilizes a command-line interface, the hooks can potentially be integrated into a graphical user interface (GUI) in the future.
@@ -146,12 +146,12 @@ For this reason, the module needs to be able to ignore hooks that are not meant 
 
 \subsection{Architectural overview}\label{subsec:overview}
 
-I will conclude this chapter by providing an architectural overview of the VFS\@.
+I will conclude this chapter by providing an architectural overview of the VFS.
 The architecture of our system is designed using object-oriented principles to ensure modularity, extensibility, and maintainability.
 The core of the system is built around the FuseWrapper class, which provides a base implementation for interacting with the FUSE library.
 By deriving from this base class, we can create custom virtual file systems with various features and functionality.
 
-The CustomVfs class inherits from FuseWrapper and serves as a foundation for more specialized virtual file systems.
+The \texttt{FuseWrapper} class, which is a parent class of \texttt{CustomVfs}, serves as a foundation for more specialized virtual file systems.
 By utilizing the decorator pattern, we implement additional functionality in separate classes, such as EncryptionVfs and VersioningVfs, which both inherit from the VfsDecorator class.
 This approach allows us to easily extend the system with new features while minimizing the impact on existing code.
 
