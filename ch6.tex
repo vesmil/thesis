@@ -6,7 +6,7 @@ The evaluation is performed in terms of its functionality, usability, reliabilit
 
 \section{Usability}\label{sec:usability}
 
-The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
+The VFS itself is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
 The features are currently accessed through a set of CLI tools, which are slightly less user-friendly, but that could be improved over time.
 Despite the limited effort put into developing the CLI, it remains a functional and accessible interface.
 
@@ -55,12 +55,12 @@ The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt di
 
 \begin{table}[ht]
     \centering
-    \caption{File System Versioning Tools Evaluation}
+    \caption{Versioning Tools Evaluation}
     \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
         & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Files} & \textbf{Dirs} & \textbf{Type} & \textbf{Auto} \\
         \hline
-        Custom VFS   & --           & \checkmark     & \checkmark     & \checkmark     & --            & Full          & \checkmark    \\
+        This VFS   & --           & \checkmark     & \checkmark     & \checkmark     & --            & Full          & \checkmark    \\
         \hline
         Btrfs        & --           & \checkmark     & --             & \checkmark     & \checkmark    & Diff          & \checkmark    \\
         \hline
@@ -85,15 +85,15 @@ The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt di
         \hline
         & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Password} & \textbf{Key} & \textbf{Auto Unlock} \\
         \hline
-        This VFS  & \texttimes   & \checkmark     & \checkmark     & \checkmark    & \checkmark   & \checkmark              \\
+        This VFS  & \texttimes   & \checkmark     & \checkmark     & \checkmark        & \checkmark   & \checkmark           \\
         \hline
-        VeraCrypt & \checkmark   & \checkmark     & \checkmark     & \checkmark    & \checkmark   & \texttimes              \\
+        VeraCrypt & \checkmark   & \checkmark     & \checkmark     & \checkmark        & \checkmark   & \texttimes           \\
         \hline
-        BitLocker & \checkmark   & \texttimes     & \texttimes     & \checkmark    & \checkmark   & \checkmark              \\
+        BitLocker & \checkmark   & \texttimes     & \texttimes     & \checkmark        & \checkmark   & \checkmark           \\
         \hline
-        AxCrypt   & \checkmark   & \texttimes     & \texttimes     & \checkmark    & \texttimes   & \checkmark              \\
+        AxCrypt   & \checkmark   & \texttimes     & \texttimes     & \checkmark        & \texttimes   & \checkmark           \\
         \hline
-        7-Zip     & \checkmark   & \checkmark     & \texttimes     & \checkmark    & \texttimes   & \texttimes              \\
+        7-Zip     & \checkmark   & \checkmark     & \texttimes     & \checkmark        & \texttimes   & \texttimes           \\
         \hline
     \end{tabular}
     \label{tab:encryption-evaluation}

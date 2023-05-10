@@ -1,9 +1,6 @@
 \chapter{Installation}
 
-\section{Dependencies}\label{sec:dependencies}
-
-It is important to note that this project was originally meant for Linux systems.
-Because of that, there might be some issues with other operating systems.
+\section*{Dependencies}\label{sec:dependencies}
 
 Before we even start, we need to clone the repository.
 
@@ -12,13 +9,13 @@ git clone git@gitlab.mff.cuni.cz:teaching/\
 theses/yaghob/vesely-milan/source-code.git
 \end{lstlisting}
 
-or in case you do not have access to MFF GitLab:
+\noindent \ldots or in case you do not have access to MFF GitLab:
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
 git clone https://github.com/vesmil/thesis-source
 \end{lstlisting}
 
-After that we need to install the dependencies.
+\noindent After that we need to install the dependencies.
 
 \subsection*{Linux}
 
@@ -31,16 +28,13 @@ sudo apt-get update && sudo apt-get install -y \
      pkg-config libboost-program-options-dev
 \end{lstlisting}
 
-Other linux distributions may have different package names for the dependencies.
+\noindent Other linux distributions may have different package names for the dependencies.
 But overall, it should be similar.
 
 \subsubsection*{Docker}\label{subsubsec:docker-guide}
 
 Even though there is a functioning Docker file, its main purpose was for testing.
 The Reason behind that is that FUSE requires kernel module, and Docker would have to reuse the host's kernel.
-This, however, does not provide any benefits over using the host directly.
-
-In case of different Linux distributions, however, you can use the Dockerfile in case of problems with dependencies.
 
 \subsection*{macOS}
 
@@ -52,7 +46,6 @@ brew install libsodium boost googletest cmake llvm
 \end{lstlisting}
 
 Even though macs are supported and tested for both Intel and Apple Silicon; the setup does include some extra steps.
-
 Namely, you need to enable support for kernel extensions.
 This is done through recovery mode, but I will not go into details as there are multiple guides on the internet on how to do that\cite{macos-kext}.
 I may also note that in case you skip this step, the program will prompt you to do so upon running.
@@ -66,12 +59,12 @@ However, the rest of the project should work just fine.
 The project is not supported on Windows as both WinFSP and Dokany have different API than FUSE\@.
 However, it could be easily ported to Windows by providing a different implementation of \texttt{FuseWrapper}.
 All the other used libraries should be platform independent.
+Nonetheless, it could be theoretically run on Windows using WSL\@.
 
-Nonetheless, it could be run on Windows using WSL\@.
-
-\section{Build}\label{sec:build}
+\section*{Build}\label{sec:build}
 
 Once the environment is set up, you can build the project easily using CMake.
+From the root of the repository follow these steps:
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
 mkdir build
@@ -85,3 +78,10 @@ cmake ..
 make
 \end{lstlisting}
 
+\noindent Optionally, you can save yourself some typing by adding the executables to your \texttt{PATH} variable or creating aliases such as:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+  alias cvfs_encrypt="path/to/cvfs_encrypt"
+  alias cvfs_version="path/to/cvfs_version"
+  alias custom_vfs="path/to/customvfs_exec"
+\end{lstlisting}
