@@ -3,10 +3,11 @@
 
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
-Initially, it was necessary to identify and incorporate various FUSE operations.
+Initially, it was necessary to identify and incorporate various FUSE operations that need to be implemented and passed to \texttt{FuseWrapper} class.
 This section provides a brief overview of some of the essential operations, incorporating information from the Facile Engineering tutorial and IBM Developer article\cite{ibm_fuse, facile_fuse}:
 
 \begin{itemize}
+    \setlength\itemsep{-0.2em}
     \item \textbf{getattr}: Retrieves the metadata of a given path.
     This operation is always called before any other operation made on the filesystem.
     It is responsible for reading the file or directory attributes, such as size, access permissions, and timestamps.
@@ -23,10 +24,6 @@ This section provides a brief overview of some of the essential operations, inco
 
 Besides these operations a full-featured filesystem might need operations such as \texttt{truncate}, \texttt{symlink}, \texttt{link}, \texttt{chmod}, \texttt{chown}, \texttt{utime}, \texttt{statfs}, \texttt{flush}, \texttt{release}, \texttt{fsync}, \texttt{setxattr}, \texttt{getxattr}, \texttt{listxattr}, and \texttt{removexattr}.
 
-To create a filesystem with FUSE, a structure variable of type fuse\_operations should be declared and passed to the fuse\_main function.
-The fuse\_operations structure contains pointers to functions that will be called when the appropriate action is required.
-This is, as described earlier\ref{sec:fuse-in-cpp}, done in the \texttt{FuseWrapper} class and all the other classes simply implement the required functions.
-
 \subsection{Operations for the Base VFS}\label{subsec:base-ops}
 
 The core of the implementation is provided by \texttt{CustomVfs} class, which is responsible for handling all file system operations.
@@ -38,10 +35,9 @@ Consequently, the debugging process is simplified as the user can easily access 
 Using the base VFS is also then as simple as creating an object and invoking the \texttt{main} method, as demonstrated in the following code snippet~\ref{lst:main}.
 
 \begin{lstlisting}[language=c++, basicstyle=\ttfamily\small, caption={Main method of the \texttt{CustomVfs} class}, label={lst:main}]
-int main(int argc, char* argv[]) {
+void main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     custom_vfs.main(argc, argv);
-    return 0;
 }
 \end{lstlisting}
 
@@ -87,7 +83,6 @@ int VersVfs::write(const std::string &file_path,
     if (off > 0) {
         prepare_newfile_for_write(file_path);
     }
-
     wrapped_vfs_->write(file_path, buf, size, off);
 }
 \end{lstlisting}

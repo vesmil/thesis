@@ -60,22 +60,18 @@ The decorator class wraps an instance of the base VFS class, allowing it to perf
 Following code snippet~\ref{lst:decorator} showcase the standard implementation of decorator pattern:
 
 \begin{lstlisting}[language=c++, caption={Decorator pattern implementation},label={lst:decorator},basicstyle=\ttfamily\small]
-class CustomVfs { /.../ };
-
 class VfsDecorator : public CustomVfs {
 public:
-explicit VfsDecorator(CustomVfs& wrapped_vfs);
-
+    explicit VfsDecorator(CustomVfs& wrapped_vfs);
 protected:
-CustomVfs& wrapped_vfs_;
+    CustomVfs& wrapped_vfs_;
 };
 
 class EncryptionVfs : public VfsDecorator {
 public:
-explicit EncryptionVfs(CustomVfs& wrapped_vfs);
-
-int read(/.../) override;
-int write(/.../) override;
+    explicit EncryptionVfs(CustomVfs& wrapped_vfs);
+    int read(/*...*/) override;
+    // ...
 };
 \end{lstlisting}
 
@@ -86,17 +82,13 @@ This allows me to simply copy construct the parent \texttt{CustomVfs} object wit
 The use of this pattern is then illustrated in the following code snippet~\ref{lst:decorator-main}, which shows how the VFS is initialized and used in the \texttt{main} function:
 
 \begin{lstlisting}[language=c++, caption={VFS initialization and usage},label={lst:decorator-main}, basicstyle=\ttfamily\small]
-int main(int argc, char* argv[]) {
+void main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     VersioningVfs versioned_vfs(custom_vfs);
     EncryptionVfs enc_vers_vfs(versioned_vfs);
-
     enc_vers_vfs.main(argc, argv);
-    return 0;
 }
 \end{lstlisting}
-
-Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS\@.
 
 \subsubsection{Modularity caveats}\label{subsubsec:modularity-cavs}
 
@@ -137,7 +129,6 @@ int Vfs::write(const std::string &ppath, char *buffer,
     if (is_hook(path)) {
         return handle_hook(path, buffer, size, offset);
     }
-
     // Do normal write operation...
 }
 \end{lstlisting}
