@@ -1,6 +1,8 @@
 \chapter{Design and Architecture}
 \label{chap:design-and-architecture}
 
+This chapter will outline the architecture and design decisions made during the development of the custom and extendable VFS\@.
+The first section will describe complications that arose from the use of FUSE in C++, while the second section will focus on the architecture of the VFS itself.
 
 \section{Using FUSE in C++}\label{sec:fuse-in-cpp}
 
@@ -12,29 +14,29 @@ As is evident, the latter solution was chosen.
 Fortunately, there was no need to start from scratch, as existing repositories already provide a solution to this problem.
 However, none of them were complete and up-to-date, and I still had to write some portion of the code myself.
 
-The foundation for this project was built upon the fusexx~\cite{fusexx} repository, which was found most suitable for the needs of this thesis.
+The foundation for this project was built upon the fusexx\cite{fusexx} repository, which was found most suitable for the needs of this thesis.
 But as I said, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
 The first step was therefore to refactor the code to use modern C++ features and resolve numerous clang-tidy warnings.
 Moreover, the repository was not updated for several years, and it was necessary to change some of the code's version-specific parts.
 And as a final touch, some methods were completely rewritten to improve readability or efficiency.
 
 Needless to say, there was also a third, rather ``hacky'' solution, more like a sub-solution of the second one, which involved beside other implementation details using a data field in the FUSE context to store a pointer to the C++ object.
-Something similar is done in the fusepp~\cite{fusepp} repository.
+Something similar is done in the fusepp\cite{fusepp} repository.
 But this approach did not seem to be the most elegant solution, and it was decided to use the singleton wrapper instead.
 Furthermore, the fusepp repository was not updated for even longer and would be harder to be used as a base for the project.
 
 
 \section{Architecture}\label{sec:architecture}
 
-Once the foundation was laid, the next step was to design a core VFS.
+Once the foundation was laid, the next step was to design a core VFS\@.
 It is important to note that this implementation was not the primary focus of this thesis as it was rather focused on providing modularity and extensibility.
 The result of this is that the entire core VFS is built on top of already present filesystem in the operating system.
 It is based on simply using a backing directory to store all the files and directories.
 However, such implementation details can be easily replaced, allowing for future improvements.
 
-Still, there were some design decisions to be made regarding the object-oriented design of the VFS.
+Still, there were some design decisions to be made regarding the object-oriented design of the VFS\@.
 And multiple approaches were contemplated: mainly one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE.
+Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
 The reason for that is I would still need to somehow bound all those classes into one, meaning at least the wrapper would have to be more complicated.
 Another concern regarding the second approach is that it would be harder to make the VFS extensible, but more on that in the following sections.
 
@@ -55,9 +57,9 @@ For example, an \texttt{EncryptionVfs} class is implemented as a decorator, inhe
 The \texttt{VfsDecorator} class, in turn, inherits from the base \texttt{CustomVfs} class.
 The decorator class wraps an instance of the base VFS class, allowing it to perform additional encryption-related tasks when reading or writing files.
 
-Following code snippet showcase the standard implementation of decorator pattern:
+Following code snippet~\ref{lst:decorator} showcase the standard implementation of decorator pattern:
 
-\begin{lstlisting}[language=c++, caption={Decorator pattern implementation},basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={Decorator pattern implementation},label={lst:decorator},basicstyle=\ttfamily\small]
 class CustomVfs { /.../ };
 
 class VfsDecorator : public CustomVfs {
@@ -81,9 +83,9 @@ It's important to note that I currently do use both inheritance and composition 
 The reason behind that is that it allows me to spare some boilerplate code and make the code more readable as I use the CustomVfs more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
 This allows me to simply copy construct the parent \texttt{CustomVfs} object with passed decorator.
 
-The use of this pattern is then illustrated in the following code snippet, which shows how the VFS is initialized and used in the \texttt{main} function:
+The use of this pattern is then illustrated in the following code snippet~\ref{lst:decorator-main}, which shows how the VFS is initialized and used in the \texttt{main} function:
 
-\begin{lstlisting}[language=c++, caption={VFS initialization and usage},basicstyle=\ttfamily\small]
+\begin{lstlisting}[language=c++, caption={VFS initialization and usage},label={lst:decorator-main}, basicstyle=\ttfamily\small]
 int main(int argc, char* argv[]) {
     CustomVfs custom_vfs();
     VersioningVfs versioned_vfs(custom_vfs);
@@ -94,9 +96,9 @@ int main(int argc, char* argv[]) {
 }
 \end{lstlisting}
 
-Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS.
+Anyone can easily add new features to the VFS by implementing a new decorator class and wrapping it around the base VFS\@.
 
-\subsection{Modularity caveats}\label{subsec:modularity-cavs}
+\subsubsection{Modularity caveats}\label{subsubsec:modularity-cavs}
 
 Unfortunate thing about this modularity design is complications with accessing the files other ways than using the parent decorator.
 To demonstrate my point, I will explain the complication with combing versioning and encryption.
@@ -118,7 +120,7 @@ The filesystem captures the mentioned operation, performs the requested action, 
 This approach allows users to interact with the VFS features without deviating from standard filesystem operations.
 
 The CLI consists of two primary components: one for encryption and another for versioning.
-Users can execute commands related to these features via the CLI, making it a user-friendly and accessible interface for interacting with the VFS.
+Users can execute commands related to these features via the CLI, making it a user-friendly and accessible interface for interacting with the VFS\@.
 Commands for encryption may include encryption key management and selecting encryption algorithms, while versioning commands may involve creating new versions, listing available versions, and reverting to a previous version.
 
 Although the current implementation utilizes a command-line interface, the hooks can potentially be integrated into a graphical user interface (GUI) in the future.
@@ -146,7 +148,7 @@ For this reason, the module needs to be able to ignore hooks that are not meant 
 
 \subsection{Architectural overview}\label{subsec:overview}
 
-I will conclude this chapter by providing an architectural overview of the VFS.
+I will conclude this chapter by providing an architectural overview of the VFS\@.
 The architecture of our system is designed using object-oriented principles to ensure modularity, extensibility, and maintainability.
 The core of the system is built around the FuseWrapper class, which provides a base implementation for interacting with the FUSE library.
 By deriving from this base class, we can create custom virtual file systems with various features and functionality.

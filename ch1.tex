@@ -8,10 +8,10 @@ Even for those already familiar with the subject, a brief refresher might be hel
 
 \section{Understanding File Systems}\label{sec:file-systems}
 
-Let's start with what a file system is and what it does, as it is important for understanding the VFS itself.
+Let us start with what a file system is and what it does, as it is important for understanding the VFS itself.
 
 A file system is a critical component of any operating system, with the task of managing and organizing data stored on a device.
-As described by Oja et al.~\cite{oja-fs}, a file system represents the methods and data structures used by an operating system to maintain files on a disk or partition, that is, how files are organized on the disk.
+As described by Oja et al.\cite{oja-fs}, a file system represents the methods and data structures used by an operating system to maintain files on a disk or partition, that is, how files are organized on the disk.
 This consists of multiple operations such as creation, reading, modifying, and deleting files or directories.
 This is done in order to allow users and applications to interact seamlessly with the underlying storage medium.
 
@@ -32,7 +32,7 @@ Metadata encompasses information such as file names, creation and modification t
 A VFS is an essential abstraction layer in modern operating systems, designed to ease the interaction between various file systems and user applications.
 The VFS functions as an intermediary, enabling applications to access various file systems through a unified interface, regardless of the underlying file system's specific characteristics or structure.
 
-According to a book by David A. Rusling~\cite{rusling-linux}, the VFS manages various mounted file systems by maintaining data structures that describe the entire virtual file system and the real mounted file systems.
+According to a book by David A. Rusling\cite{rusling-linux}, the VFS manages various mounted file systems by maintaining data structures that describe the entire virtual file system and the real mounted file systems.
 The VFS uses superblocks and inodes, similar to the EXT2 file system, to describe files and directories within the system.
 Each file system register with the VFS during operating system initialization.
 File system modules are loaded as needed, which allows VFS to read their superblocks.
@@ -50,7 +50,7 @@ In this thesis, I will also demonstrate that the extensibility of the VFS is a v
 VFS provides a range of operations for interacting with files and directories.
 These operations are implemented as system calls, such as \texttt{open(2)}, \texttt{stat(2)}, \texttt{read(2)}, \texttt{write(2)}, and \texttt{chmod(2)}, which are called from a process context.
 
-The way this is implemented in Linux VFS is described by an article by Richard Gooch and Pekka Enberg~\cite{vfs}.
+The way this is implemented in Linux VFS is described by an article by Richard Gooch and Pekka Enberg\cite{vfs}.
 During a system call, the VFS translates a pathname into a directory entry (dentry) by searching through the dentry cache.
 However, if the cache is too small to fit all dentries in RAM, the VFS may have to create dentries and load inodes to resolve the pathname.
 Each dentry typically has a pointer to an inode, which represents a file system object that may be on disk or in memory.

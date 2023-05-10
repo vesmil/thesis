@@ -1,13 +1,13 @@
 \chapter{Preparation}
 \label{chap:preparation}
 
-With the architecture and design decisions established, the focus now shifts to the implementation of the custom and extendable VFS.
+With the architecture and design decisions established, the focus now shifts to the implementation of the custom and extendable VFS\@.
 This concise chapter will outline the tools and technologies employed throughout the development process, ensuring a solid foundation for the implementation phase.
 
 
 \section{Cross-platform build System}\label{sec:build-system-and-cross-platform-challenges}
 
-CMake~\cite{cmake}, an open-source build system, has been selected for this project due to its cross-platform compatibility, user-friendliness, and extensive support for various platforms.
+CMake\cite{cmake}, an open-source build system, has been selected for this project due to its cross-platform compatibility, user-friendliness, and extensive support for various platforms.
 CMake generates native build environments, such as Makefiles or project files for integrated development environments (IDEs), streamlining the development process.
 
 \subsection{Platform-Specific Challenges}\label{subsec:platform-specific-challenges}
@@ -16,12 +16,17 @@ Despite the cross-platform advantages provided by CMake, several platform-specif
 For instance, running applications on an M1 Mac proved difficult due to the lack of compatible binaries for the hardware.
 While building the applications from source was an option, there were no compelling reasons to do so for the purposes of this thesis.
 Furthermore, the osxfuse port had not received an update in five years, exacerbating the situation.
-On Windows, WinFsp~\cite{winfsp} is required to ensure FUSE compatibility, introducing additional hurdles for seamless cross-platform development.
+On Windows, WinFsp\cite{winfsp} is required to ensure FUSE compatibility, introducing additional hurdles for seamless cross-platform development.
+
+Unfortunately, the current implementation of the encryption module is not compatible with Apple Silicon.
+This was found out during the final stages of development, as the project was being tested on an M1 Mac.
+The reason for this is that libsodium does not properly support Apple Silicon yet.
+However, the rest of the project should work just fine and the part of encryption module could be easily replaced with a different implementation.
 
 
 \section{Gitlab CI}\label{sec:gitlab-ci}
 
-The MFF faculty GitLab instance was utilized for this project~\cite{gitlab_mff}.
+The MFF faculty GitLab instance was utilized for this project\cite{gitlab_mff}.
 GitLab CI/CD pipelines were employed to automate various tasks, such as checking code formatting with clang-format, building the project, running Google Test unit tests, and providing the ability to download build artifacts.
 This approach facilitated a more efficient and organized development process.
 
@@ -54,11 +59,14 @@ First, it allowed for the creation of a consistent and reproducible development 
 This came in handy because as I wrote this thesis partly using the aforementioned M1 mac, and partly using a Linux machine.
 
 Additionally, Docker provided two methods for debugging or even demoing the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
-By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS.
+By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS\@.
 
-To create the Docker environment for the project, I started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS.
+To create the Docker environment for the project, I started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS\@.
 These dependencies included FUSE, GTest, Boost Program Option, and Libsodium.
 Then I copied the source code into the container and built the project.
-More information about how exactly it was done and how to use it can be found in the appendix~\ref{sec:docker-guide}.
 
-Overall, the incorporation of Docker into the project provided a consistent and reproducible development environment, simplified the deployment process, and allowed for easier debugging and testing of the custom VFS.
+Sadly, the Docker container in this project has one major drawback, as FUSE requires a kernel module, which Docker is not able to provide.
+Meaning that the Docker would still need access to the fuse device, complicating the process of running the container across different platforms.
+Besides that, it also needs to run with privileged access, which is not ideal.
+
+Overall, the incorporation of Docker into the project provided a consistent and reproducible development environment, simplified the deployment process, and allowed for easier debugging and testing of the custom VFS\@.

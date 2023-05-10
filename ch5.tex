@@ -7,7 +7,7 @@ Once the preparation phase was complete, it was time to begin the implementation
 \section{Essential FUSE Operations}\label{sec:fuse-ops}
 
 Initially, it was necessary to identify and incorporate various FUSE operations.
-This section provides a brief overview of some of the essential operations, incorporating information from the Facile Engineering tutorial and IBM Developer article~\cite{ibm_fuse, facile_fuse}:
+This section provides a brief overview of some of the essential operations, incorporating information from the Facile Engineering tutorial and IBM Developer article\cite{ibm_fuse, facile_fuse}:
 
 \begin{itemize}
     \item \textbf{getattr}: Retrieves the metadata of a given path.
@@ -54,8 +54,8 @@ This allows the user to specify the mount point and other options such as the de
 
 \section{Encryption}\label{sec:encryption}
 
-To implement the prototype module of encryption, I have chosen to use the XChaCha20-Poly1305 as described in the initial chapter~\ref{subsec:xchacha20-poly1305}.
-I particularly used this algorithm implemented by the libsodium library~\ref{subsec:encryption-analysis}.
+To implement the prototype module of encryption, I have chosen to use the XChaCha20-Poly1305 described in the initial chapter~\ref{subsec:xchacha20-poly1305}.
+I particularly used this algorithm implemented by the libsodium library as discussed in~\ref{subsec:encryption-analysis}.
 
 There are two main approaches to use the added encryption functionality.
 The first approach is to use a user-defined password, which is then employed to generate the encryption key.
