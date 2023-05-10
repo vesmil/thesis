@@ -9,14 +9,14 @@ All you need to do is a directory and to run the following command:
   .\customvfs_exec /path/to/mountpoint
 \end{lstlisting}
 
-But there are mutliple options you can use.
+But there are multiple options you can use.
 
-First of all mounting point does not have to be positional argument and you can use \texttt{-m} or \texttt{-{}-mountpoint} option.
+First of all, mounting point does not have to be a positional argument, and you can use \texttt{-m} or \texttt{-{}-mountpoint} option.
 
-In case you want to use already existing directory in this VFS, you can use the \texttt{-b} or \texttt{-{}-backing} option with specified path to the directory.
-Note, that the directory will be altered.
+In case you want to use already existing directory in this VFS, you can use the \texttt{-b} or \texttt{-{}-backing} option with a specified path to the directory.
+Note that the directory will be altered.
 
-Another optopn you might use is \texttt{-f} or \texttt{-{}-fuse-args} which will pass following argument to the FUSE library.
+Another option you might use is \texttt{-f} or \texttt{-{}-fuse-args} which will pass the following argument to the FUSE library.
 In case of multiple arguments, do not forget to use quotes.
 
 \subsection*{Example}
@@ -40,26 +40,82 @@ Or in case of macOS:
     umount /path/to/mountpoint
 \end{lstlisting}
 
-
 \section*{Commands}
 
 Now when you are all set up, you can start using the file system.
-All standard operations stays the same as you are used to.
+All standard operations stay the same as you are used to.
 Well, that was the whole point of this project.
 
-But to you use the custom features, you need to use the separate tools.
+But if you wish to use the custom features, you need to use one of the separate tools.
 There are two of them, one for each feature.
 
 \subsection*{Encryption}
 
-To encrypt a file or directory, you need to use the \texttt{customvfs\_encrypt} tool.
+To encrypt a file or directory, you need to use the \texttt{cvfs\_encrypt} tool.
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-  .\customvfs_encrypt /path/to/file/or/directory
+./encryption --lock <file>
 \end{lstlisting}
 
-\ldots
+This will encrypt the given file.
+If you wish to provide a custom encryption key, you can do so using the \texttt{--key} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./encryption --lock <file> --key <key>
+\end{lstlisting}
+
+To decrypt a file, you can use the \texttt{--unlock} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./encryption --unlock <file>
+\end{lstlisting}
+
+If you encrypted the file with a custom key, you will need to provide it again to decrypt:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./encryption --unlock <file> --key <key>
+\end{lstlisting}
+
+If you wish to generate a new encryption key, you can use the \texttt{--generate} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./encryption --generate <file>
+\end{lstlisting}
+
+This will generate a new encryption key and save it to the specified file.
+Note that the file needs to be located on the mounted file system.
+Even though you may eventually move it.
+
+If you wish to set a default path for the encryption key, you can use the \texttt{--set-key-path} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./encryption --set-key-path <file>
+\end{lstlisting}
 
 \subsection*{Versioning}
 
-\ldots
+For versioning of files, the \texttt{cvfs\_version} tool is used.
+
+To list all versions of a file, you can use the \texttt{--list} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./versioning --list <key>
+\end{lstlisting}
+
+To restore a file to a specific version, you can use the \texttt{--restore} flag followed by the version number:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./versioning --restore \texttt{<version>} <key>
+\end{lstlisting}
+
+If you wish to delete a specific version of a file, you can use the \texttt{--delete} flag followed by the version number:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./versioning --delete \texttt{<version>} <key>
+\end{lstlisting}
+
+To delete all versions of a file, you can use the \texttt{--deleteAll} flag:
+
+\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
+./versioning --deleteAll <key>
+\end{lstlisting}
