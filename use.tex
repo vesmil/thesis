@@ -53,14 +53,9 @@ The following commands can be utilized:
 
 \begin{itemize}
     \setlength\itemsep{-0.1em}
-    \item \textbf{Encrypt a file:} \\
+    \item \textbf{Encrypt a file using a password (or a custom key):} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_encrypt --lock <file>
-    \end{BVerbatim}
-
-    \item \textbf{Encrypt a file with a custom key:} \\
-    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_encrypt --lock <file> --key <key>
+  cvfs_encrypt --lock <file> (--key <key>)
     \end{BVerbatim}
 
     \item \textbf{Encrypt a file with a default key:} \\
@@ -68,14 +63,9 @@ The following commands can be utilized:
   cvfs_encrypt --default-lock <file>
     \end{BVerbatim}
 
-    \item \textbf{Decrypt a file:} \\
+    \item \textbf{Decrypt a file using a password (or a custom key):} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_encrypt --unlock <file>
-    \end{BVerbatim}
-
-    \item \textbf{Decrypt a file with a custom key:} \\
-    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_encrypt --unlock <file> --key <key>
+  cvfs_encrypt --unlock <file> (--key <key>)
     \end{BVerbatim}
 
     \item \textbf{Generate a new encryption key:} \\
@@ -85,7 +75,7 @@ The following commands can be utilized:
 
     \item \textbf{Set a default path for the encryption key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_encrypt --set-key-path <vfs-ptah> <file>
+  cvfs_encrypt --set-key-path <vfs> <file>
     \end{BVerbatim}
 \end{itemize}
 
