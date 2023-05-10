@@ -54,10 +54,10 @@ This allows the user to specify the mount point and other options such as the de
 
 \section{Encryption}\label{sec:encryption}
 
-To implement the prototype module of encryption, I have chosen to use the XChaCha20-Poly1305 described in the initial chapter~\ref{subsec:xchacha20-poly1305}.
-I particularly used this algorithm implemented by the libsodium library as discussed in~\ref{subsec:encryption-analysis}.
+To implement the prototype module of encryption, the XChaCha20-Poly1305,described in the initial chapter~\ref{subsec:xchacha20-poly1305}, was chosen.
+Particularly, was used the implementation from libsodium library as discussed in~\ref{subsec:encryption-analysis}.
 
-There are two main approaches to use the added encryption functionality.
+There are two main approaches how to use the added encryption functionality.
 The first approach is to use a user-defined password, which is then employed to generate the encryption key.
 This method is not very practical, as the user has to manually lock and unlock files, since there is no mechanism to request the password when accessing a file.
 
@@ -67,17 +67,17 @@ However, this brings up the question of when to encrypt and decrypt the files.
 
 Encryption and decryption of files are easily performed upon opening and closing the file, respectively.
 In contrast, handling directories is more complicated, as there is no way to identify when the directory is being accessed.
-As a result, I have chosen to temporarily decrypt file names when reading the directory, while individual file contents are decrypted only when the file is opened.
+As a result, there is no encryption of the file names; instead solely the individual file contents are decrypted when the file is opened.
 This approach reduces unnecessary encryption and decryption operations and maintains relatively fast performance.
 
 The encryption itself was done by asking the parent vfs for the proper file path and then using the libsodium library to encrypt or decrypt the file.
-Encryption of directories was then done by simply encrypting the files and their names in the directory recursively.
+Encryption of directories was then done using stack instead of recursion.
 
 
 \section{Versioning}\label{sec:versioning2}
 
 The versioning module prototype is as of now rather limited since implementing a full-featured versioning system would be a significant undertaking.
-Namely, instead of using a diff-based approach for versioning, I have chosen to store the entire file in the versioning system as it simplifies the implementation.
+Namely, instead of using a diff-based approach for versioning, the entire file is stored in the versioning system as it simplifies the implementation.
 Diff-based approach could be then implemented in the future.
 
 Similar to the encryption implementation, the read and write operations were wrapped to include versioning.

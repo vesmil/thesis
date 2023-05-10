@@ -21,7 +21,7 @@ On Windows, WinFsp\cite{winfsp} is required to ensure FUSE compatibility, introd
 Unfortunately, the current implementation of the encryption module is not compatible with Apple Silicon.
 This was found out during the final stages of development, as the project was being tested on an M1 Mac.
 The reason for this is that libsodium does not properly support Apple Silicon yet.
-However, the rest of the project should work just fine and the part of encryption module could be easily replaced with a different implementation.
+However, the rest of the project should work just fine, and the part of encryption module could be easily replaced with a different implementation.
 
 
 \section{Gitlab CI}\label{sec:gitlab-ci}
@@ -31,7 +31,7 @@ GitLab CI/CD pipelines were employed to automate various tasks, such as checking
 This approach facilitated a more efficient and organized development process.
 
 Regarding the clang-format check, the project was configured to use the Google C++ style guide\cite{google_cpp_style_guide} with a few minor modifications.
-I also adhered to the Google style guide for the naming convention, which unfortunately is not enforced by the clang-format tool.
+The Google style guide was also used regarding the naming convention, although that unfortunately is not enforced by the clang-format tool.
 
 \subsection{Testing}\label{subsec:testing}
 
@@ -46,24 +46,23 @@ Originally, the tests were supposed to mount and unmount the VFS, but this prove
 Debugging the tests was difficult in particular, since the \texttt{gdb} did not properly handle detached processes and would not stop on VFS breakpoints.
 As a result of that, mounting of the VFS is now done manually before running the tests and the mount-point needs to be passed as an argument.
 
-Another fact that proved to be problematic was that FUSE requires a kernel module.
-Because of that, I had to run the tests on a custom runner with privileged access, but as I do not want them to be running all the time, I limited the CI/CD pipeline to only run helper method tests.
+Another fact that proved to be problematic was that FUSE requires a kernel module, as mentioned in section~\ref{sec:docker}.
+Because of that, the tests needed to run on a custom runner with privileged access, but as it would be a complication to let them run all the time, CI/CD pipeline was limited to only run helper method tests.
 
-In the end, the tests were not as extensive as I would have liked, but they still provided a good baseline for the project.
+In the end, the tests were not as extensive as could be, but they still provided a good baseline for the project.
 
 
 \section{Docker}\label{sec:docker}
 
 Docker\cite{docker} was also incorporated into the project because of several reasons.
 First, it allowed for the creation of a consistent and reproducible development environment, ensuring that the project could be built and run across different platforms without issues.
-This came in handy because as I wrote this thesis partly using the aforementioned M1 mac, and partly using a Linux machine.
 
 Additionally, Docker provided two methods for debugging or even demoing the VFS: one that displays debug output in a terminal, and another that runs the VFS in the background.
 By integrating Docker into the project, the development and deployment process was simplified, allowing for a more efficient and effective implementation of the custom and extendable VFS\@.
 
-To create the Docker environment for the project, I started with a base Ubuntu 20.04 image and installed the necessary dependencies for building and running the custom VFS\@.
-These dependencies included FUSE, GTest, Boost Program Option, and Libsodium.
-Then I copied the source code into the container and built the project.
+To create the Docker environment for the project, a base Ubuntu 20.04 image was used.
+Of course, some dependencies included FUSE, GTest, Boost Program Option, and Libsodium were also installed.
+After that, the source code is copied into the container and the project is built.
 
 Sadly, the Docker container in this project has one major drawback, as FUSE requires a kernel module, which Docker is not able to provide.
 Meaning that the Docker would still need access to the fuse device, complicating the process of running the container across different platforms.

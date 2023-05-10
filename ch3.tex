@@ -12,10 +12,10 @@ To solve this issue, two solutions can be considered: either writing C++ code wi
 
 As is evident, the latter solution was chosen.
 Fortunately, there was no need to start from scratch, as existing repositories already provide a solution to this problem.
-However, none of them were complete and up-to-date, and I still had to write some portion of the code myself.
+However, none of them were complete and up-to-date, and it was necessary to write or update portions of the code.
 
 The foundation for this project was built upon the fusexx\cite{fusexx} repository, which was found most suitable for the needs of this thesis.
-But as I said, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
+But as was said, significant changes were made to the existing code, as it was not written in a modern C++ style and did not adhere to the project's design goals.
 The first step was therefore to refactor the code to use modern C++ features and resolve numerous clang-tidy warnings.
 Moreover, the repository was not updated for several years, and it was necessary to change some of the code's version-specific parts.
 And as a final touch, some methods were completely rewritten to improve readability or efficiency.
@@ -36,8 +36,8 @@ However, such implementation details can be easily replaced, allowing for future
 
 Still, there were some design decisions to be made regarding the object-oriented design of the VFS\@.
 And multiple approaches were contemplated: mainly one involving a single VFS class and another comprising separate File, Directory, and VFS classes.
-Although the latter approach adheres more closely to object-oriented principles, I have decided to go with the former, as it is better suited for use with FUSE\@.
-The reason for that is I would still need to somehow bound all those classes into one, meaning at least the wrapper would have to be more complicated.
+Although the latter approach adheres more closely to object-oriented principles, We have decided to go with the former, as it is better suited for use with FUSE\@.
+The reason for that is that it would still be needed to somehow bound all those classes into one, meaning at least the wrapper would have to be more complicated.
 Another concern regarding the second approach is that it would be harder to make the VFS extensible, but more on that in the following sections.
 
 \subsection{Modularity}\label{subsec:modularity}
@@ -79,8 +79,8 @@ int write(/.../) override;
 };
 \end{lstlisting}
 
-It's important to note that I currently do use both inheritance and composition in the decorator pattern.
-The reason behind that is that it allows me to spare some boilerplate code and make the code more readable as I use the CustomVfs more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
+It's important to note that currently both inheritance and composition are used in the decorator pattern.
+The reason behind that is that it allows sparing some boilerplate code and make the code more readable as the CustomVfs is used more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
 This allows me to simply copy construct the parent \texttt{CustomVfs} object with passed decorator.
 
 The use of this pattern is then illustrated in the following code snippet~\ref{lst:decorator-main}, which shows how the VFS is initialized and used in the \texttt{main} function:
@@ -101,7 +101,7 @@ Anyone can easily add new features to the VFS by implementing a new decorator cl
 \subsubsection{Modularity caveats}\label{subsubsec:modularity-cavs}
 
 Unfortunate thing about this modularity design is complications with accessing the files other ways than using the parent decorator.
-To demonstrate my point, I will explain the complication with combing versioning and encryption.
+To demonstrate the point, We will explore the complication with combing versioning and encryption.
 With that, you have to consider what do you want to perform first.
 In case of first versioning and then encryption, you have to encrypt all the concerned files.
 In case of first encrypting and then versioning, you lose the ability to version the diff-based way.
@@ -113,7 +113,7 @@ For the described example, it means simply that each decorator has to be able to
 
 Another crucial aspects of the architecture is determining the method by which users can access the added VFS features.
 In this implementation, hooks have been designed to integrate seamlessly with standard filesystem operations.
-By `hook', I am referring to a file with a specific name that triggers a specific action when accessed.
+By `hook', We are referring to a file with a specific name that triggers a specific action when accessed.
 Additionally, a simple command-line interface (CLI) has been implemented to facilitate creating hooks for the VFS features.
 
 The filesystem captures the mentioned operation, performs the requested action, and returns the result of the operation to the user.
@@ -143,12 +143,14 @@ int Vfs::write(const std::string &ppath, char *buffer,
 \end{lstlisting}
 
 Each module has then its own implementation.
-It is also necessary to mention that I use one format for all hooks, which starts with a special character and then is followed by the name of the hook.
+It is also necessary to mention that all hooks share the same format, which is also the same as the format of hidden files.
 For this reason, the module needs to be able to ignore hooks that are not meant for it.
+
+This format is \texttt{\#<module\_name>\-(<args>)\#<affected\_file>} and creation and parsing of this format is handled by the \texttt{PrefixParser} class.
 
 \subsection{Architectural overview}\label{subsec:overview}
 
-I will conclude this chapter by providing an architectural overview of the VFS\@.
+We will conclude this chapter by providing an architectural overview of the VFS\@.
 The architecture of our system is designed using object-oriented principles to ensure modularity, extensibility, and maintainability.
 The core of the system is built around the FuseWrapper class, which provides a base implementation for interacting with the FUSE library.
 By deriving from this base class, we can create custom virtual file systems with various features and functionality.

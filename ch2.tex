@@ -18,7 +18,7 @@ This section will analyse existing non-virtual and virtual file systems with ver
 
 Let us start with versioning; non-virtual versioning file systems is a well-documented concept, and there are several implementations available.
 Notable non-virtual versioning file systems include OpenVMS, a versioning file system from Digital Equipment Corporation that automatically creates new instances of files with version numbers appended, and NILFS, a Linux-based log-structured file system that supports versioning and continuous snapshotting of the entire file system.
-And even though these solutions would be viable options, they are not what I would consider user-friendly.
+And even though these solutions would be viable options, they are not what someone might consider user-friendly.
 They also offer limited configurability and extensibility, which is a significant drawback for a user who wants to customize the versioning process.
 
 Still, several virtual file systems with versioning capabilities have been developed:
@@ -52,7 +52,7 @@ Again, the competition is mainly higher-level applications, such as Folder Lock,
 \subsection{Drawbacks of higher-level applications}\label{subsec:drawbacks-of-higher-level-applications}
 
 Since we now established that the main competition is higher-level applications, let us examine why developing proposed VFS is still a reasonable idea even though one might label it as ``overkill''.
-While I am not saying that higher-level applications are not a viable option, they are not meant for the same user base.
+While We are not saying that higher-level applications are not a viable option, they are not meant for the same user base.
 
 Depending on specific solution, negative aspects could include problematic layering of additional features, limited multi-platform support and leaking implementation details to the user.
 And even more importantly, users are limited to using that particular application, while with VFS they can use any application they want.
@@ -126,7 +126,7 @@ Initially, Crypto++\cite{crypto_pp} was considered for integration into the cust
 Utilizing Crypto++ would provide file-level encryption, effectively safeguarding the security and privacy of the data stored within the VFS\@.
 
 However, the implementation of Crypto++ led to various issues, primarily complicating the build process.
-As a result, I decided to switch to libsodium\cite{libsodium}, which is a more user-friendly alternative.
+As a result, the decision was made to switch to libsodium\cite{libsodium}, which is a more user-friendly alternative.
 It offers a robust selection of encryption, decryption, and cryptographic functions while maintaining a focus on simplicity and efficiency.
 With that, the custom VFS can achieve the desired level of data protection without incurring the complexities associated with Crypto++.
 
@@ -140,19 +140,13 @@ By employing gtest, the quality, reliability, and performance of the custom VFS 
 
 The Boost Program Options library\cite{boost_program_options} is a C++ library used for option parsing, which makes it easy to parse command-line options and arguments.
 This library has been utilized for the custom VFS to handle different command-line options effectively, including setting the mount point, enabling or disabling debugging mode, and so on.
+Besides that, it was also used for the supporting tools.
 
-The Boost Program Options library has various features, such as automatic generation of help messages, support for positional arguments, and other abilities to handle advanced scenarios, such as parsing configuration files, environment variables, and even options passed through a graphical user interface.
-
-I must also note that the Boost Program Options library has been used not only for the main VFS application but also for the supporting tools.
+The reason why this library was chosen in particular is because of its ease of use, popularity, and variety of features.
 
 \subsection{Space for improvement}\label{subsec:libs-space-for-improvement}
 
 While the libraries mentioned above have been used for the custom VFS, there are still some areas for improvement.
-Someone might argue that there are better alternatives to the libraries mentioned above, or that some more lightweight libraries could be used instead.
-And I would honestly agree with that.
-However, I was not able to research and test all the available options, and I had to make a choice based on the information I had at the time, while optimizing for the most popular and widely-used libraries.
-
-But what I originally meant by ``space for improvement'' is that there are still some areas where libraries could be used instead of ``reinventing the wheel''.
-Namely, the custom VFS has its own implementation of paths, configuration files, and logging.
-But it is hard to say whether this is a good or a bad thing as all of these implementations are elementary and straightforward.
-Furthermore, all of these implementations are written as such that they can be easily replaced with a library if needed.
+Mainly, some libraries could potentially be used instead of ``reinventing the wheel'' such as source code for handling of paths, configuration files, and logging.
+But it is hard to say how severe this issue is, as all of these implementations are elementary and straightforward.
+Furthermore, all of these implementations are written as such that they could be easily replaced with a library if needed.

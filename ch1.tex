@@ -43,7 +43,7 @@ Frequently accessed inodes are kept in the inode cache for quicker access.
 Additionally, Linux VFS uses a common buffer cache, independent of the file systems, to cache data buffers from underlying devices.
 
 VFS also plays a critical role in operating system design as it not only offers file system independence, but also provides benefits such as improved security or better performance.
-In this thesis, I will also demonstrate that the extensibility of the VFS is a valuable advantage, enabling the incorporation of advanced features without requiring kernel modifications.
+In this thesis, we will also demonstrate that the extensibility of the VFS is a valuable advantage, enabling the incorporation of advanced features without requiring kernel modifications.
 
 \subsection{VFS Operations}\label{subsec:vfs-operations}
 
@@ -67,7 +67,7 @@ As long as the file is open, the corresponding dentry and VFS inode remain in us
 
 Another concept that has to be briefly discussed is encryption.
 It is simply a process of applying cryptographic algorithms to information in such a way that only authorized parties can access it.
-In this thesis, I will use encryption as a means to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
+In this thesis, the encryption will be used as a mean to transform the contents of files and directories into an unreadable format, which can only be deciphered with the appropriate decryption key.
 Utilizing encryption enables users to effectively safeguard their data against unauthorized access, data breaches, and other malicious activities.
 
 For file and directory encryption, symmetric key algorithms are commonly utilized due to their computational efficiency and robust security properties.
