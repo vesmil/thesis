@@ -62,7 +62,11 @@ However, the rest of the project should work just fine.
 
 \subsection*{Windows}
 
-\xxx{To be tested}
+The project is not supported on Windows as both WinFSP and Dokany have different API than FUSE\@.
+However, it could be easily ported to Windows by providing a different implementation of \texttt{FuseWrapper}.
+All the other used libraries should be platform independent.
+
+Nonetheless, it could be run on Windows using WSL\@.
 
 \section{Build}\label{sec:build}
 
@@ -77,5 +81,6 @@ cd build
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
 cmake ..
+make
 \end{lstlisting}
 

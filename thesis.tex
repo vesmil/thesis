@@ -47,7 +47,6 @@
 \usepackage{caption}
 \usepackage{floatrow}
 \usepackage{enumitem}
-\usepackage{fancyvrb}
 
 
 % load bibliography tools
@@ -94,10 +93,6 @@
 \usepackage{tikz-uml}
 \usetikzlibrary{positioning} %add libraries as needed (shapes, decorations, ...)
 
-% remove this if you won't typeset any pseudocode
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-
 % remove this if you won't list any source code
 \usepackage{listings}
 
@@ -108,17 +103,12 @@
 \usepackage[noabbrev]{cleveref}
 \usepackage{hyperref}
 
-\input{todos} % remove this before compiling the final version
-
 \input{macros} % use this file for various custom definitions
-
 
 \begin{document}
 
     \include{title}
-
     \tableofcontents
-
     \include{intro}
     \include{ch1}
     \include{ch2}
