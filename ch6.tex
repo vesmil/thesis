@@ -7,7 +7,7 @@ The evaluation is performed in terms of its functionality, usability, reliabilit
 \section{Usability}\label{sec:usability}
 
 The VFS is user-friendly, as the user only needs to specify the mount directory on the command line to start using it.
-The features are currently accessed through a set of CLI tools, which are slightly less user-friendly but that could be improved over time.
+The features are currently accessed through a set of CLI tools, which are slightly less user-friendly, but that could be improved over time.
 Despite the limited effort put into developing the CLI, it remains a functional and accessible interface.
 
 In future iterations, the usability of the custom VFS could be further enhanced by providing a graphical user interface (GUI) to make it even more accessible for users who are not familiar with command-line interfaces.
@@ -38,68 +38,65 @@ This would be particularly important for applications with high I/O demands or l
 \section{Feature overview}\label{sec:feature-overview}
 
 To showcase the features of the custom VFS; the following table compares created VFS to similar software.
-Such as using the VFS in this thesis, using arbitrary external software, or creating a new FUSE VFS\@.
+I have even included some file systems, as they have some of the same features.
 
-Hopefully most of the features are self-explanatory, but there is a brief explanation of the more ambiguous ones just in case.
-The \textit{Easy Access} column refers to the ability to access the VFS features without any specialized software.
-Even though the \textit{Diff based versioning} column is marked with a cross, it is possible to implement it in the future.
-And the \textit{Automatic} in encryption means that the VFS will try to unlock the encrypted files automatically when the user tries to access them.
+It is important to note that the custom VFS is not a direct competitor to the other software, as it is a prototype and not a fully-fledged product.
+Besides that, the custom VFS has the ability to combine features easily, which could be used to create a more complete product.
+
+Hopefully, most of the features are self-explanatory, but there is a brief explanation of the more ambiguous ones just in case.
+The versioning \textit{Type} means whether it stores full snapshots or only the differences between snapshots,
+the \textit{Auto} in versioning means that the VFS stores snapshots automatically, without any user intervention, whereas
+\textit{Auto unlock} in encryption describes whether the files are automatically unlocked on access.
+The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt directories and files.
 
 \clearpage
 
 \renewcommand{\checkmark}{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
-\xxx{Specific}
+\begin{table}[ht]
+    \centering
+    \caption{File System Versioning Tools Evaluation}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Files} & \textbf{Dirs} & \textbf{Type} & \textbf{Auto} \\
+        \hline
+        Custom VFS   & --           & \checkmark     & \checkmark     & \checkmark     & --            & Full          & \checkmark    \\
+        \hline
+        Btrfs        & --           & \checkmark     & --             & \checkmark     & \checkmark    & Diff          & \checkmark    \\
+        \hline
+        ZFS          & --           & \checkmark     & \checkmark     & \checkmark     & \checkmark    & Diff          & \checkmark    \\
+        \hline
+        Time Machine & --           & --             & \checkmark     & \checkmark     & \checkmark    & Diff          & \checkmark    \\
+        \hline
+        Shadow Copy  & \checkmark   & --             & --             & \checkmark     & \checkmark    & Full          & \checkmark    \\
+        \hline
+        Git          & \checkmark   & \checkmark     & \checkmark     & \checkmark     & \checkmark    & Diff          & --            \\
+        \hline
+    \end{tabular}
+    \label{tab:versioning-evaluation}
+\end{table}
+
+\vspace{2em}
 
 \begin{table}[ht]
     \centering
-    \caption{Custom VFS Evaluation}
-    \begin{tabular}{|c|c|c|c|}
+    \caption{Encryption Tools Evaluation}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-        \textbf{}         & \textbf{Extendability} & \textbf{Multiplatform} & \textbf{Easy access} \\
+        & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Password} & \textbf{Key} & \textbf{Auto Unlock} \\
         \hline
-        External software & \texttimes             & --                     & \texttimes           \\
+        This VFS  & \texttimes   & \checkmark     & \checkmark     & \checkmark    & \checkmark   & \checkmark              \\
         \hline
-        This thesis VFS   & \checkmark             & --                     & \checkmark           \\
+        VeraCrypt & \checkmark   & \checkmark     & \checkmark     & \checkmark    & \checkmark   & \texttimes              \\
         \hline
-        New FUSE VFS      & \checkmark             & \checkmark             & \checkmark           \\
+        BitLocker & \checkmark   & \texttimes     & \texttimes     & \checkmark    & \checkmark   & \checkmark              \\
         \hline
-    \end{tabular}
-    \label{tab:vfs-evaluation}
-\end{table}
-
-
-\begin{table}[ht]
-    \centering
-    \caption{Versioning Evaluation}
-    \begin{tabular}{|c|c|c|c|}
+        AxCrypt   & \checkmark   & \texttimes     & \texttimes     & \checkmark    & \texttimes   & \checkmark              \\
         \hline
-        \textbf{}         & \textbf{Versioning} & \textbf{Diff based versioning} \\
-        \hline
-        External software & \checkmark          & \checkmark                     \\
-        \hline
-        This thesis VFS   & \checkmark          & \texttimes                     \\
-        \hline
-        New FUSE VFS      & \texttimes          & \texttimes                     \\
+        7-Zip     & \checkmark   & \checkmark     & \texttimes     & \checkmark    & \texttimes   & \texttimes              \\
         \hline
     \end{tabular}
-    \label{tab:vfs-vers-evaluation}
+    \label{tab:encryption-evaluation}
 \end{table}
 
-\begin{table}[ht]
-    \centering
-    \caption{Encryption Evaluation}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
-        \textbf{}         & \textbf{Password protection} & \textbf{Key protection} & \textbf{Automatic} \\
-        \hline
-        External software & \checkmark                   & \checkmark              & --                 \\
-        \hline
-        This thesis VFS   & \checkmark                   & \checkmark              & \checkmark         \\
-        \hline
-        New FUSE VFS      & \texttimes                   & \texttimes              & \texttimes         \\
-        \hline
-    \end{tabular}
-    \label{tab:vfs-enc-evaluation}
-\end{table}
 

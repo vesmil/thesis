@@ -55,37 +55,37 @@ The following commands can be utilized:
     \setlength\itemsep{-0.1em}
     \item \textbf{Encrypt a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --lock <file>
+  cvfs_encrypt --lock <file>
     \end{BVerbatim}
 
     \item \textbf{Encrypt a file with a custom key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --lock <file> --key <key>
+  cvfs_encrypt --lock <file> --key <key>
     \end{BVerbatim}
 
     \item \textbf{Encrypt a file with a default key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --default-lock <file>
+  cvfs_encrypt --default-lock <file>
     \end{BVerbatim}
 
     \item \textbf{Decrypt a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --unlock <file>
+  cvfs_encrypt --unlock <file>
     \end{BVerbatim}
 
     \item \textbf{Decrypt a file with a custom key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --unlock <file> --key <key>
+  cvfs_encrypt --unlock <file> --key <key>
     \end{BVerbatim}
 
     \item \textbf{Generate a new encryption key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --generate <file>
+  cvfs_encrypt --generate <file>
     \end{BVerbatim}
 
     \item \textbf{Set a default path for the encryption key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_encrypt --set-key-path <vfs-ptah> <file>
+  cvfs_encrypt --set-key-path <vfs-ptah> <file>
     \end{BVerbatim}
 \end{itemize}
 
@@ -97,21 +97,21 @@ The \texttt{cvfs\_version} tool is used for file versioning, and available are t
     \setlength\itemsep{-0.1em}
     \item \textbf{List all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_version --list <key>
+  cvfs_version --list <key>
     \end{BVerbatim}
 
     \item \textbf{Restore a file to a specific version:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_version --restore <version> <key>
+  cvfs_version --restore <version> <key>
     \end{BVerbatim}
 
     \item \textbf{Delete a specific version of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_version --delete <version> <key>
+  cvfs_version --delete <version> <key>
     \end{BVerbatim}
 
     \item \textbf{Delete all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs\_version --deleteAll <key>
+  cvfs_version --deleteAll <key>
     \end{BVerbatim}
 \end{itemize}
