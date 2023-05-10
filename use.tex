@@ -1,121 +1,106 @@
 \chapter{Usage}
 
-\section*{Mount the file system}
+\section*{Mount the VFS}
 
-Mounting the file system is rather simple.
-All you need to do is a directory and to run the following command:
+Mounting the VFS is rather simple, you just need to run the following command:
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
   .\customvfs_exec /path/to/mountpoint
 \end{lstlisting}
 
-But there are multiple options you can use.
-
-First of all, mounting point does not have to be a positional argument, and you can use \texttt{-m} or \texttt{-{}-mountpoint} option.
-
 In case you want to use already existing directory in this VFS, you can use the \texttt{-b} or \texttt{-{}-backing} option with a specified path to the directory.
-Note that the directory will be altered.
+Note that the directory will be altered and used for helper files, hooks, and other stuff.
 
 Another option you might use is \texttt{-f} or \texttt{-{}-fuse-args} which will pass the following argument to the FUSE library.
-In case of multiple arguments, do not forget to use quotes.
+In case of multiple arguments, you have to use quotes.
 
 \subsection*{Example}
 
+The following command will mount the file system to \texttt{/path/to/mountpoint} with backing directory set to \texttt{/path/to/backing/directory}.
+Besides that, it will also pass \texttt{-o nonempty -f -d} to the FUSE main, meaning it will run in foreground, print debug messages and allow mounting to non-empty directory.
+
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-  .\customvfs_exec -b /path/to/backing/directory -m /path/to/mountpoint -f "-o nonempty -f -d"
+  .\customvfs_exec -b /path/to/backing/directory \
+                   -f "-o nonempty -f -d" \
+                   /path/to/mountpoint
 \end{lstlisting}
 
-This will mount the file system to \texttt{/path/to/mountpoint} with \texttt{/path/to/backing/directory} as backing directory and with \texttt{-o nonempty -f -d} as FUSE arguments.
-Meaning it will run in foreground, print debug messages and allow mounting to non-empty directory.
+\subsection*{Unmount}
 
-\subsection*{Unmount the file system}
+That is even simpler as you just have to run:
 
 \begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
   fusermount -u /path/to/mountpoint
-\end{lstlisting}
-
-Or in case of macOS:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-    umount /path/to/mountpoint
+  # or in case of macOS - umount /path/to/mountpoint
 \end{lstlisting}
 
 \section*{Commands}
 
 Now when you are all set up, you can start using the file system.
 All standard operations stay the same as you are used to.
-Well, that was the whole point of this project.
-
-But if you wish to use the custom features, you need to use one of the separate tools.
-There are two of them, one for each feature.
+But if you wish to use the custom features, you need to use one of the two provided tools.
 
 \subsection*{Encryption}
 
-To encrypt a file or directory, you need to use the \texttt{cvfs\_encrypt} tool.
+The \texttt{cvfs\_encrypt} tool is used for encrypting files or directories.
+The following commands can be utilized:
 
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --lock <file>
-\end{lstlisting}
+\begin{enumerate}
+    \setlength\itemsep{-0.1em}
+    \item \textbf{Encrypt a file:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --lock <file>
+    \end{BVerbatim}
 
-This will encrypt the given file.
-If you wish to provide a custom encryption key, you can do so using the \texttt{--key} flag:
+    \item \textbf{Encrypt a file with a custom key:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --lock <file> --key <key>
+    \end{BVerbatim}
 
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --lock <file> --key <key>
-\end{lstlisting}
+    \item \textbf{Decrypt a file:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --unlock <file>
+    \end{BVerbatim}
 
-To decrypt a file, you can use the \texttt{--unlock} flag:
+    \item \textbf{Decrypt a file with a custom key:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --unlock <file> --key <key>
+    \end{BVerbatim}
 
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --unlock <file>
-\end{lstlisting}
+    \item \textbf{Generate a new encryption key:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --generate <file>
+    \end{BVerbatim}
 
-If you encrypted the file with a custom key, you will need to provide it again to decrypt:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --unlock <file> --key <key>
-\end{lstlisting}
-
-If you wish to generate a new encryption key, you can use the \texttt{--generate} flag:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --generate <file>
-\end{lstlisting}
-
-This will generate a new encryption key and save it to the specified file.
-Note that the file needs to be located on the mounted file system.
-Even though you may eventually move it.
-
-If you wish to set a default path for the encryption key, you can use the \texttt{--set-key-path} flag:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./encryption --set-key-path <file>
-\end{lstlisting}
+    \item \textbf{Set a default path for the encryption key:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./encryption --set-key-path <file>
+    \end{BVerbatim}
+\end{enumerate}
 
 \subsection*{Versioning}
 
-For versioning of files, the \texttt{cvfs\_version} tool is used.
+The \texttt{cvfs\_version} tool is used for file versioning, and available are the following commands:
 
-To list all versions of a file, you can use the \texttt{--list} flag:
+\begin{enumerate}
+    \setlength\itemsep{-0.1em}
+    \item \textbf{List all versions of a file:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./versioning --list <key>
+    \end{BVerbatim}
 
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./versioning --list <key>
-\end{lstlisting}
+    \item \textbf{Restore a file to a specific version:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./versioning --restore <version> <key>
+    \end{BVerbatim}
 
-To restore a file to a specific version, you can use the \texttt{--restore} flag followed by the version number:
+    \item \textbf{Delete a specific version of a file:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./versioning --delete <version> <key>
+    \end{BVerbatim}
 
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./versioning --restore \texttt{<version>} <key>
-\end{lstlisting}
-
-If you wish to delete a specific version of a file, you can use the \texttt{--delete} flag followed by the version number:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./versioning --delete \texttt{<version>} <key>
-\end{lstlisting}
-
-To delete all versions of a file, you can use the \texttt{--deleteAll} flag:
-
-\begin{lstlisting}[language=bash, basicstyle=\ttfamily\small]
-./versioning --deleteAll <key>
-\end{lstlisting}
+    \item \textbf{Delete all versions of a file:} \\
+    \begin{BVerbatim}[baseline=t,boxwidth=10cm]
+  ./versioning --deleteAll <key>
+    \end{BVerbatim}
+\end{enumerate}
