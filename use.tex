@@ -49,32 +49,32 @@ The following commands can be utilized:
     \setlength\itemsep{-0.1em}
     \item \textbf{Encrypt a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --lock <file>
+  ./cvfs\_encryp --lock <file>
     \end{BVerbatim}
 
     \item \textbf{Encrypt a file with a custom key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --lock <file> --key <key>
+  ./cvfs\_encryp --lock <file> --key <key>
     \end{BVerbatim}
 
     \item \textbf{Decrypt a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --unlock <file>
+  ./cvfs\_encryp --unlock <file>
     \end{BVerbatim}
 
     \item \textbf{Decrypt a file with a custom key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --unlock <file> --key <key>
+  ./cvfs\_encryp --unlock <file> --key <key>
     \end{BVerbatim}
 
     \item \textbf{Generate a new encryption key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --generate <file>
+  ./cvfs\_encryp --generate <file>
     \end{BVerbatim}
 
     \item \textbf{Set a default path for the encryption key:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./encryption --set-key-path <file>
+  ./cvfs\_encryp --set-key-path <file>
     \end{BVerbatim}
 \end{enumerate}
 
@@ -86,21 +86,21 @@ The \texttt{cvfs\_version} tool is used for file versioning, and available are t
     \setlength\itemsep{-0.1em}
     \item \textbf{List all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./versioning --list <key>
+  ./cvfs\_version --list <key>
     \end{BVerbatim}
 
     \item \textbf{Restore a file to a specific version:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./versioning --restore <version> <key>
+  ./cvfs\_version --restore <version> <key>
     \end{BVerbatim}
 
     \item \textbf{Delete a specific version of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./versioning --delete <version> <key>
+  ./cvfs\_version --delete <version> <key>
     \end{BVerbatim}
 
     \item \textbf{Delete all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  ./versioning --deleteAll <key>
+  ./cvfs\_version --deleteAll <key>
     \end{BVerbatim}
 \end{enumerate}
