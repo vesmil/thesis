@@ -75,7 +75,7 @@ public:
 };
 \end{lstlisting}
 
-It's important to note that currently both inheritance and composition are used in the decorator pattern.
+It is important to note that currently both inheritance and composition are used in the decorator pattern.
 The reason behind that is that it allows sparing some boilerplate code and make the code more readable as the CustomVfs is used more like a value type (if there was such thing in C++), meaning its behaviour is defined not by its reference but the values inside it.
 This allows me to simply copy construct the parent \texttt{CustomVfs} object with passed decorator.
 
@@ -105,10 +105,10 @@ For the described example, it means simply that each decorator has to be able to
 
 Another crucial aspects of the architecture is determining the method by which users can access the added VFS features.
 In this implementation, hooks have been designed to integrate seamlessly with standard filesystem operations.
-By `hook', We are referring to a file with a specific name that triggers a specific action when accessed.
+By `hook', we are referring to a file with a specific name that triggers a specific action when accessed.
 Additionally, a simple command-line interface (CLI) has been implemented to facilitate creating hooks for the VFS features.
 
-The filesystem captures the mentioned operation, performs the requested action, and returns the result of the operation to the user.
+The filesystem captures the mentioned operation, performs the requested action, and writes the result of the operation to the hook file.
 This approach allows users to interact with the VFS features without deviating from standard filesystem operations.
 
 The CLI consists of two primary components: one for encryption and another for versioning.

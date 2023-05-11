@@ -43,11 +43,11 @@ I have even included some file systems, as they have some of the same features.
 It is important to note that the custom VFS is not a direct competitor to the other software, as it is a prototype and not a fully-fledged product.
 Besides that, the custom VFS has the ability to combine features easily, which could be used to create a more complete product.
 
-Hopefully, most of the features are self-explanatory, but there is a brief explanation of the more ambiguous ones just in case.
-The versioning \textit{Type} means whether it stores full snapshots or only the differences between snapshots,
-the \textit{Auto} in versioning means that the VFS stores snapshots automatically, without any user intervention, whereas
+Hopefully, most of the columns' names are self-explanatory, but there is a brief explanation of the more ambiguous ones just in case.
+The versioning \textit{Dir} and \textit{File} columns simply tell if the VFS can version directories and files.
+The \textit{Type} means whether it stores full snapshots or only the differences between snapshots, whereas
+the \textit{Auto} there means that the VFS stores versions automatically, without any user intervention, similarly
 \textit{Auto unlock} in encryption describes whether the files are automatically unlocked on access.
-The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt directories and files.
 
 \clearpage
 
@@ -60,7 +60,7 @@ The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt di
         \hline
         & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Files} & \textbf{Dirs} & \textbf{Type} & \textbf{Auto} \\
         \hline
-        This VFS   & --           & \checkmark     & \checkmark     & \checkmark     & --            & Full          & \checkmark    \\
+        This VFS     & --           & \checkmark     & \checkmark     & \checkmark     & --            & Full          & \checkmark    \\
         \hline
         Btrfs        & --           & \checkmark     & --             & \checkmark     & \checkmark    & Diff          & \checkmark    \\
         \hline
@@ -85,15 +85,15 @@ The \textit{Dir} and \textit{File} columns simply tell if the VFS can encrypt di
         \hline
         & \textbf{Win} & \textbf{Linux} & \textbf{macOS} & \textbf{Password} & \textbf{Key} & \textbf{Auto Unlock} \\
         \hline
-        This VFS  & \texttimes   & \checkmark     & \checkmark     & \checkmark        & \checkmark   & \checkmark           \\
+        This VFS  & --           & \checkmark     & \checkmark     & \checkmark        & \checkmark   & \checkmark           \\
         \hline
-        VeraCrypt & \checkmark   & \checkmark     & \checkmark     & \checkmark        & \checkmark   & \texttimes           \\
+        VeraCrypt & \checkmark   & \checkmark     & \checkmark     & \checkmark        & \checkmark   & --                   \\
         \hline
-        BitLocker & \checkmark   & \texttimes     & \texttimes     & \checkmark        & \checkmark   & \checkmark           \\
+        BitLocker & \checkmark   & --             & --             & \checkmark        & \checkmark   & \checkmark           \\
         \hline
-        AxCrypt   & \checkmark   & \texttimes     & \texttimes     & \checkmark        & \texttimes   & \checkmark           \\
+        AxCrypt   & \checkmark   & --             & --             & \checkmark        & --           & \checkmark           \\
         \hline
-        7-Zip     & \checkmark   & \checkmark     & \texttimes     & \checkmark        & \texttimes   & \texttimes           \\
+        7-Zip     & \checkmark   & \checkmark     & --             & \checkmark        & --           & --                   \\
         \hline
     \end{tabular}
     \label{tab:encryption-evaluation}
