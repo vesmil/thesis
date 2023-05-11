@@ -1,7 +1,7 @@
 % Metadata to be stored in PDF, see documentation of the pdfx package for more details.
 
-\Author{Name Surname}
-\Title{Thesis title}
-\Keywords{keywords\sep more such\sep yet another}
-\Subject{Abstract of thesis}
+\Author{Milan Veselý}
+\Title{Virtual file system in user space}
+\Keywords{VFS\sep User space\sep versioning\sep encryption}
+\Subject{This thesis presents a custom Virtual File System (VFS) built with C++, using a custom wrapper for the FUSE library. The VFS is modular in design, facilitating easy extension with new features. Two prototype modules for versioning and encryption are also included, each accompanied by a command-line interface tool for control, such as restoring versions or encrypting files. Thanks to its password/key protection and encryption capabilities, the VFS enhances file management, enabling secure storage and retrieval of sensitive data. In addition, built-in versioning functionality allows users to access and restore previous file versions with ease. Once the VFS is mounted, it can be accessed in the same standard way as any other file system, making it user-friendly and accessible.}
 \Publisher{Charles University}
