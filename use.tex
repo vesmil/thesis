@@ -81,21 +81,21 @@ The \texttt{cvfs\_version} tool is used for file versioning, and available are t
     \setlength\itemsep{-0.1em}
     \item \textbf{List all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_version --list <key>
+  cvfs_version --list <file>
     \end{BVerbatim}
 
     \item \textbf{Restore a file to a specific version:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_version --restore <version> <key>
+  cvfs_version --restore <version> <file>
     \end{BVerbatim}
 
     \item \textbf{Delete a specific version of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_version --delete <version> <key>
+  cvfs_version --delete <version> <file>
     \end{BVerbatim}
 
     \item \textbf{Delete all versions of a file:} \\
     \begin{BVerbatim}[baseline=t,boxwidth=10cm]
-  cvfs_version --deleteAll <key>
+  cvfs_version --delete-all <file>
     \end{BVerbatim}
 \end{itemize}
